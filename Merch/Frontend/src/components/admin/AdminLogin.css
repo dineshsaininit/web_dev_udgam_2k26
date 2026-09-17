@@ -1,0 +1,232 @@
+/* =========================================================
+   ADMIN LOGIN STYLING
+========================================================= */
+
+.admin-login-page {
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 460px;
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 36px 32px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 25px 60px -15px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  display: flex;
+  flex-direction: column;
+}
+
+.back-store-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #71717a;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  transition: all 0.15s ease;
+}
+
+.back-store-link:hover {
+  color: #18181b;
+  background: #f4f4f5;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-badge-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #18181b;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.inst-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #71717a;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.login-title {
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: #09090b;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  font-size: 0.84rem;
+  color: #71717a;
+  line-height: 1.45;
+}
+
+.login-error-alert {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #18181b;
+}
+
+.admin-input {
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1.5px solid #e4e4e7;
+  font-size: 0.88rem;
+  outline: none;
+  background: #fafafa;
+  transition: all 0.15s ease;
+}
+
+.admin-input:focus {
+  background: #ffffff;
+  border-color: #18181b;
+  box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.08);
+}
+
+.admin-submit-btn {
+  height: 48px;
+  margin-top: 4px;
+  background: #18181b;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(24, 24, 27, 0.2);
+  transition: all 0.2s ease;
+}
+
+.admin-submit-btn:hover:not(:disabled) {
+  background: #000000;
+  transform: translateY(-2px);
+}
+
+.admin-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Demo box */
+.demo-credentials-box {
+  margin-top: 24px;
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.demo-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #0369a1;
+  margin-bottom: 4px;
+}
+
+.sparkle-icon {
+  color: #0284c7;
+}
+
+.demo-text {
+  font-size: 0.74rem;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.demo-text code {
+  background: #e2e8f0;
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: #0f172a;
+  font-size: 0.72rem;
+}
+
+.demo-login-btn {
+  background: #ffffff;
+  border: 1.5px solid #0284c7;
+  color: #0284c7;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.demo-login-btn:hover {
+  background: #e0f2fe;
+}
+
+.security-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 20px;
+  font-size: 0.72rem;
+  color: #71717a;
+}
