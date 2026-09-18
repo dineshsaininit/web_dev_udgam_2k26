@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import {
   TrendingUp,
@@ -14,7 +14,9 @@ import {
   ArrowUpRight,
   BarChart3,
   Layers,
-  Search
+  Search,
+  Printer,
+  Filter
 } from "lucide-react";
 import ProductEditModal from "./ProductEditModal";
 import "./AdminDashboard.css";
@@ -35,66 +37,31 @@ export default function AdminDashboard({
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("inventory"); // "inventory" | "analytics" | "orders"
 
+  const [orders, setOrders] = useState([]);
+  const [ordersSearch, setOrdersSearch] = useState("");
+  const [ordersQtyFilter, setOrdersQtyFilter] = useState("all");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/orders")
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setOrders(data.orders);
+      })
+      .catch(err => console.error("Error fetching orders:", err));
+  }, []);
+
   // Compute live product statistics
   const totalProductsCount = products.length;
   const inStockProductsCount = products.filter((p) => p.inStock !== false).length;
   const inStockRate = totalProductsCount > 0 ? Math.round((inStockProductsCount / totalProductsCount) * 100) : 0;
 
-  // Mock analytics based on catalog
-  const totalGrossRevenue = products.reduce((acc, p) => acc + p.price * (p.reviewsCount || 100), 0);
-  const totalOrdersCount = products.reduce((acc, p) => acc + (p.reviewsCount || 100), 0);
-
-  // Mock recent campus orders
-  const recentOrders = [
-    {
-      id: "ORD-9428",
-      student: "Aarav Sharma",
-      rollNo: "B220045CS",
-      email: "b220045@nitsikkim.ac.in",
-      item: "UDGAM '26 Heavyweight Oversized Hoodie",
-      size: "L",
-      qty: 1,
-      total: 1999,
-      status: "Ready for Pickup",
-      time: "10 mins ago"
-    },
-    {
-      id: "ORD-9427",
-      student: "Priya Lepcha",
-      rollNo: "B230018EC",
-      email: "b230018@nitsikkim.ac.in",
-      item: "UDGAM 'Chase the Bloom' Vintage Tee",
-      size: "M",
-      qty: 2,
-      total: 1798,
-      status: "Dispatched",
-      time: "45 mins ago"
-    },
-    {
-      id: "ORD-9426",
-      student: "Rohit Verma",
-      rollNo: "B210082ME",
-      email: "b210082@nitsikkim.ac.in",
-      item: "UDGAM Retro Athletic Quarter Zip Pullover",
-      size: "XL",
-      qty: 1,
-      total: 1699,
-      status: "Ready for Pickup",
-      time: "2 hours ago"
-    },
-    {
-      id: "ORD-9425",
-      student: "Ananya Bhutia",
-      rollNo: "B220091EE",
-      email: "b220091@nitsikkim.ac.in",
-      item: "UDGAM '26 Heavyweight Oversized Hoodie",
-      size: "M",
-      qty: 1,
-      total: 1999,
-      status: "Delivered",
-      time: "5 hours ago"
-    }
-  ];
+  // Compute real analytics based on orders from DB
+  const totalOrdersCount = orders.length;
+  const totalGrossRevenue = orders.reduce((acc, o) => {
+    const matchedProduct = products.find(p => p.title === o.item || p.id === o.item);
+    const price = matchedProduct ? matchedProduct.price : 0;
+    return acc + (price * o.qty);
+  }, 0);
 
   const handleOpenEdit = (product) => {
     setEditingProduct(product);
@@ -137,6 +104,17 @@ export default function AdminDashboard({
       p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const filteredOrders = orders.filter((o) => {
+    const matchesSearch = o.student.toLowerCase().includes(ordersSearch.toLowerCase()) || 
+                          o.rollNo.toLowerCase().includes(ordersSearch.toLowerCase());
+    const matchesQty = ordersQtyFilter === "all" || o.qty.toString() === ordersQtyFilter || (ordersQtyFilter === "3+" && o.qty >= 3);
+    return matchesSearch && matchesQty;
+  });
+
+  const handlePrintOrders = () => {
+    window.print();
+  };
 
   return (
     <div className="admin-dashboard-container">
@@ -427,8 +405,10 @@ export default function AdminDashboard({
         <section className="analytics-section">
           <div className="analytics-cards-grid">
             {products.map((prod) => {
-              const estimatedSales = (prod.reviewsCount || 100) * prod.price;
-              const unitCount = prod.reviewsCount || 100;
+              // Calculate actual units sold from orders
+              const productOrders = orders.filter(o => o.item === prod.title || o.item === prod.id);
+              const unitCount = productOrders.reduce((sum, o) => sum + o.qty, 0);
+              const estimatedSales = unitCount * prod.price;
 
               return (
                 <div key={prod.id} className="product-stat-box">
@@ -478,21 +458,54 @@ export default function AdminDashboard({
       =================================================== */}
       {activeTab === "orders" && (
         <section className="orders-section">
-          <div className="orders-table-wrapper">
+          <div className="inventory-toolbar no-print">
+            <div className="search-input-wrapper" style={{ flex: 1 }}>
+              <Search size={16} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search orders by Name or Roll No..."
+                value={ordersSearch}
+                onChange={(e) => setOrdersSearch(e.target.value)}
+                className="search-input"
+              />
+            </div>
+            
+            <div className="filter-dropdown-wrapper" style={{ display: 'flex', gap: '10px' }}>
+              <div className="select-wrapper" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <Filter size={16} style={{ position: 'absolute', left: '10px', color: '#666' }} />
+                <select 
+                  className="form-input" 
+                  value={ordersQtyFilter} 
+                  onChange={(e) => setOrdersQtyFilter(e.target.value)}
+                  style={{ paddingLeft: '35px', margin: 0, width: '150px' }}
+                >
+                  <option value="all">All Quantities</option>
+                  <option value="1">1 Item</option>
+                  <option value="2">2 Items</option>
+                  <option value="3+">3+ Items</option>
+                </select>
+              </div>
+              <button className="add-merch-primary-btn" onClick={handlePrintOrders}>
+                <Printer size={16} />
+                <span>Print List</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="orders-table-wrapper printable-orders">
             <table className="orders-admin-table">
               <thead>
                 <tr>
-                  <th>Order Reference</th>
+                  <th>Order Ref</th>
                   <th>Student & Roll No</th>
-                  <th>Merchandise Item</th>
+                  <th>Item & Print Name</th>
                   <th>Size & Qty</th>
-                  <th>Amount Paid</th>
                   <th>Status</th>
                   <th>Time</th>
                 </tr>
               </thead>
               <tbody>
-                {recentOrders.map((ord) => (
+                {filteredOrders.map((ord) => (
                   <tr key={ord.id}>
                     <td>
                       <code className="order-id-code">{ord.id}</code>
@@ -500,15 +513,22 @@ export default function AdminDashboard({
                     <td>
                       <div className="order-student-info">
                         <strong>{ord.student}</strong>
-                        <span>{ord.rollNo} • {ord.email}</span>
+                        <span>{ord.rollNo} • {ord.phone}</span>
+                        <span style={{ fontSize: '11px', color: '#666' }}>{ord.email}</span>
                       </div>
                     </td>
-                    <td>{ord.item}</td>
                     <td>
-                      <span className="order-size-badge">Size {ord.size} × {ord.qty}</span>
+                      <div className="order-student-info">
+                        <span>{ord.item}</span>
+                        {ord.printedName && (
+                          <strong style={{ color: '#5b7318', fontSize: '12px', marginTop: '4px' }}>
+                            Print: "{ord.printedName}"
+                          </strong>
+                        )}
+                      </div>
                     </td>
                     <td>
-                      <strong>₹{ord.total.toLocaleString("en-IN")}</strong>
+                      <span className="order-size-badge">Size {ord.size} × {ord.qty}</span>
                     </td>
                     <td>
                       <span
@@ -526,6 +546,13 @@ export default function AdminDashboard({
                     <td className="order-time-cell">{ord.time}</td>
                   </tr>
                 ))}
+                {filteredOrders.length === 0 && (
+                  <tr>
+                    <td colSpan="6" style={{ textAlign: 'center', padding: '30px', color: '#888' }}>
+                      No orders match your filters.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

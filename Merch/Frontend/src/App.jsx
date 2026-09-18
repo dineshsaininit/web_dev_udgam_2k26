@@ -6,6 +6,7 @@ import ProductDetail from "./components/ProductDetail";
 import CartDrawer from "./components/CartDrawer";
 import AdminLogin from "./components/admin/AdminLogin";
 import AdminDashboard from "./components/admin/AdminDashboard";
+import OrderReceipt from "./components/OrderReceipt";
 import { merchItems } from "./data/merchData";
 import { ShieldCheck } from "lucide-react";
 import "./App.css";
@@ -39,8 +40,16 @@ export default function App() {
   });
 
   // Navigation view state: 'showcase' | 'product' | 'admin' | 'admin-login'
-  const [currentView, setCurrentView] = useState("showcase");
+  const [currentView, setCurrentView] = useState(() => {
+    return window.location.hash === '#admin' ? (
+      // If we directly go to #admin, determine if we should show login or dashboard
+      // Note: we can't read the lazy isAdminAuthenticated state easily here without duplicating logic,
+      // so we'll just check localStorage directly.
+      localStorage.getItem(ADMIN_AUTH_KEY) === "true" ? "admin" : "admin-login"
+    ) : "showcase";
+  });
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [successfulOrderData, setSuccessfulOrderData] = useState(null);
 
   // Cart state with localStorage persistence
   const [cart, setCart] = useState(() => {
@@ -53,6 +62,20 @@ export default function App() {
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Hash-based admin routing
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#admin') {
+        setCurrentView(isAdminAuthenticated ? "admin" : "admin-login");
+      } else {
+        setCurrentView("showcase");
+      }
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [isAdminAuthenticated]);
 
   // Save products catalog changes
   useEffect(() => {
@@ -137,22 +160,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Admin routing
-  const handleNavigateAdmin = () => {
-    let isAuth = isAdminAuthenticated;
-    try {
-      if (localStorage.getItem(ADMIN_AUTH_KEY) === "true") isAuth = true;
-    } catch {}
-
-    if (isAuth) {
-      setCurrentView("admin");
-      window.location.hash = "admin";
-    } else {
-      setCurrentView("admin-login");
-      window.location.hash = "admin-login";
-    }
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   const handleAdminLoginSuccess = () => {
     try {
@@ -295,14 +302,13 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* Centered UDGAM Branding, Top-Right Cart & Admin Shortcut */}
+      {/* Centered UDGAM Branding, Top-Right Cart */}
       {currentView !== "admin" && (
         <Header
           cartCount={totalCartCount}
           onOpenCart={() => setIsCartOpen(true)}
           currentView={currentView}
           onNavigateHome={handleNavigateHome}
-          onNavigateAdmin={handleNavigateAdmin}
         />
       )}
 
@@ -390,7 +396,16 @@ export default function App() {
         onRemoveItem={handleRemoveItem}
         onClearCart={handleClearCart}
         onSelectProduct={handleSelectProduct}
+        onCheckoutSuccess={(orderData) => setSuccessfulOrderData(orderData)}
       />
+
+      {/* Envelope Receipt Animation */}
+      {successfulOrderData && (
+        <OrderReceipt 
+          orderData={successfulOrderData} 
+          onClose={() => setSuccessfulOrderData(null)} 
+        />
+      )}
 
       {/* Bottom Footer */}
       {currentView !== "admin" && (
@@ -401,15 +416,6 @@ export default function App() {
             <span className="footer-fest">Udgam</span>
             <span className="footer-dot">•</span>
             <span className="footer-theme">Chase the bloom</span>
-            <span className="footer-dot">•</span>
-            <button
-              className="footer-admin-btn"
-              onClick={handleNavigateAdmin}
-              title="Open Admin Portal"
-            >
-              <ShieldCheck size={13} />
-              <span>Admin Portal</span>
-            </button>
           </div>
         </footer>
       )}

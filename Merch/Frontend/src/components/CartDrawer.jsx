@@ -37,6 +37,7 @@ export default function CartDrawer({
   onRemoveItem,
   onClearCart,
   onSelectProduct,
+  onCheckoutSuccess,
 }) {
   const hasOutOfStockItems = items.some((item) => item.product.inStock === false);
   const [promoCode, setPromoCode] = useState("");
@@ -50,12 +51,14 @@ export default function CartDrawer({
   const [orderId, setOrderId] = useState("");
   const [paymentId, setPaymentId] = useState("");
   const [failureReason, setFailureReason] = useState("");
+  const [failureCode, setFailureCode] = useState("");
 
   const [checkoutForm, setCheckoutForm] = useState({
     name: "",
     officialEmail: "",
     rollNumber: "",
     phone: "",
+    printedName: "",
   });
 
   // Calculate totals
@@ -95,20 +98,108 @@ export default function CartDrawer({
     setPaymentStep("gateway");
   };
 
-  // Simulate Payment Success
-  const handleSimulateSuccess = () => {
-    const generatedOrderId = `UDGAM-26-${Math.floor(100000 + Math.random() * 900000)}`;
-    const generatedPayId = `pay_rzp_${Math.random().toString(36).substring(2, 11)}`;
-    setOrderId(generatedOrderId);
-    setPaymentId(generatedPayId);
-    setPaymentStep("success");
-    onClearCart();
-  };
+  // Real Razorpay Payment
+  const handleRazorpayPayment = async () => {
+    try {
+      // 1. Create order on backend
+      const res = await fetch("http://localhost:5000/api/payments/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: total }),
+      });
+      const order = await res.json();
+      if (!order || order.error) throw new Error("Failed to create order");
 
-  // Simulate Payment Failure
-  const handleSimulateFailure = () => {
-    setFailureReason("Transaction declined: Bank server timeout or insufficient balance simulation.");
-    setPaymentStep("failure");
+      // 2. Initialize Razorpay options
+      const options = {
+        key: "rzp_test_TdN2WJc0kSRPBs", // In production, move to VITE_RAZORPAY_KEY_ID
+        amount: order.amount,
+        currency: order.currency,
+        name: "Udgam 2026",
+        description: "Official Merchandise",
+        order_id: order.id,
+        handler: async (response) => {
+          try {
+            // Show verification loading screen while we call backend
+            setPaymentStep("verifying");
+            
+            // 3. Verify payment on backend
+            const verifyRes = await fetch("http://localhost:5000/api/payments/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                orderDetails: {
+                  itemName: items.map(i => i.product.title).join(', '),
+                  size: items.map(i => i.size).join(', '),
+                  quantity: items.map(i => i.quantity).reduce((a, b) => a + b, 0),
+                  address: 'Campus Pickup',
+                  name: checkoutForm.name,
+                  email: checkoutForm.officialEmail,
+                  rollNo: checkoutForm.rollNumber,
+                  phone: 'N/A', // Assuming phone is not in the form yet
+                  printedName: checkoutForm.printedName
+                }
+              }),
+            });
+
+            const verifyData = await verifyRes.json();
+            if (verifyData.success) {
+              if (onCheckoutSuccess) {
+                onCheckoutSuccess({
+                  orderId: verifyData.orderId || order.id,
+                  name: checkoutForm.name,
+                  email: checkoutForm.officialEmail,
+                  rollNo: checkoutForm.rollNumber,
+                  itemName: items.map(i => i.product.title).join(', '),
+                  size: items.map(i => i.size).join(', '),
+                  printedName: checkoutForm.printedName
+                });
+                handleCloseAll();
+                onClearCart();
+              } else {
+                setOrderId(verifyData.orderId || order.id);
+                setPaymentId(response.razorpay_payment_id);
+                setPaymentStep("success");
+                onClearCart();
+              }
+            } else {
+              setFailureReason(verifyData.error || "Payment verification failed. Please contact support.");
+              setFailureCode("ERR_VERIFICATION_FAILED");
+              setPaymentStep("failure");
+            }
+          } catch (err) {
+            console.error("Verification error:", err);
+            setFailureReason(err.message || "Server error during verification. Try again.");
+            setFailureCode("ERR_SERVER_TIMEOUT");
+            setPaymentStep("failure");
+          }
+        },
+        prefill: {
+          name: checkoutForm.name,
+          email: checkoutForm.officialEmail,
+        },
+        theme: {
+          color: "#01b068",
+        },
+      };
+
+      const rzp1 = new window.Razorpay(options);
+      rzp1.on('payment.failed', function (response){
+        setFailureReason(response.error.description || "Payment failed.");
+        setFailureCode(response.error.code || "ERR_PAYMENT_FAILED");
+        setPaymentStep("failure");
+      });
+      rzp1.open();
+
+    } catch (error) {
+      console.error(error);
+      setFailureReason("Failed to initialize payment gateway. Please try again later.");
+      setFailureCode("ERR_INIT_FAILED");
+      setPaymentStep("failure");
+    }
   };
 
   const handleRetryPayment = () => {
@@ -499,6 +590,26 @@ export default function CartDrawer({
                       />
                     </div>
 
+                    {/* Conditional: Name to Print (For 3+ items) */}
+                    {totalItemCount >= 3 && (
+                      <div className="form-group" style={{ backgroundColor: "#f9fbf0", padding: "10px", borderRadius: "8px", border: "1px solid #dce8b5" }}>
+                        <label className="form-label" style={{ color: "#5b7318" }}>
+                          <Tag size={13} className="label-icon" />
+                          <span>Custom Name Print (FREE offer for 3+ items)</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          placeholder="e.g. THE BOSS"
+                          value={checkoutForm.printedName}
+                          onChange={(e) =>
+                            setCheckoutForm({ ...checkoutForm, printedName: e.target.value.toUpperCase() })
+                          }
+                        />
+                        <span className="field-hint">Leave blank if you don't want a custom print.</span>
+                      </div>
+                    )}
+
                     <div className="order-final-summary">
                       <span>Total Payable:</span>
                       <strong>₹{total.toLocaleString("en-IN")}</strong>
@@ -561,24 +672,16 @@ export default function CartDrawer({
                       </p>
                     </div>
 
-                    {/* TWO TEST TRIGGERS: SUCCESS & FAILURE */}
-                    <div className="gateway-simulation-actions">
+                    {/* RAZORPAY TRIGGER */}
+                    <div className="gateway-simulation-actions" style={{ flexDirection: 'column' }}>
                       <button
                         type="button"
                         className="simulate-btn simulate-success-btn"
-                        onClick={handleSimulateSuccess}
+                        style={{ width: '100%', background: '#01b068', color: '#fff', border: 'none', justifyContent: 'center' }}
+                        onClick={handleRazorpayPayment}
                       >
-                        <CheckCircle2 size={18} />
-                        <span>Simulate Payment Success</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        className="simulate-btn simulate-failure-btn"
-                        onClick={handleSimulateFailure}
-                      >
-                        <XCircle size={18} />
-                        <span>Simulate Payment Failure</span>
+                        <ShoppingBag size={18} />
+                        <span>Pay with Razorpay</span>
                       </button>
                     </div>
 
@@ -590,6 +693,36 @@ export default function CartDrawer({
                       ← Back to Student Details
                     </button>
                   </div>
+                </motion.div>
+              )}
+
+              {/* STEP 2.5: VERIFYING SECURE PAYMENT */}
+              {paymentStep === "verifying" && (
+                <motion.div
+                  className="verifying-modal-card"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{ textAlign: 'center', padding: '40px 20px' }}
+                >
+                  <div className="loader-spinner" style={{ 
+                    border: '4px solid #f3f3f3', 
+                    borderTop: '4px solid #01b068', 
+                    borderRadius: '50%', 
+                    width: '40px', 
+                    height: '40px', 
+                    animation: 'spin 1s linear infinite',
+                    margin: '0 auto 20px auto' 
+                  }}></div>
+                  <style>
+                    {`
+                      @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                      }
+                    `}
+                  </style>
+                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Verifying Payment...</h3>
+                  <p style={{ color: '#666', fontSize: '14px' }}>Please wait while we secure your transaction with Razorpay. Do not close this window.</p>
                 </motion.div>
               )}
 
@@ -668,7 +801,7 @@ export default function CartDrawer({
                   <div className="failure-reason-box">
                     <div className="reason-title">Error Details:</div>
                     <p className="reason-text">{failureReason}</p>
-                    <span className="error-code">CODE: ERR_RAZORPAY_USER_OR_BANK_DECLINED</span>
+                    {failureCode && <span className="error-code">CODE: {failureCode}</span>}
                   </div>
 
                   <p className="failure-cart-safety-note">

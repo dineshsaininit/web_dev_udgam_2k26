@@ -1,4 +1,4 @@
-import { ShoppingBag, ArrowLeft, Sparkles, ShieldCheck } from "lucide-react";
+import { ShoppingBag, ArrowLeft, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import "./Header.css";
 
@@ -14,7 +14,6 @@ export default function Header({
   onOpenCart,
   currentView = "showcase",
   onNavigateHome,
-  onNavigateAdmin,
 }) {
   return (
     <header className="udgam-header">
@@ -49,19 +48,8 @@ export default function Header({
         </button>
       </div>
 
-      {/* Right Actions: Admin Link & Cart Button */}
+      {/* Right Actions: Cart Button */}
       <div className="header-right">
-        {onNavigateAdmin && (
-          <button
-            className="admin-header-btn"
-            onClick={onNavigateAdmin}
-            title="Open UDGAM Admin Portal"
-            aria-label="Admin Portal"
-          >
-            <ShieldCheck size={16} />
-            <span className="admin-header-label">Admin</span>
-          </button>
-        )}
 
         <motion.button
           className="cart-toggle-btn"
