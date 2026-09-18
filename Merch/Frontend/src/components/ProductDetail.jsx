@@ -147,13 +147,14 @@ export default function ProductDetail({
               />
             </AnimatePresence>
 
-            {/* Amazon-style rectangular Zoom Lens */}
+            {/* In-place on-top Zoom Magnification Layer */}
             {isZooming && (
               <div
-                className="amazon-zoom-lens"
+                className="inplace-zoom-layer"
                 style={{
-                  left: `${zoomCoords.lensX}px`,
-                  top: `${zoomCoords.lensY}px`,
+                  backgroundImage: `url(${selectedImage})`,
+                  backgroundPosition: `${zoomCoords.x}% ${zoomCoords.y}%`,
+                  backgroundSize: "260%",
                 }}
               />
             )}
@@ -163,7 +164,7 @@ export default function ProductDetail({
               <span
                 className="image-badge-pill"
                 style={{
-                  backgroundColor: product.badgeColor || "#18181b",
+                  backgroundColor: product.badgeColor || "var(--color-soft-charcoal)",
                 }}
               >
                 {product.badgeText || "OFFICIAL MERCH"}
@@ -182,13 +183,11 @@ export default function ProductDetail({
               )}
             </div>
 
-            {/* Hover to Zoom Hint Pill */}
-            {!isZooming && (
-              <div className="zoom-hint-badge">
-                <ZoomIn size={13} />
-                <span>Hover to zoom • Click to expand</span>
-              </div>
-            )}
+            {/* Zoom Hint Pill */}
+            <div className="zoom-hint-badge">
+              <ZoomIn size={13} />
+              <span>{isZooming ? "2.6x In-Place Detail Zoom" : "Hover to zoom • Click to expand"}</span>
+            </div>
           </div>
 
           {/* Thumbnail Strip */}
@@ -208,29 +207,6 @@ export default function ProductDetail({
               ))}
             </div>
           )}
-
-          {/* Amazon-style Side Zoom Preview Window */}
-          <AnimatePresence>
-            {isZooming && (
-              <motion.div
-                className="amazon-zoom-window"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.15 }}
-                style={{
-                  backgroundImage: `url(${selectedImage})`,
-                  backgroundPosition: `${zoomCoords.x}% ${zoomCoords.y}%`,
-                  backgroundSize: "280%",
-                }}
-              >
-                <div className="zoom-window-header">
-                  <Sparkles size={13} className="zoom-header-icon" />
-                  <span>2.8x Ultra-HD Fabric Inspection</span>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
 
         {/* ===================================================

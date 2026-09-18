@@ -8,11 +8,12 @@ import AdminLogin from "./components/admin/AdminLogin";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import OrderReceipt from "./components/OrderReceipt";
 import { merchItems } from "./data/merchData";
+import PetalsOverlay from "./components/PetalsOverlay";
 import { ShieldCheck } from "lucide-react";
 import "./App.css";
 
 const CART_STORAGE_KEY = "udgam_merch_cart_v1";
-const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v1";
+const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v2";
 const ADMIN_AUTH_KEY = "udgam_admin_auth_v1";
 
 export default function App() {
@@ -302,6 +303,27 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {/* Decorative Subtle Cherry Blossom Branches in Top Corners */}
+      <div className="sakura-corner sakura-corner-left" aria-hidden="true">
+        <img
+          src="/sakura-branch-left.png"
+          alt=""
+          className="sakura-branch-img"
+          draggable={false}
+        />
+      </div>
+      <div className="sakura-corner sakura-corner-right" aria-hidden="true">
+        <img
+          src="/sakura-branch-right.png"
+          alt=""
+          className="sakura-branch-img"
+          draggable={false}
+        />
+      </div>
+
+      {/* Subtle Floating Petals Across All Views */}
+      <PetalsOverlay />
+
       {/* Centered UDGAM Branding, Top-Right Cart */}
       {currentView !== "admin" && (
         <Header
@@ -415,7 +437,7 @@ export default function App() {
             <span className="footer-dot">•</span>
             <span className="footer-fest">Udgam</span>
             <span className="footer-dot">•</span>
-            <span className="footer-theme">Chase the bloom</span>
+            <span className="footer-theme">🌸 Chase the Bloom</span>
           </div>
         </footer>
       )}

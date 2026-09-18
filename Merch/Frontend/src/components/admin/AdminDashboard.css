@@ -7,6 +7,8 @@
   max-width: 1340px;
   margin: 0 auto;
   padding: 10px 20px 60px;
+  position: relative;
+  z-index: 5;
 }
 
 /* Navbar */
@@ -231,18 +233,18 @@
   gap: 8px;
   padding: 10px 20px;
   border-radius: 9999px;
-  background: #18181b;
+  background: #678473;
   color: #ffffff;
   border: none;
   font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(24, 24, 27, 0.2);
+  box-shadow: 0 4px 14px rgba(103, 132, 115, 0.3);
   transition: all 0.15s ease;
 }
 
 .add-merch-primary-btn:hover {
-  background: #000000;
+  background: #546d5e;
   transform: translateY(-2px);
 }
 
@@ -437,7 +439,7 @@
 }
 
 .save-quick-price-btn {
-  background: #0f172a;
+  background: #678473;
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -445,6 +447,10 @@
   font-size: 0.7rem;
   font-weight: 700;
   cursor: pointer;
+}
+
+.save-quick-price-btn:hover {
+  background: #546d5e;
 }
 
 /* Stock Cell */
@@ -531,9 +537,9 @@
 }
 
 .edit-btn:hover {
-  background: #0f172a;
+  background: #678473;
   color: #ffffff;
-  border-color: #0f172a;
+  border-color: #678473;
 }
 
 .delete-btn {
