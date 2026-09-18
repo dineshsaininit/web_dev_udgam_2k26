@@ -112,7 +112,7 @@ export default function CartDrawer({
 
       // 2. Initialize Razorpay options
       const options = {
-        key: "rzp_test_TdN2WJc0kSRPBs", // In production, move to VITE_RAZORPAY_KEY_ID
+        key: "rzp_live_TdSgnhpUJ300ka", // Live Key
         amount: order.amount,
         currency: order.currency,
         name: "Udgam 2026",
