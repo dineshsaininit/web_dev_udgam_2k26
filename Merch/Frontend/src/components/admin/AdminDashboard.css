@@ -1,0 +1,781 @@
+/* =========================================================
+   ADMIN DASHBOARD STYLING
+========================================================= */
+
+.admin-dashboard-container {
+  width: 100%;
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 10px 20px 60px;
+}
+
+/* Navbar */
+.admin-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: #ffffff;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  margin-bottom: 24px;
+}
+
+.admin-nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.admin-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-badge-pill {
+  padding: 4px 10px;
+  background: #18181b;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  border-radius: 9999px;
+}
+
+.admin-portal-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #09090b;
+}
+
+.admin-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-store-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #f4f4f5;
+  border: 1px solid #e4e4e7;
+  border-radius: 9999px;
+  color: #18181b;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-store-link:hover {
+  background: #18181b;
+  color: #ffffff;
+}
+
+.nav-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 9999px;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-logout-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+/* =========================================================
+   STATS KPI GRID
+========================================================= */
+.stats-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 22px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.stat-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-icon-wrapper {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.revenue-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.orders-icon {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.catalog-icon {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.stock-icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.stat-val {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: #09090b;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.stat-delta {
+  font-size: 0.74rem;
+  color: #71717a;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-delta.positive {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+/* =========================================================
+   DASHBOARD TABS
+========================================================= */
+.dashboard-tabs-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tabs-left {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  border-radius: 9999px;
+}
+
+.dash-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #52525b;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dash-tab-btn:hover {
+  color: #18181b;
+}
+
+.dash-tab-btn.active {
+  background: #ffffff;
+  color: #18181b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.add-merch-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: #18181b;
+  color: #ffffff;
+  border: none;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(24, 24, 27, 0.2);
+  transition: all 0.15s ease;
+}
+
+.add-merch-primary-btn:hover {
+  background: #000000;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   INVENTORY TABLE
+========================================================= */
+.inventory-section {
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+}
+
+.inventory-toolbar {
+  padding: 18px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.search-input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.search-icon {
+  color: #94a3b8;
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  font-size: 0.84rem;
+  outline: none;
+  width: 100%;
+  color: #1e293b;
+}
+
+.products-table-container {
+  overflow-x: auto;
+}
+
+.products-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.products-admin-table th {
+  padding: 14px 20px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.products-admin-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.product-table-row:hover {
+  background: #fafafa;
+}
+
+/* Asset Cell */
+.admin-thumb-wrapper {
+  position: relative;
+  width: 68px;
+  height: 76px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.admin-prod-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-count-pill {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 2px 0;
+  border-radius: 4px;
+}
+
+/* Info Cell */
+.admin-prod-cat {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #2563eb;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.admin-prod-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.admin-prod-sub {
+  font-size: 0.76rem;
+  color: #64748b;
+  margin: 0;
+  max-width: 320px;
+  line-height: 1.35;
+}
+
+/* Price Cell & Quick Edit */
+.price-display-wrapper {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.price-display-wrapper:hover {
+  background: #f1f5f9;
+}
+
+.admin-price-tag {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.admin-orig-price {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.edit-hint-icon {
+  color: #94a3b8;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.price-display-wrapper:hover .edit-hint-icon {
+  opacity: 1;
+}
+
+.quick-price-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  border: 1.5px solid #0f172a;
+  border-radius: 8px;
+  padding: 3px 6px;
+}
+
+.quick-currency {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.quick-price-input {
+  width: 70px;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.save-quick-price-btn {
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Stock Cell */
+.stock-badge-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.stock-badge-toggle.in-stock {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.stock-badge-toggle.in-stock .stock-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #16a34a;
+}
+
+.stock-badge-toggle.out-stock {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.stock-badge-toggle.out-stock .stock-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #dc2626;
+}
+
+.stock-badge-toggle:hover {
+  transform: scale(1.04);
+}
+
+/* Sizes */
+.sizes-pill-list {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.admin-size-chip {
+  padding: 3px 8px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+/* Actions */
+.actions-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.edit-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+}
+
+.edit-btn:hover {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.delete-btn {
+  background: transparent;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  padding: 7px;
+}
+
+.delete-btn:hover {
+  background: #fee2e2;
+}
+
+/* =========================================================
+   ANALYTICS BREAKDOWN SECTION
+========================================================= */
+.analytics-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.product-stat-box {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-box-media {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background: #e2e8f0;
+}
+
+.stat-box-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.box-category-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.stat-box-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.stat-box-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 14px;
+}
+
+.stat-box-numbers {
+  display: flex;
+  justify-content: space-between;
+  background: #f8fafc;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.num-sub {
+  display: block;
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.num-main {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.size-distribution-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meter-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.meter-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.s-slice { background: #38bdf8; }
+.m-slice { background: #3b82f6; }
+.l-slice { background: #1d4ed8; }
+.xl-slice { background: #1e3a8a; }
+
+.meter-legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* =========================================================
+   ORDERS TAB
+========================================================= */
+.orders-section {
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+}
+
+.orders-table-wrapper {
+  overflow-x: auto;
+}
+
+.orders-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.orders-admin-table th {
+  padding: 14px 20px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.orders-admin-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.84rem;
+  vertical-align: middle;
+}
+
+.order-id-code {
+  background: #f1f5f9;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.order-student-info strong {
+  display: block;
+  color: #0f172a;
+}
+
+.order-student-info span {
+  font-size: 0.74rem;
+  color: #64748b;
+}
+
+.order-size-badge {
+  background: #f1f5f9;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.status-ready {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-dispatched {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.status-delivered {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.order-time-cell {
+  color: #94a3b8;
+  font-size: 0.76rem;
+}
+
+/* Responsive */
+@media (max-width: 1080px) {
+  .stats-overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .analytics-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-navbar {
+    flex-direction: column;
+    gap: 12px;
+    border-radius: 20px;
+  }
+}
