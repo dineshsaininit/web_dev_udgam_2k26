@@ -98,6 +98,9 @@
   overflow: hidden;
   background: var(--color-warm-cream);
   cursor: crosshair;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
   box-shadow: 
     0 24px 48px -12px rgba(30, 30, 30, 0.08),
     0 0 0 1px rgba(168, 191, 161, 0.25);
@@ -108,6 +111,8 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* In-place on-top Zoom Magnification Layer */
@@ -129,6 +134,81 @@
   to {
     opacity: 1;
   }
+}
+
+/* Gallery Navigation Chevrons */
+.gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 4;
+  transition: all 0.2s ease;
+  opacity: 0.85;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-nav-btn:hover {
+  opacity: 1;
+  background: rgba(15, 23, 42, 0.85);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.gallery-nav-btn:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+.gallery-nav-btn.prev {
+  left: 14px;
+}
+
+.gallery-nav-btn.next {
+  right: 14px;
+}
+
+/* Gallery Indicator Dots */
+.gallery-dots-indicator {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  z-index: 4;
+}
+
+.gallery-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+
+.gallery-dot.active {
+  width: 18px;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
 
 /* Zoom Hint Badge */
@@ -164,6 +244,28 @@
   justify-content: space-between;
   pointer-events: none;
   z-index: 2;
+}
+
+.image-badge-right-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.image-counter-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 11px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .image-badge-pill {
@@ -862,6 +964,16 @@
 
   .main-image-viewport {
     max-height: 480px;
+    cursor: default !important;
+  }
+
+  /* Completely remove hover to zoom and hint on mobile / tablet */
+  .inplace-zoom-layer {
+    display: none !important;
+  }
+
+  .zoom-hint-badge {
+    display: none !important;
   }
 
   .product-info-column {
@@ -871,6 +983,21 @@
 
   .product-headline {
     font-size: 1.7rem;
+  }
+}
+
+/* Explicit rule for touch / pointer coarse devices regardless of width */
+@media (hover: none) or (pointer: coarse) {
+  .inplace-zoom-layer {
+    display: none !important;
+  }
+
+  .zoom-hint-badge {
+    display: none !important;
+  }
+
+  .main-image-viewport {
+    cursor: default !important;
   }
 }
 
@@ -885,6 +1012,44 @@
 
   .product-breadcrumb {
     display: none;
+  }
+
+  /* Mobile Gallery Thumbnails & Controls */
+  .gallery-thumbnails {
+    overflow-x: auto;
+    padding-bottom: 6px;
+    gap: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .gallery-thumbnails::-webkit-scrollbar {
+    display: none;
+  }
+
+  .thumbnail-card {
+    width: 66px;
+    height: 66px;
+    flex-shrink: 0;
+    border-radius: 12px;
+  }
+
+  .gallery-nav-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .gallery-nav-btn.prev {
+    left: 10px;
+  }
+
+  .gallery-nav-btn.next {
+    right: 10px;
+  }
+
+  .gallery-dots-indicator {
+    bottom: 12px;
+    padding: 5px 8px;
   }
 
   .purchase-actions-row {

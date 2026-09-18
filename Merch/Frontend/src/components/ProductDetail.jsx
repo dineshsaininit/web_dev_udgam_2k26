@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingBag,
@@ -12,15 +12,16 @@ import {
   Info,
   X,
   ZoomIn,
-  Sparkles,
   AlertTriangle,
-  Ban
+  Ban,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import "./ProductDetail.css";
 
 /**
  * Product Detail Page Component
- * - Left column: High-res merchandise photography with Amazon-style interactive hover zoom
+ * - Left column: High-res merchandise photography with swipe navigation on mobile and interactive hover zoom on desktop
  * - Right column: Title, pricing, rich description, size selection, quantity selector, and Add to Cart action
  */
 export default function ProductDetail({
@@ -34,18 +35,119 @@ export default function ProductDetail({
   const [selectedSize, setSelectedSize] = useState(
     product.sizes && product.sizes.length > 0 ? product.sizes[0] : "M"
   );
-  const [selectedImage, setSelectedImage] = useState(
-    product.image || (product.gallery && product.gallery[0])
-  );
+
+  const images =
+    product.gallery && product.gallery.length > 0
+      ? product.gallery
+      : product.image
+      ? [product.image]
+      : [];
+
+  const [activeImageIndex, setActiveImageIndex] = useState(() => {
+    const initialImg = product.image || (product.gallery && product.gallery[0]);
+    const idx = images.indexOf(initialImg);
+    return idx !== -1 ? idx : 0;
+  });
+  const [swipeDirection, setSwipeDirection] = useState(0);
+  const selectedImage = images[activeImageIndex] || product.image;
+
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
 
-  // Amazon-style zoom states
+  // Mobile / Touch device detection
+  const [isMobileOrTouch, setIsMobileOrTouch] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+      const isNarrowScreen = window.innerWidth <= 960;
+      const noHover = window.matchMedia("(hover: none)").matches;
+      setIsMobileOrTouch(hasCoarsePointer || isNarrowScreen || noHover);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Amazon-style zoom states (desktop only)
   const [isZooming, setIsZooming] = useState(false);
   const [zoomCoords, setZoomCoords] = useState({ x: 50, y: 50, lensX: 0, lensY: 0 });
   const [showLightbox, setShowLightbox] = useState(false);
   const imageViewportRef = useRef(null);
+
+  // Swiping refs
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+  const touchDeltaXRef = useRef(0);
+  const isSwipingRef = useRef(false);
+  const justSwipedRef = useRef(false);
+
+  // Gallery navigation functions
+  const handleNextImage = () => {
+    if (images.length <= 1) return;
+    setSwipeDirection(1);
+    setActiveImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrevImage = () => {
+    if (images.length <= 1) return;
+    setSwipeDirection(-1);
+    setActiveImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleSelectImage = (idx) => {
+    if (idx === activeImageIndex) return;
+    setSwipeDirection(idx > activeImageIndex ? 1 : -1);
+    setActiveImageIndex(idx);
+  };
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e) => {
+    if (images.length <= 1) return;
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+    touchDeltaXRef.current = 0;
+    isSwipingRef.current = false;
+  };
+
+  const handleTouchMove = (e) => {
+    if (images.length <= 1) return;
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const deltaX = currentX - touchStartXRef.current;
+    const deltaY = currentY - touchStartYRef.current;
+    touchDeltaXRef.current = deltaX;
+    if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+      isSwipingRef.current = true;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (images.length <= 1) return;
+    const deltaX = touchDeltaXRef.current;
+    const threshold = 35; // minimum swipe distance in px
+
+    if (Math.abs(deltaX) > threshold) {
+      justSwipedRef.current = true;
+      setTimeout(() => {
+        justSwipedRef.current = false;
+      }, 150);
+
+      if (deltaX < 0) {
+        handleNextImage();
+      } else {
+        handlePrevImage();
+      }
+    }
+    touchDeltaXRef.current = 0;
+    isSwipingRef.current = false;
+  };
+
+  const handleTouchCancel = () => {
+    touchDeltaXRef.current = 0;
+    isSwipingRef.current = false;
+  };
 
   // Calculate discount percentage
   const discountPercent = product.originalPrice
@@ -72,9 +174,19 @@ export default function ProductDetail({
     setQuantity((q) => Math.max(1, q - 1));
   };
 
-  // Amazon-style mouse move tracker for zoom lens & window
+  // Desktop hover zoom mouse handlers
+  const handleMouseEnter = () => {
+    if (isMobileOrTouch) return;
+    setIsZooming(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (isMobileOrTouch) return;
+    setIsZooming(false);
+  };
+
   const handleMouseMove = (e) => {
-    if (!imageViewportRef.current) return;
+    if (isMobileOrTouch || !imageViewportRef.current) return;
     const rect = imageViewportRef.current.getBoundingClientRect();
     const clientX = e.clientX - rect.left;
     const clientY = e.clientY - rect.top;
@@ -89,6 +201,11 @@ export default function ProductDetail({
     const lensY = Math.max(0, Math.min(rect.height - lensH, clientY - lensH / 2));
 
     setZoomCoords({ x: percentX, y: percentY, lensX, lensY });
+  };
+
+  const handleViewportClick = () => {
+    if (justSwipedRef.current) return;
+    setShowLightbox(true);
   };
 
   return (
@@ -122,33 +239,56 @@ export default function ProductDetail({
       {/* Main 2-Column Product Layout */}
       <div className="product-detail-grid">
         {/* ===================================================
-            LEFT COLUMN: MERCH PHOTO & AMAZON-STYLE ZOOM
+            LEFT COLUMN: MERCH PHOTO & GALLERY WITH SWIPE
         =================================================== */}
         <div className="product-gallery-column">
           <div
             ref={imageViewportRef}
-            className={`main-image-viewport ${isZooming ? "is-zooming" : ""}`}
-            onMouseEnter={() => setIsZooming(true)}
-            onMouseLeave={() => setIsZooming(false)}
+            className={`main-image-viewport ${!isMobileOrTouch && isZooming ? "is-zooming" : ""}`}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             onMouseMove={handleMouseMove}
-            onClick={() => setShowLightbox(true)}
-            title="Click to view full-screen image"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchCancel}
+            onClick={handleViewportClick}
+            title={isMobileOrTouch ? "Tap to view full-screen image" : "Hover to zoom • Click to view full-screen image"}
           >
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" custom={swipeDirection}>
               <motion.img
                 key={selectedImage}
                 src={selectedImage}
-                alt={product.title}
+                alt={`${product.title} - angle ${activeImageIndex + 1}`}
                 className="main-product-image"
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.25 }}
+                custom={swipeDirection}
+                variants={{
+                  enter: (dir) => ({
+                    opacity: 0,
+                    x: dir > 0 ? 40 : dir < 0 ? -40 : 0,
+                    scale: 0.98,
+                  }),
+                  center: {
+                    opacity: 1,
+                    x: 0,
+                    scale: 1,
+                  },
+                  exit: (dir) => ({
+                    opacity: 0,
+                    x: dir > 0 ? -40 : dir < 0 ? 40 : 0,
+                    scale: 0.98,
+                  }),
+                }}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                draggable={false}
               />
             </AnimatePresence>
 
-            {/* In-place on-top Zoom Magnification Layer */}
-            {isZooming && (
+            {/* In-place on-top Zoom Magnification Layer - Desktop Fine Pointer Only */}
+            {!isMobileOrTouch && isZooming && (
               <div
                 className="inplace-zoom-layer"
                 style={{
@@ -170,39 +310,95 @@ export default function ProductDetail({
                 {product.badgeText || "OFFICIAL MERCH"}
               </span>
 
-              {isOutOfStock ? (
-                <span className="image-stock-pill out-of-stock">
-                  <span className="stock-dot-red" />
-                  Out of Stock
-                </span>
-              ) : (
-                <span className="image-stock-pill in-stock">
-                  <span className="stock-pulse-dot" />
-                  In Stock • Campus Pickup
-                </span>
-              )}
+              <div className="image-badge-right-group">
+                {images.length > 1 && (
+                  <span className="image-counter-pill">
+                    {activeImageIndex + 1}/{images.length}
+                  </span>
+                )}
+
+                {isOutOfStock ? (
+                  <span className="image-stock-pill out-of-stock">
+                    <span className="stock-dot-red" />
+                    Out of Stock
+                  </span>
+                ) : (
+                  <span className="image-stock-pill in-stock">
+                    <span className="stock-pulse-dot" />
+                    In Stock • Campus Pickup
+                  </span>
+                )}
+              </div>
             </div>
 
-            {/* Zoom Hint Pill */}
-            <div className="zoom-hint-badge">
-              <ZoomIn size={13} />
-              <span>{isZooming ? "2.6x In-Place Detail Zoom" : "Hover to zoom • Click to expand"}</span>
-            </div>
+            {/* Gallery Navigation Arrows (if multiple images) */}
+            {images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  className="gallery-nav-btn prev"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrevImage();
+                  }}
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  className="gallery-nav-btn next"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNextImage();
+                  }}
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
+
+            {/* Mobile Dots Indicator (if multiple images) */}
+            {images.length > 1 && (
+              <div className="gallery-dots-indicator" aria-label="Image indicators">
+                {images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`gallery-dot ${activeImageIndex === idx ? "active" : ""}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectImage(idx);
+                    }}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Desktop-only Zoom Hint Pill */}
+            {!isMobileOrTouch && (
+              <div className="zoom-hint-badge">
+                <ZoomIn size={13} />
+                <span>{isZooming ? "2.6x In-Place Detail Zoom" : "Hover to zoom • Click to expand"}</span>
+              </div>
+            )}
           </div>
 
           {/* Thumbnail Strip */}
-          {product.gallery && product.gallery.length > 1 && (
+          {images.length > 1 && (
             <div className="gallery-thumbnails">
-              {product.gallery.map((thumbUrl, idx) => (
+              {images.map((thumbUrl, idx) => (
                 <button
                   key={idx}
                   className={`thumbnail-card ${
-                    selectedImage === thumbUrl ? "active" : ""
+                    activeImageIndex === idx ? "active" : ""
                   }`}
-                  onClick={() => setSelectedImage(thumbUrl)}
+                  onClick={() => handleSelectImage(idx)}
                   aria-label={`View angle ${idx + 1}`}
                 >
-                  <img src={thumbUrl} alt="" className="thumb-img" />
+                  <img src={thumbUrl} alt="" className="thumb-img" draggable={false} />
                 </button>
               ))}
             </div>
