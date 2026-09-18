@@ -42,7 +42,7 @@ export default function AdminDashboard({
   const [ordersQtyFilter, setOrdersQtyFilter] = useState("all");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/orders")
+    fetch("https://merch-backend-fn9a.onrender.com/api/orders")
       .then(res => res.json())
       .then(data => {
         if (data.success) setOrders(data.orders);

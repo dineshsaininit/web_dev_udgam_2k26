@@ -102,7 +102,7 @@ export default function CartDrawer({
   const handleRazorpayPayment = async () => {
     try {
       // 1. Create order on backend
-      const res = await fetch("http://localhost:5000/api/payments/create-order", {
+      const res = await fetch("https://merch-backend-fn9a.onrender.com/api/payments/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: total }),
@@ -124,7 +124,7 @@ export default function CartDrawer({
             setPaymentStep("verifying");
             
             // 3. Verify payment on backend
-            const verifyRes = await fetch("http://localhost:5000/api/payments/verify-payment", {
+            const verifyRes = await fetch("https://merch-backend-fn9a.onrender.com/api/payments/verify-payment", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
