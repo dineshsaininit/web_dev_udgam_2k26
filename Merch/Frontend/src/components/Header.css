@@ -1,6 +1,6 @@
 /* =========================================================
    UDGAM HEADER STYLING
-   Clean, modern minimalist luxury aesthetic
+   Clean, modern minimalist luxury editorial aesthetic
 ========================================================= */
 
 .udgam-header {
@@ -8,19 +8,19 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   width: 100%;
-  max-width: 1300px;
-  margin: 0 auto 16px;
-  padding: 14px 28px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  max-width: 1260px;
+  margin: 4px auto 14px;
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-radius: 9999px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(168, 191, 161, 0.3);
   box-shadow: 
-    0 8px 30px -4px rgba(0, 0, 0, 0.04),
-    0 2px 8px -2px rgba(0, 0, 0, 0.02);
+    0 10px 30px -6px rgba(30, 30, 30, 0.03),
+    0 2px 10px -2px rgba(246, 201, 168, 0.16);
   position: sticky;
-  top: 14px;
+  top: 12px;
   z-index: 50;
   transition: all 0.3s ease;
 }
@@ -35,20 +35,21 @@
 .fest-edition-tag {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: rgba(0, 0, 0, 0.03);
+  gap: 7px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 9999px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  font-size: 0.7rem;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #52525b;
+  letter-spacing: 0.1em;
+  color: #4b5563;
   text-transform: uppercase;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
 }
 
 .fest-sparkle {
-  color: #d97706;
+  color: #e09f67;
 }
 
 .back-nav-btn {
@@ -68,9 +69,9 @@
 }
 
 .back-nav-btn:hover {
-  background: #18181b;
+  background: #678473;
   color: #ffffff;
-  border-color: #18181b;
+  border-color: #678473;
   transform: translateX(-2px);
 }
 
@@ -97,7 +98,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 4px 16px;
+  padding: 2px 16px;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
@@ -107,24 +108,24 @@
 }
 
 .brand-logo-text {
-  font-size: 1.75rem;
+  font-size: 1.65rem;
   font-weight: 900;
-  letter-spacing: 0.26em;
-  color: #09090b;
+  letter-spacing: 0.28em;
+  color: #1E1E1E;
   line-height: 1;
   text-transform: uppercase;
   font-family: inherit;
-  margin-left: 0.26em; /* Optical center balance for letter-spacing */
+  margin-left: 0.28em; /* Optical center balance for letter-spacing */
 }
 
 .brand-logo-sub {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.32em;
-  color: #71717a;
+  letter-spacing: 0.35em;
+  color: #7A8F7B;
   text-transform: uppercase;
   margin-top: 3px;
-  margin-left: 0.32em;
+  margin-left: 0.35em;
 }
 
 /* Right Section */
@@ -135,44 +136,23 @@
   gap: 10px;
 }
 
-.admin-header-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: rgba(0, 0, 0, 0.04);
-  color: #52525b;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 9999px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.admin-header-btn:hover {
-  background: #18181b;
-  color: #ffffff;
-  border-color: #18181b;
-}
-
 .cart-toggle-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 8px 18px;
-  background: #18181b;
+  background: #678473;
   color: #ffffff;
   border: none;
   border-radius: 9999px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(24, 24, 27, 0.2);
+  box-shadow: 0 4px 14px rgba(103, 132, 115, 0.28);
   transition: all 0.2s ease;
 }
 
 .cart-toggle-btn:hover {
-  background: #000000;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+  background: #546d5e;
+  box-shadow: 0 6px 20px rgba(84, 109, 94, 0.35);
 }
 
 .cart-icon-wrapper {
@@ -194,39 +174,39 @@
   height: 18px;
   padding: 0 5px;
   border-radius: 9999px;
-  background: #ef4444;
+  background: #f43f5e;
   color: #ffffff;
   font-size: 0.68rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #18181b;
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+  border: 2px solid #0f172a;
+  box-shadow: 0 2px 6px rgba(244, 63, 94, 0.4);
 }
 
 .cart-btn-label {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 /* Mobile & Responsive */
 @media (max-width: 768px) {
   .udgam-header {
-    padding: 10px 18px;
+    padding: 10px 16px;
     margin-bottom: 12px;
   }
 
   .brand-logo-text {
-    font-size: 1.35rem;
+    font-size: 1.3rem;
     letter-spacing: 0.2em;
   }
 
   .brand-logo-sub {
-    font-size: 0.55rem;
-    letter-spacing: 0.24em;
+    font-size: 0.52rem;
+    letter-spacing: 0.22em;
   }
 
   .fest-edition-tag {

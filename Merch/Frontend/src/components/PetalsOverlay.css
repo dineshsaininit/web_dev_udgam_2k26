@@ -1,0 +1,77 @@
+/* =========================================================
+   CHERRY BLOSSOM PETALS OVERLAY
+   Gentle, non-intrusive ambient floating petals
+========================================================= */
+
+.petals-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.petal-item {
+  position: absolute;
+  top: -60px;
+  will-change: transform;
+  animation-name: petalFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.petal-sway {
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  animation-name: petalDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.petal-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 2px 5px rgba(244, 114, 182, 0.2));
+  transform-origin: center center;
+}
+
+/* Vertical Fall with slow 3D rotation */
+@keyframes petalFall {
+  0% {
+    transform: translateY(0) rotate(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(55vh) rotate(180deg) rotateY(180deg);
+  }
+  100% {
+    transform: translateY(115vh) rotate(360deg) rotateY(360deg);
+  }
+}
+
+/* Horizontal Sway / Drift in the gentle breeze */
+@keyframes petalDrift {
+  0% {
+    transform: translateX(-24px) rotateZ(-12deg);
+  }
+  50% {
+    transform: translateX(18px) rotateZ(16deg);
+  }
+  100% {
+    transform: translateX(-16px) rotateZ(-8deg);
+  }
+}
+
+/* Reduce motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .petal-item,
+  .petal-sway {
+    animation: none !important;
+    display: none !important;
+  }
+}

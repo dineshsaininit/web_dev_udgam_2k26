@@ -1,5 +1,6 @@
 /* =========================================================
    APP SHELL & PAGE LAYOUT - UDGAM MERCHANDISE
+   "Chase the Bloom" Spring Editorial Aesthetic
 ========================================================= */
 
 .app-container {
@@ -8,6 +9,40 @@
   min-height: 100vh;
   padding: 12px 20px 24px;
   justify-content: space-between;
+  position: relative;
+}
+
+/* ---------------------------------------------------------
+   CORNER SAKURA (CHERRY BLOSSOM) BRANCHES
+   Matching reference image top-left & top-right framing
+--------------------------------------------------------- */
+.sakura-corner {
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  z-index: 0; /* In the very back behind all page elements */
+  width: 330px;
+  max-width: 28vw;
+  mix-blend-mode: multiply;
+  opacity: 0.92;
+  transition: opacity 0.3s ease;
+}
+
+.sakura-corner-left {
+  left: 0;
+  top: 0;
+}
+
+.sakura-corner-right {
+  right: 0;
+  top: 0;
+}
+
+.sakura-branch-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(244, 114, 182, 0.15));
 }
 
 /* Main Content Area */
@@ -20,6 +55,7 @@
   width: 100%;
   margin: 0 auto;
   position: relative;
+  z-index: 20;
 }
 
 .carousel-showcase-section {
@@ -41,6 +77,8 @@
   max-width: 1240px;
   width: 100%;
   margin: 0 auto;
+  position: relative;
+  z-index: 20;
 }
 
 .footer-branding {
@@ -48,12 +86,12 @@
   align-items: center;
   gap: 12px;
   padding: 8px 24px;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-radius: 9999px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(168, 191, 161, 0.28);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
   font-size: 0.82rem;
   letter-spacing: 0.06em;
   color: #52525b;
@@ -61,27 +99,27 @@
 
 .footer-inst {
   font-weight: 700;
-  color: #18181b;
+  color: #1E1E1E;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .footer-dot {
-  color: #d4d4d8;
+  color: #A8BFA1;
   font-size: 0.8rem;
 }
 
 .footer-fest {
   font-weight: 800;
-  color: #09090b;
+  color: #1E1E1E;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
 
 .footer-theme {
   font-style: italic;
-  font-weight: 500;
-  color: #71717a;
+  font-weight: 600;
+  color: #7A8F7B;
   letter-spacing: 0.04em;
 }
 
@@ -93,7 +131,7 @@
   border: none;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #2563eb;
+  color: #678473;
   cursor: pointer;
   padding: 3px 8px;
   border-radius: 6px;
@@ -101,8 +139,8 @@
 }
 
 .footer-admin-btn:hover {
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: rgba(103, 132, 115, 0.12);
+  color: #546d5e;
 }
 
 .admin-view-wrapper {
@@ -112,15 +150,27 @@
 /* ---------------------------------------------------------
    RESPONSIVE LAYOUT
 --------------------------------------------------------- */
+@media (max-width: 900px) {
+  .sakura-corner {
+    width: 200px;
+    max-width: 30vw;
+  }
+}
+
 @media (max-width: 640px) {
   .app-container {
     padding: 8px 10px 18px;
   }
 
-  .interaction-tips {
-    font-size: 0.72rem;
-    flex-wrap: wrap;
-    justify-content: center;
+  .sakura-corner {
+    width: 130px;
+    top: -4px;
+    opacity: 0.78;
+  }
+
+  .footer-branding {
+    font-size: 0.74rem;
+    padding: 6px 16px;
     gap: 8px;
   }
 }

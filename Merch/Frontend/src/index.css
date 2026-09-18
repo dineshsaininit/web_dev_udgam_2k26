@@ -1,11 +1,34 @@
 :root {
-  --bg-offwhite: #f7f7f5;
+  /* =========================================================
+     PALETTE TOKENS (Warm Cream, Muted Sage, Soft Apricot Peach, Deep Sage Moss, Soft Charcoal)
+  ========================================================= */
+  --color-warm-cream: #FFFBF2;
+  --color-muted-sage: #A8BFA1;
+  --color-soft-apricot: #F6C9A8;
+  --color-deep-sage: #7A8F7B;
+  --color-soft-charcoal: #1E1E1E;
+
+  /* Semantic UI Tokens */
+  --bg-offwhite: var(--color-warm-cream);
   --bg-card: #ffffff;
-  --text-primary: #121212;
-  --text-secondary: #52525b;
-  --text-muted: #71717a;
-  --accent-dark: #18181b;
-  --border-light: rgba(0, 0, 0, 0.07);
+  --text-primary: var(--color-soft-charcoal);
+  --text-secondary: #4a5568;
+  --text-muted: var(--color-deep-sage);
+  --accent-dark: var(--color-soft-charcoal);
+  --border-light: rgba(122, 143, 123, 0.16);
+
+  /* Subtle Palette & Blossom Accents */
+  --blossom-pink: var(--color-soft-apricot);
+  --blossom-soft: rgba(246, 201, 168, 0.14);
+  --blossom-border: rgba(246, 201, 168, 0.32);
+  --blossom-glow: rgba(246, 201, 168, 0.22);
+  --sage-border: rgba(168, 191, 161, 0.28);
+  --sage-soft: rgba(168, 191, 161, 0.12);
+
+  /* Button Colors */
+  --color-btn-primary: #678473;
+  --color-btn-hover: #546d5e;
+
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -18,8 +41,8 @@
 html, body {
   width: 100%;
   min-height: 100%;
-  background-color: var(--bg-offwhite);
-  color: var(--text-primary);
+  background-color: var(--color-warm-cream);
+  color: var(--color-soft-charcoal);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -28,9 +51,9 @@ html, body {
 
 body {
   position: relative;
+  background-color: var(--color-warm-cream);
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.8) 0%, rgba(247, 247, 245, 0) 70%),
-    radial-gradient(circle at 100% 100%, rgba(240, 239, 235, 0.4) 0%, rgba(247, 247, 245, 0) 50%);
+    radial-gradient(ellipse at 50% 0%, #ffffff 0%, rgba(255, 251, 242, 0.85) 45%, rgba(248, 241, 229, 0.95) 100%);
   min-height: 100vh;
 }
 
@@ -46,6 +69,6 @@ button {
 }
 
 button:focus-visible {
-  outline: 2px solid #18181b;
+  outline: 2px solid var(--color-soft-charcoal);
   outline-offset: 2px;
 }

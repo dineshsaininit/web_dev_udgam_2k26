@@ -23,7 +23,7 @@ export default function Carousel({
   onSelectProduct,
 }) {
   const total = items.length;
-  const [cardIndex, setCardIndex] = useState(0);
+  const [cardIndex, setCardIndex] = useState(1);
   const [isPlaying, setIsPlaying] = useState(enableAutoPlay);
   const [isHovered, setIsHovered] = useState(false);
   const [spacing, setSpacing] = useState(390);
@@ -287,9 +287,7 @@ export default function Carousel({
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="meta-tag-line">
-              <span className="meta-series">{currentItem.tag || "COLLECTION"}</span>
-              <span className="meta-separator">•</span>
-              <span className="meta-category-badge">{currentItem.category}</span>
+              <span className="meta-series">{currentItem.tag || `0${activeNormalizedIndex + 1} • ${currentItem.category?.toUpperCase()} • ${currentItem.category?.toUpperCase()}`}</span>
             </div>
 
             <h2 className="meta-category-title">{currentItem.title}</h2>

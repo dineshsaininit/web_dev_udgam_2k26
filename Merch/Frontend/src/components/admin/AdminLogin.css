@@ -141,7 +141,7 @@
 .admin-submit-btn {
   height: 48px;
   margin-top: 4px;
-  background: #18181b;
+  background: #678473;
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -152,12 +152,12 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 14px rgba(24, 24, 27, 0.2);
+  box-shadow: 0 4px 14px rgba(103, 132, 115, 0.3);
   transition: all 0.2s ease;
 }
 
 .admin-submit-btn:hover:not(:disabled) {
-  background: #000000;
+  background: #546d5e;
   transform: translateY(-2px);
 }
 

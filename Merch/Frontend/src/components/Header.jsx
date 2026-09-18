@@ -71,7 +71,7 @@ export default function Header({
               </motion.span>
             )}
           </div>
-          <span className="cart-btn-label">Cart</span>
+          <span className="cart-btn-label">CART</span>
         </motion.button>
       </div>
     </header>
