@@ -287,8 +287,8 @@ export default function ProductDetail({
               />
             </AnimatePresence>
 
-            {/* In-place on-top Zoom Magnification Layer - Desktop Fine Pointer Only */}
-            {!isMobileOrTouch && isZooming && (
+            {/* In-place on-top Zoom Magnification Layer */}
+            {isZooming && (
               <div
                 className="inplace-zoom-layer"
                 style={{
@@ -331,59 +331,11 @@ export default function ProductDetail({
               </div>
             </div>
 
-            {/* Gallery Navigation Arrows (if multiple images) */}
-            {images.length > 1 && (
-              <>
-                <button
-                  type="button"
-                  className="gallery-nav-btn prev"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePrevImage();
-                  }}
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <button
-                  type="button"
-                  className="gallery-nav-btn next"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNextImage();
-                  }}
-                  aria-label="Next image"
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </>
-            )}
-
-            {/* Mobile Dots Indicator (if multiple images) */}
-            {images.length > 1 && (
-              <div className="gallery-dots-indicator" aria-label="Image indicators">
-                {images.map((_, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    className={`gallery-dot ${activeImageIndex === idx ? "active" : ""}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectImage(idx);
-                    }}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Desktop-only Zoom Hint Pill */}
-            {!isMobileOrTouch && (
-              <div className="zoom-hint-badge">
-                <ZoomIn size={13} />
-                <span>{isZooming ? "2.6x In-Place Detail Zoom" : "Hover to zoom • Click to expand"}</span>
-              </div>
-            )}
+            {/* Zoom Hint Pill */}
+            <div className="zoom-hint-badge">
+              <ZoomIn size={13} />
+              <span>{isZooming ? "2.6x In-Place Detail Zoom" : "Hover to zoom • Click to expand"}</span>
+            </div>
           </div>
 
           {/* Thumbnail Strip */}
