@@ -4,7 +4,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ShoppingBag,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from "lucide-react";
 import "./Carousel.css";
 
@@ -220,6 +221,14 @@ export default function Carousel({
                     <span className="badge-text">{item.category}</span>
                   </div>
 
+                  {/* Free Hoodie Name Customization Badge on Collection Card */}
+                  {(item.isBundle || item.id === "udgam-collection-04") && (
+                    <div className="card-hoodie-perk-badge">
+                      <Sparkles size={11} className="badge-sparkle-icon" />
+                      <span>Free Name on Hoodie</span>
+                    </div>
+                  )}
+
                   {/* Out of Stock Ribbon / Badge */}
                   {item.inStock === false && (
                     <div className="card-out-of-stock-pill">
@@ -288,12 +297,31 @@ export default function Carousel({
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="meta-tag-line">
-              <span className="meta-series">{currentItem.tag || `0${activeNormalizedIndex + 1} • ${currentItem.category?.toUpperCase()} • ${currentItem.category?.toUpperCase()}`}</span>
+              <span className="meta-series">
+                {Array.from(new Set((currentItem.tag || `0${activeNormalizedIndex + 1} • ${currentItem.category?.toUpperCase()}`).split(" • "))).join(" • ")}
+              </span>
             </div>
 
             <h2 className="meta-category-title">{currentItem.title}</h2>
 
             <p className="meta-subtitle">{currentItem.subtitle}</p>
+
+            {/* Customization on Hoodie specification */}
+            {(currentItem.isBundle || currentItem.id === "udgam-collection-04") ? (
+              <div className="meta-bundle-hoodie-perk">
+                <Sparkles size={15} className="meta-perk-sparkle" />
+                <span>
+                  <strong>Full Collection Perk:</strong> Includes all 3 pieces + <strong>Free Name Customization on your Hoodie!</strong>
+                </span>
+              </div>
+            ) : (
+              <div className="meta-bundle-hoodie-hint">
+                <Sparkles size={13} className="meta-hint-sparkle" />
+                <span>
+                  Buy all 3 different items to get <strong>Free Custom Name Printing on your Hoodie</strong>
+                </span>
+              </div>
+            )}
 
             {/* Price & Action Button */}
             <div className="meta-action-row">

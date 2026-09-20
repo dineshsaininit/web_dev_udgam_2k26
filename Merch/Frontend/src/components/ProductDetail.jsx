@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingBag,
   ArrowLeft,
-  Star,
   Check,
   Truck,
   ShieldCheck,
@@ -363,22 +362,13 @@ export default function ProductDetail({
           {/* Header Metadata */}
           <div className="product-meta-header">
             <span className="product-series-tag">
-              NIT SIKKIM • {product.tag || "OFFICIAL UDGAM DROP"}
+              NIT SIKKIM • {Array.from(new Set((product.tag || "OFFICIAL UDGAM DROP").split(" • "))).join(" • ")}
             </span>
             <h1 className="product-headline">{product.title}</h1>
             <p className="product-tagline">{product.subtitle}</p>
 
-            {/* Ratings & Orders */}
-            <div className="product-rating-row">
-              <div className="rating-badge">
-                <Star size={14} className="star-icon filled" />
-                <span className="rating-value">{product.rating || 4.9}</span>
-              </div>
-              <span className="reviews-count">
-                ({product.reviewsCount || 120} verified campus orders)
-              </span>
-              <span className="rating-divider">•</span>
-              <span className="fest-stamp">Chase the bloom</span>
+            <div className="product-fest-stamp-row">
+              <span className="fest-stamp">🌸 Chase the bloom • NIT Sikkim</span>
             </div>
           </div>
 
@@ -655,12 +645,6 @@ export default function ProductDetail({
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><strong>XS</strong></td>
-                        <td>38</td>
-                        <td>26.5</td>
-                        <td>18</td>
-                      </tr>
                       <tr>
                         <td><strong>S</strong></td>
                         <td>40</td>
