@@ -4,17 +4,13 @@ import Header from "./components/Header";
 import Carousel from "./components/Carousel";
 import ProductDetail from "./components/ProductDetail";
 import CartDrawer from "./components/CartDrawer";
-import AdminLogin from "./components/admin/AdminLogin";
-import AdminDashboard from "./components/admin/AdminDashboard";
 import OrderReceipt from "./components/OrderReceipt";
 import { merchItems } from "./data/merchData";
 import PetalsOverlay from "./components/PetalsOverlay";
-import { ShieldCheck } from "lucide-react";
 import "./App.css";
 
 const CART_STORAGE_KEY = "udgam_merch_cart_v1";
 const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v2";
-const ADMIN_AUTH_KEY = "udgam_admin_auth_v1";
 
 export default function App() {
   // Products catalog with localStorage persistence
@@ -31,24 +27,8 @@ export default function App() {
     return merchItems;
   });
 
-  // Admin authentication state
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
-    try {
-      return localStorage.getItem(ADMIN_AUTH_KEY) === "true";
-    } catch {
-      return false;
-    }
-  });
-
-  // Navigation view state: 'showcase' | 'product' | 'admin' | 'admin-login'
-  const [currentView, setCurrentView] = useState(() => {
-    return window.location.hash === '#admin' ? (
-      // If we directly go to #admin, determine if we should show login or dashboard
-      // Note: we can't read the lazy isAdminAuthenticated state easily here without duplicating logic,
-      // so we'll just check localStorage directly.
-      localStorage.getItem(ADMIN_AUTH_KEY) === "true" ? "admin" : "admin-login"
-    ) : "showcase";
-  });
+  // Navigation view state: 'showcase' | 'product'
+  const [currentView, setCurrentView] = useState("showcase");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [successfulOrderData, setSuccessfulOrderData] = useState(null);
 
@@ -64,20 +44,6 @@ export default function App() {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Hash-based admin routing
-  useEffect(() => {
-    const handleHashChange = () => {
-      if (window.location.hash === '#admin') {
-        setCurrentView(isAdminAuthenticated ? "admin" : "admin-login");
-      } else {
-        setCurrentView("showcase");
-      }
-    };
-    
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [isAdminAuthenticated]);
-
   // Save products catalog changes
   useEffect(() => {
     try {
@@ -86,15 +52,6 @@ export default function App() {
       console.error("Failed to save products to localStorage", e);
     }
   }, [products]);
-
-  // Save admin auth
-  useEffect(() => {
-    try {
-      localStorage.setItem(ADMIN_AUTH_KEY, isAdminAuthenticated ? "true" : "false");
-    } catch (e) {
-      console.error("Failed to save admin auth to localStorage", e);
-    }
-  }, [isAdminAuthenticated]);
 
   // Save cart changes to localStorage
   useEffect(() => {
@@ -109,22 +66,8 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      let isAuth = isAdminAuthenticated;
-      try {
-        if (!isAuth && localStorage.getItem(ADMIN_AUTH_KEY) === "true") {
-          isAuth = true;
-        }
-      } catch {}
 
-      if (hash === "#admin") {
-        if (isAuth) {
-          setCurrentView("admin");
-        } else {
-          setCurrentView("admin-login");
-        }
-      } else if (hash === "#admin-login") {
-        setCurrentView("admin-login");
-      } else if (hash.startsWith("#product-")) {
+      if (hash.startsWith("#product-")) {
         const prodId = hash.replace("#product-", "");
         const found = products.find((p) => p.id === prodId);
         if (found) {
@@ -143,7 +86,7 @@ export default function App() {
 
     window.addEventListener("popstate", handleHashChange);
     return () => window.removeEventListener("popstate", handleHashChange);
-  }, [isAdminAuthenticated, products]);
+  }, [products]);
 
   // Handler to open product detail view
   const handleSelectProduct = (product) => {
@@ -159,91 +102,6 @@ export default function App() {
     setSelectedProduct(null);
     window.location.hash = "";
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-
-  const handleAdminLoginSuccess = () => {
-    try {
-      localStorage.setItem(ADMIN_AUTH_KEY, "true");
-    } catch {}
-    setIsAdminAuthenticated(true);
-    setCurrentView("admin");
-    window.location.hash = "admin";
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleAdminLogout = () => {
-    try {
-      localStorage.setItem(ADMIN_AUTH_KEY, "false");
-    } catch {}
-    setIsAdminAuthenticated(false);
-    setCurrentView("showcase");
-    window.location.hash = "";
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  // ===================================================
-  // PRODUCT CRUD HANDLERS (ADMIN)
-  // ===================================================
-  const handleUpdateProduct = (updatedProduct) => {
-    setProducts((prev) =>
-      prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-
-    // Keep selectedProduct in sync if open
-    if (selectedProduct && selectedProduct.id === updatedProduct.id) {
-      setSelectedProduct(updatedProduct);
-    }
-
-    // Keep cart item product details in sync
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.product.id === updatedProduct.id
-          ? { ...item, product: updatedProduct }
-          : item
-      )
-    );
-  };
-
-  const handleAddProduct = (newProduct) => {
-    setProducts((prev) => [newProduct, ...prev]);
-  };
-
-  const handleDeleteProduct = (productId) => {
-    setProducts((prev) => prev.filter((p) => p.id !== productId));
-    if (selectedProduct && selectedProduct.id === productId) {
-      handleNavigateHome();
-    }
-    setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
-  };
-
-  const handleToggleStock = (productId) => {
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === productId ? { ...p, inStock: p.inStock === false ? true : false } : p
-      )
-    );
-    if (selectedProduct && selectedProduct.id === productId) {
-      setSelectedProduct((prev) => ({
-        ...prev,
-        inStock: prev.inStock === false ? true : false,
-      }));
-    }
-
-    // Synchronize stock state in cart items
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.product.id === productId
-          ? {
-              ...item,
-              product: {
-                ...item.product,
-                inStock: item.product.inStock === false ? true : false,
-              },
-            }
-          : item
-      )
-    );
   };
 
   // Cart operations
@@ -325,56 +183,17 @@ export default function App() {
       <PetalsOverlay />
 
       {/* Centered UDGAM Branding, Top-Right Cart */}
-      {currentView !== "admin" && (
-        <Header
-          cartCount={totalCartCount}
-          onOpenCart={() => setIsCartOpen(true)}
-          currentView={currentView}
-          onNavigateHome={handleNavigateHome}
-        />
-      )}
+      <Header
+        cartCount={totalCartCount}
+        onOpenCart={() => setIsCartOpen(true)}
+        currentView={currentView}
+        onNavigateHome={handleNavigateHome}
+      />
 
       {/* Main View Area with Animated Transitions */}
       <main className="app-main-content">
         <AnimatePresence mode="wait">
-          {/* 1. ADMIN DASHBOARD */}
-          {currentView === "admin" && (
-            <motion.div
-              key="admin-dashboard-view"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="admin-view-wrapper"
-            >
-              <AdminDashboard
-                products={products}
-                onUpdateProduct={handleUpdateProduct}
-                onAddProduct={handleAddProduct}
-                onDeleteProduct={handleDeleteProduct}
-                onToggleStock={handleToggleStock}
-                onBackToStore={handleNavigateHome}
-                onLogout={handleAdminLogout}
-              />
-            </motion.div>
-          )}
-
-          {/* 2. ADMIN LOGIN PAGE */}
-          {currentView === "admin-login" && (
-            <motion.div
-              key="admin-login-view"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="admin-view-wrapper"
-            >
-              <AdminLogin
-                onLoginSuccess={handleAdminLoginSuccess}
-                onBackToStore={handleNavigateHome}
-              />
-            </motion.div>
-          )}
-
-          {/* 3. PRODUCT DETAIL PAGE */}
+          {/* PRODUCT DETAIL PAGE */}
           {currentView === "product" && selectedProduct && (
             <ProductDetail
               key={selectedProduct.id}
@@ -387,7 +206,7 @@ export default function App() {
             />
           )}
 
-          {/* 4. SHOWCASE CAROUSEL (HOME) */}
+          {/* SHOWCASE CAROUSEL (HOME) */}
           {currentView === "showcase" && (
             <motion.section
               key="showcase-view"
@@ -430,17 +249,15 @@ export default function App() {
       )}
 
       {/* Bottom Footer */}
-      {currentView !== "admin" && (
-        <footer className="app-footer">
-          <div className="footer-branding">
-            <span className="footer-inst">NIT Sikkim</span>
-            <span className="footer-dot">•</span>
-            <span className="footer-fest">Udgam</span>
-            <span className="footer-dot">•</span>
-            <span className="footer-theme">🌸 Chase the Bloom</span>
-          </div>
-        </footer>
-      )}
+      <footer className="app-footer">
+        <div className="footer-branding">
+          <span className="footer-inst">NIT Sikkim</span>
+          <span className="footer-dot">•</span>
+          <span className="footer-fest">Udgam</span>
+          <span className="footer-dot">•</span>
+          <span className="footer-theme">🌸 Chase the Bloom</span>
+        </div>
+      </footer>
     </div>
   );
 }

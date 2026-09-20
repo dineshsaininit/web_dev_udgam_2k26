@@ -6,7 +6,6 @@ import "./Header.css";
  * UDGAM Header Component
  * - Centered "UDGAM" branding
  * - Top-right interactive Cart button with animated quantity badge
- * - Admin portal shortcut
  * - Left contextual action (Back to Collection when inside product view)
  */
 export default function Header({

@@ -69,6 +69,8 @@ export default function CartDrawer({
   const discountAmount = Math.round(subtotal * appliedDiscount);
   const total = Math.max(0, subtotal - discountAmount);
   const totalItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const uniqueProductIds = new Set(items.map(item => item.product.id));
+  const hasAllThreeDifferentItems = uniqueProductIds.size === 3;
 
   const handleApplyPromo = (e) => {
     e.preventDefault();
@@ -590,12 +592,12 @@ export default function CartDrawer({
                       />
                     </div>
 
-                    {/* Conditional: Name to Print (For 3+ items) */}
-                    {totalItemCount >= 3 && (
+                    {/* Conditional: Name to Print (For all 3 different items) */}
+                    {hasAllThreeDifferentItems && (
                       <div className="form-group" style={{ backgroundColor: "#f9fbf0", padding: "10px", borderRadius: "8px", border: "1px solid #dce8b5" }}>
                         <label className="form-label" style={{ color: "#5b7318" }}>
                           <Tag size={13} className="label-icon" />
-                          <span>Custom Name Print (FREE offer for 3+ items)</span>
+                          <span>Custom Name Print (FREE offer for buying all 3 items)</span>
                         </label>
                         <input
                           type="text"
