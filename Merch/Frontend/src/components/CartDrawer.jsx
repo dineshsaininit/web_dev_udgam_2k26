@@ -10,7 +10,6 @@ import {
   Sparkles,
   CheckCircle2,
   XCircle,
-  Tag,
   ShieldCheck,
   CreditCard,
   RefreshCw,
@@ -25,7 +24,6 @@ import "./CartDrawer.css";
 /**
  * Slide-over Cart Drawer Component
  * - Manages items, quantities, size breakdown
- * - Promo code application
  * - Compulsory checkout fields: Name, Official Email, Roll No, Phone
  * - Razorpay payment simulation with both Payment Success and Payment Failure flows
  */
@@ -38,12 +36,9 @@ export default function CartDrawer({
   onClearCart,
   onSelectProduct,
   onCheckoutSuccess,
+  initialPrintedName = "",
 }) {
   const hasOutOfStockItems = items.some((item) => item.product.inStock === false);
-  const [promoCode, setPromoCode] = useState("");
-  const [appliedDiscount, setAppliedDiscount] = useState(0);
-  const [promoMessage, setPromoMessage] = useState("");
-  const [promoError, setPromoError] = useState("");
 
   // Checkout & Payment Simulation states
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -58,36 +53,42 @@ export default function CartDrawer({
     officialEmail: "",
     rollNumber: "",
     phone: "",
-    printedName: "",
+    printedName: initialPrintedName || "",
   });
 
-  // Calculate totals
+  const [prevInitial, setPrevInitial] = useState(initialPrintedName);
+  if (initialPrintedName !== prevInitial) {
+    setPrevInitial(initialPrintedName);
+    setCheckoutForm((prev) => ({ ...prev, printedName: initialPrintedName }));
+  }
+
+  // Calculate totals (No coupons)
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
-  const discountAmount = Math.round(subtotal * appliedDiscount);
-  const total = Math.max(0, subtotal - discountAmount);
+  const total = subtotal;
   const totalItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const uniqueProductIds = new Set(items.map(item => item.product.id));
-  const hasAllThreeDifferentItems = uniqueProductIds.size === 3;
 
-  const handleApplyPromo = (e) => {
-    e.preventDefault();
-    const code = promoCode.trim().toUpperCase();
-    if (code === "UDGAM10" || code === "FEST10") {
-      setAppliedDiscount(0.1);
-      setPromoMessage("10% Fest discount applied successfully!");
-      setPromoError("");
-    } else if (code === "VIP20") {
-      setAppliedDiscount(0.2);
-      setPromoMessage("20% VIP Summit discount applied!");
-      setPromoError("");
-    } else {
-      setPromoError("Invalid code. Try 'UDGAM10' for 10% off.");
-      setPromoMessage("");
-    }
-  };
+  // Check if all three flagship products are in cart (or bundle)
+  const hasTshirt = items.some(
+    (item) =>
+      item.product.id === "udgam-tshirt-01" ||
+      item.product.title.toLowerCase().includes("t-shirt")
+  );
+  const hasHoodie = items.some(
+    (item) =>
+      item.product.id === "udgam-hoodie-02" ||
+      item.product.title.toLowerCase().includes("hoodie")
+  );
+  const hasQuarterZip = items.some(
+    (item) =>
+      item.product.id === "udgam-quarterzip-03" ||
+      item.product.title.toLowerCase().includes("quarter zip")
+  );
+  const hasAllThreeDifferentItems =
+    (hasTshirt && hasHoodie && hasQuarterZip) ||
+    items.some((item) => item.product.id === "udgam-collection-04" || item.product.isBundle);
 
   const handleStartCheckout = () => {
     setPaymentStep("form");
@@ -141,8 +142,8 @@ export default function CartDrawer({
                   name: checkoutForm.name,
                   email: checkoutForm.officialEmail,
                   rollNo: checkoutForm.rollNumber,
-                  phone: 'N/A', // Assuming phone is not in the form yet
-                  printedName: checkoutForm.printedName
+                  phone: checkoutForm.phone || 'N/A',
+                  printedName: checkoutForm.printedName || null
                 }
               }),
             });
@@ -275,6 +276,15 @@ export default function CartDrawer({
               ) : (
                 /* Items List */
                 <div className="cart-items-list">
+                  {hasAllThreeDifferentItems && (
+                    <div className="cart-perk-unlocked-banner">
+                      <Sparkles size={16} className="unlocked-icon" />
+                      <div>
+                        <strong>Free Custom Name Unlocked!</strong>
+                        <p>All 3 pieces added. Free name printing on your Hoodie is included at checkout.</p>
+                      </div>
+                    </div>
+                  )}
                   {items.map((item) => {
                     const itemKey = `${item.product.id}-${item.size}`;
                     return (
@@ -389,42 +399,12 @@ export default function CartDrawer({
             {/* Footer Summary & Checkout (Only when items exist) */}
             {items.length > 0 && (
               <div className="cart-drawer-footer">
-                {/* Promo Code Form */}
-                <form className="promo-form" onSubmit={handleApplyPromo}>
-                  <div className="promo-input-wrapper">
-                    <Tag size={15} className="promo-icon" />
-                    <input
-                      type="text"
-                      placeholder="Coupon (e.g. UDGAM10)"
-                      value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
-                      className="promo-input"
-                    />
-                    <button type="submit" className="promo-submit-btn">
-                      Apply
-                    </button>
-                  </div>
-                  {promoMessage && (
-                    <span className="promo-success-text">{promoMessage}</span>
-                  )}
-                  {promoError && (
-                    <span className="promo-error-text">{promoError}</span>
-                  )}
-                </form>
-
-                {/* Price Breakdown */}
+                {/* Price Breakdown (No coupons) */}
                 <div className="cart-breakdown">
                   <div className="breakdown-row">
                     <span>Subtotal</span>
                     <span>₹{subtotal.toLocaleString("en-IN")}</span>
                   </div>
-
-                  {appliedDiscount > 0 && (
-                    <div className="breakdown-row discount-row">
-                      <span>Discount ({appliedDiscount * 100}%)</span>
-                      <span>-₹{discountAmount.toLocaleString("en-IN")}</span>
-                    </div>
-                  )}
 
                   <div className="breakdown-row">
                     <span>Campus Distribution</span>
@@ -592,23 +572,27 @@ export default function CartDrawer({
                       />
                     </div>
 
-                    {/* Conditional: Name to Print (For all 3 different items) */}
+                    {/* Conditional: Name to Print (For all 3 different items / Collection) */}
                     {hasAllThreeDifferentItems && (
-                      <div className="form-group" style={{ backgroundColor: "#f9fbf0", padding: "10px", borderRadius: "8px", border: "1px solid #dce8b5" }}>
-                        <label className="form-label" style={{ color: "#5b7318" }}>
-                          <Tag size={13} className="label-icon" />
-                          <span>Custom Name Print (FREE offer for buying all 3 items)</span>
+                      <div className="form-group" style={{ backgroundColor: "#f3f8f2", padding: "12px 14px", borderRadius: "10px", border: "1.5px solid #a8cfa5" }}>
+                        <label className="form-label" style={{ color: "#235c2b", fontWeight: "600" }}>
+                          <Sparkles size={14} className="label-icon" style={{ color: "#01b068" }} />
+                          <span>Custom Name Print on Hoodie (FREE Offer)</span>
                         </label>
                         <input
                           type="text"
                           className="form-input"
-                          placeholder="e.g. THE BOSS"
+                          placeholder="e.g. RAHUL"
+                          maxLength={20}
                           value={checkoutForm.printedName}
                           onChange={(e) =>
                             setCheckoutForm({ ...checkoutForm, printedName: e.target.value.toUpperCase() })
                           }
+                          style={{ borderColor: "#a8cfa5" }}
                         />
-                        <span className="field-hint">Leave blank if you don't want a custom print.</span>
+                        <span className="field-hint" style={{ color: "#2d6335", marginTop: "6px", display: "block", fontSize: "0.78rem" }}>
+                          ⚠️ <strong>Please note:</strong> Custom name will <u>only be printed on the Udgam26 Hoodie</u>. Leave blank if you do not want a custom print.
+                        </span>
                       </div>
                     )}
 

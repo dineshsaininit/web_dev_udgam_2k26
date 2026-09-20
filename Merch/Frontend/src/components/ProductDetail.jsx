@@ -6,7 +6,6 @@ import {
   Star,
   Check,
   Truck,
-  RotateCcw,
   ShieldCheck,
   Ruler,
   Info,
@@ -14,8 +13,7 @@ import {
   ZoomIn,
   AlertTriangle,
   Ban,
-  ChevronLeft,
-  ChevronRight
+  Sparkles
 } from "lucide-react";
 import "./ProductDetail.css";
 
@@ -54,6 +52,7 @@ export default function ProductDetail({
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [customName, setCustomName] = useState("");
 
   // Mobile / Touch device detection
   const [isMobileOrTouch, setIsMobileOrTouch] = useState(false);
@@ -158,7 +157,7 @@ export default function ProductDetail({
 
   const handleAddToCart = () => {
     if (isOutOfStock) return;
-    onAddToCart(product, selectedSize, quantity);
+    onAddToCart(product, selectedSize, quantity, customName);
     setIsAdded(true);
     setTimeout(() => {
       setIsAdded(false);
@@ -477,6 +476,30 @@ export default function ProductDetail({
                 <span>{product.fitNote}</span>
               </div>
             )}
+
+            {/* Udgam26 Collection Special Perk: Custom Name Printing on Hoodie */}
+            {product.isBundle && (
+              <div className="bundle-custom-card">
+                <div className="bundle-custom-header">
+                  <Sparkles size={16} className="bundle-custom-icon" />
+                  <strong>Free Custom Name on Hoodie</strong>
+                </div>
+                <p className="bundle-custom-desc">
+                  Buying the full Udgam26 Collection includes complimentary name customization. Specify the name to print:
+                </p>
+                <input
+                  type="text"
+                  className="bundle-custom-input"
+                  placeholder="e.g. RAHUL"
+                  maxLength={20}
+                  value={customName}
+                  onChange={(e) => setCustomName(e.target.value.toUpperCase())}
+                />
+                <span className="bundle-custom-hint">
+                  * Note: Name will only be printed on the Hoodie. Leave blank if you prefer no custom print.
+                </span>
+              </div>
+            )}
           </div>
 
           {/* ===================================================
@@ -565,10 +588,10 @@ export default function ProductDetail({
             </div>
 
             <div className="trust-item">
-              <RotateCcw size={17} className="trust-icon" />
+              <Sparkles size={17} className="trust-icon" />
               <div>
-                <strong>Instant Size Exchange</strong>
-                <p>On-spot size exchanges available during fest days</p>
+                <strong>Authentic & Premium Quality</strong>
+                <p>100% genuine official festival merchandise, crafted with durable materials</p>
               </div>
             </div>
 
@@ -661,12 +684,6 @@ export default function ProductDetail({
                         <td>46</td>
                         <td>30.5</td>
                         <td>22</td>
-                      </tr>
-                      <tr>
-                        <td><strong>XXL</strong></td>
-                        <td>48</td>
-                        <td>31.5</td>
-                        <td>23</td>
                       </tr>
                     </tbody>
                   </table>

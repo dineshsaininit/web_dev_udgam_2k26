@@ -1042,3 +1042,36 @@
   background: #f4f4f5;
   color: #18181b;
 }
+
+/* Free Customization Unlocked Banner in Cart */
+.cart-perk-unlocked-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border: 1px solid #86efac;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(1, 176, 104, 0.08);
+}
+
+.unlocked-icon {
+  color: #16a34a;
+  flex-shrink: 0;
+}
+
+.cart-perk-unlocked-banner strong {
+  display: block;
+  font-size: 0.82rem;
+  color: #15803d;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.cart-perk-unlocked-banner p {
+  font-size: 0.74rem;
+  color: #166534;
+  margin: 0;
+  line-height: 1.35;
+}
