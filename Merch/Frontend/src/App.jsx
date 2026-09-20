@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Sparkles, ArrowRight } from "lucide-react";
 import Header from "./components/Header";
 import Carousel from "./components/Carousel";
 import ProductDetail from "./components/ProductDetail";
@@ -10,7 +11,7 @@ import PetalsOverlay from "./components/PetalsOverlay";
 import "./App.css";
 
 const CART_STORAGE_KEY = "udgam_merch_cart_v2";
-const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v3";
+const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v6";
 
 export default function App() {
   // Products catalog with localStorage persistence
@@ -253,6 +254,33 @@ export default function App() {
               exit={{ opacity: 0, scale: 0.99 }}
               transition={{ duration: 0.35 }}
             >
+              {/* Home Page Announcement Banner: Free Custom Name on Hoodie Perk */}
+              <motion.div
+                className="home-customization-hero-banner"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                onClick={() => {
+                  const collection = products.find((p) => p.id === "udgam-collection-04");
+                  if (collection) handleSelectProduct(collection);
+                }}
+                role="button"
+                tabIndex={0}
+                title="Click to view Udgam26 Collection with Free Hoodie Customization"
+              >
+                <div className="banner-sparkle-pill">
+                  <Sparkles size={14} className="banner-sparkle-icon" />
+                  <span>SPECIAL FEST OFFER</span>
+                </div>
+                <div className="banner-message">
+                  Buy all 3 items (T-Shirt, Hoodie & Quarter Zip) or the <strong>Udgam26 Collection</strong> to get <strong>Free Name Customization printed on your Hoodie!</strong>
+                </div>
+                <div className="banner-action-link">
+                  <span>View Bundle</span>
+                  <ArrowRight size={13} />
+                </div>
+              </motion.div>
+
               {/* Core 3-Card Continuous Merchandise Carousel */}
               <Carousel
                 items={products}
