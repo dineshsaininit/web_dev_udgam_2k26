@@ -9,12 +9,12 @@ import { merchItems } from "./data/merchData";
 import PetalsOverlay from "./components/PetalsOverlay";
 import "./App.css";
 
-const CART_STORAGE_KEY = "udgam_merch_cart_v1";
-const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v2";
+const CART_STORAGE_KEY = "udgam_merch_cart_v2";
+const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v3";
 
 export default function App() {
   // Products catalog with localStorage persistence
-  const [products, setProducts] = useState(() => {
+  const [products] = useState(() => {
     try {
       const saved = localStorage.getItem(PRODUCTS_STORAGE_KEY);
       if (saved) {
@@ -31,6 +31,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState("showcase");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [successfulOrderData, setSuccessfulOrderData] = useState(null);
+  const [initialPrintedName, setInitialPrintedName] = useState("");
 
   // Cart state with localStorage persistence
   const [cart, setCart] = useState(() => {
@@ -105,10 +106,46 @@ export default function App() {
   };
 
   // Cart operations
-  const handleAddToCart = (product, size, quantity) => {
+  const handleAddToCart = (product, size, quantity, customName = "") => {
+    if (customName) {
+      setInitialPrintedName(customName);
+    }
+
     // Strictly prevent adding out of stock product to cart
     const liveProd = products.find((p) => p.id === product.id) || product;
     if (liveProd.inStock === false) {
+      return;
+    }
+
+    // If Udgam26 Collection is added, add all 3 individual items to the cart
+    if (liveProd.id === "udgam-collection-04" || liveProd.isBundle) {
+      const tshirt = products.find((p) => p.id === "udgam-tshirt-01") || merchItems.find((p) => p.id === "udgam-tshirt-01");
+      const hoodie = products.find((p) => p.id === "udgam-hoodie-02") || merchItems.find((p) => p.id === "udgam-hoodie-02");
+      const quarterzip = products.find((p) => p.id === "udgam-quarterzip-03") || merchItems.find((p) => p.id === "udgam-quarterzip-03");
+
+      const bundleItems = [
+        { prod: tshirt, size, qty: quantity },
+        { prod: hoodie, size, qty: quantity },
+        { prod: quarterzip, size, qty: quantity }
+      ].filter((b) => b.prod && b.prod.inStock !== false);
+
+      setCart((prevCart) => {
+        let updated = [...prevCart];
+        bundleItems.forEach(({ prod, size: s, qty }) => {
+          const existingIdx = updated.findIndex(
+            (item) => item.product.id === prod.id && item.size === s
+          );
+          if (existingIdx > -1) {
+            updated[existingIdx] = {
+              ...updated[existingIdx],
+              quantity: updated[existingIdx].quantity + qty,
+            };
+          } else {
+            updated.push({ product: prod, size: s, quantity: qty });
+          }
+        });
+        return updated;
+      });
       return;
     }
 
@@ -238,6 +275,7 @@ export default function App() {
         onClearCart={handleClearCart}
         onSelectProduct={handleSelectProduct}
         onCheckoutSuccess={(orderData) => setSuccessfulOrderData(orderData)}
+        initialPrintedName={initialPrintedName}
       />
 
       {/* Envelope Receipt Animation */}

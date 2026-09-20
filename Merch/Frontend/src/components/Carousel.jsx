@@ -23,7 +23,8 @@ export default function Carousel({
   onSelectProduct,
 }) {
   const total = items.length;
-  const [cardIndex, setCardIndex] = useState(1);
+  const defaultIdx = items.findIndex((i) => i.id === "udgam-collection-04");
+  const [cardIndex, setCardIndex] = useState(defaultIdx >= 0 ? defaultIdx : 0);
   const [isPlaying, setIsPlaying] = useState(enableAutoPlay);
   const [isHovered, setIsHovered] = useState(false);
   const [spacing, setSpacing] = useState(390);
