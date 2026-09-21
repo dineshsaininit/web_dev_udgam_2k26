@@ -121,6 +121,7 @@ export default function App() {
     if (liveProd.id === "udgam-collection-04" || liveProd.isBundle) {
       const tshirtBase = products.find((p) => p.baseId === "udgam-tshirt-01" || p.id === "udgam-tshirt-01") || merchItems.find((p) => p.baseId === "udgam-tshirt-01" || p.id === "udgam-tshirt-01");
       const hoodieBase = products.find((p) => p.id === "udgam-hoodie-02") || merchItems.find((p) => p.id === "udgam-hoodie-02");
+      const hoodiepink = products.find((p) => p.id === "udgam-hoodie-pink") || merchItems.find((p) => p.id === "udgam-hoodie-02");
       const quarterzip = products.find((p) => p.id === "udgam-quarterzip-03") || merchItems.find((p) => p.id === "udgam-quarterzip-03");
 
       const tshirtColor = bundleCustomization?.tshirtColor || "White";

@@ -121,7 +121,7 @@ export const merchItems = [
     fitNote: "Relaxed oversized fit. Order your true size for a loose streetwear drape, or size down for classic tailored fit."
   },
   {
-    id: "udgam-hoodie-02",
+    id: "udgam-hoodie-pink",
     category: "Hoodies",
     title: "Udgam26 Hoodie",
     subtitle: "High quality plush fleece cotton with signature puff-print typography",

@@ -78,7 +78,7 @@ export default function CartDrawer({
   );
   const hasHoodie = items.some(
     (item) =>
-      item.product.id?.startsWith("udgam-hoodie-02") ||
+      item.product.id?.startsWith("-02") ||
       item.product.title?.toLowerCase().includes("hoodie")
   );
   const hasQuarterZip = items.some(
@@ -125,7 +125,7 @@ export default function CartDrawer({
           try {
             // Show verification loading screen while we call backend
             setPaymentStep("verifying");
-            
+
             // 3. Verify payment on backend
             const verifyRes = await fetch("https://merch-backend-fn9a.onrender.com/api/payments/verify-payment", {
               method: "POST",
@@ -190,7 +190,7 @@ export default function CartDrawer({
       };
 
       const rzp1 = new window.Razorpay(options);
-      rzp1.on('payment.failed', function (response){
+      rzp1.on('payment.failed', function (response) {
         setFailureReason(response.error.description || "Payment failed.");
         setFailureCode(response.error.code || "ERR_PAYMENT_FAILED");
         setPaymentStep("failure");
@@ -441,9 +441,8 @@ export default function CartDrawer({
 
                 {/* Checkout CTA */}
                 <button
-                  className={`checkout-primary-btn ${
-                    hasOutOfStockItems ? "disabled-checkout" : ""
-                  }`}
+                  className={`checkout-primary-btn ${hasOutOfStockItems ? "disabled-checkout" : ""
+                    }`}
                   onClick={hasOutOfStockItems ? undefined : handleStartCheckout}
                   disabled={hasOutOfStockItems}
                   title={
@@ -700,14 +699,14 @@ export default function CartDrawer({
                   animate={{ opacity: 1, y: 0 }}
                   style={{ textAlign: 'center', padding: '40px 20px' }}
                 >
-                  <div className="loader-spinner" style={{ 
-                    border: '4px solid #f3f3f3', 
-                    borderTop: '4px solid #01b068', 
-                    borderRadius: '50%', 
-                    width: '40px', 
-                    height: '40px', 
+                  <div className="loader-spinner" style={{
+                    border: '4px solid #f3f3f3',
+                    borderTop: '4px solid #01b068',
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
                     animation: 'spin 1s linear infinite',
-                    margin: '0 auto 20px auto' 
+                    margin: '0 auto 20px auto'
                   }}></div>
                   <style>
                     {`
