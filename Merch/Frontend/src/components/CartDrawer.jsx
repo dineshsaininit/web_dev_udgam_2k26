@@ -153,12 +153,31 @@ export default function CartDrawer({
               if (onCheckoutSuccess) {
                 onCheckoutSuccess({
                   orderId: verifyData.orderId || order.id,
+                  paymentId: response.razorpay_payment_id || verifyData.paymentId,
                   name: checkoutForm.name,
                   email: checkoutForm.officialEmail,
                   rollNo: checkoutForm.rollNumber,
+                  phone: checkoutForm.phone || 'N/A',
                   itemName: items.map(i => i.product.title).join(', '),
                   size: items.map(i => i.size).join(', '),
-                  printedName: checkoutForm.printedName
+                  items: items.map(i => ({
+                    id: i.id || i.product?.id,
+                    title: i.product?.title || 'Merchandise Item',
+                    size: i.size,
+                    quantity: i.quantity,
+                    price: i.product?.price || 0
+                  })),
+                  totalAmount: total,
+                  printedName: checkoutForm.printedName || null,
+                  orderDate: new Date().toLocaleString('en-IN', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                  }),
+                  pickupLocation: 'UDGAM Merch Desk, NIT Sikkim Campus'
                 });
                 handleCloseAll();
                 onClearCart();
@@ -626,7 +645,7 @@ export default function CartDrawer({
                     <div className="razorpay-logo-badge">
                       <CreditCard size={18} className="rzp-icon" />
                       <strong>Razorpay</strong>
-                      <span className="rzp-pill">Gateway Simulation</span>
+                      <span className="rzp-pill">Secure Payment</span>
                     </div>
                     <button
                       className="modal-close-btn"
@@ -657,23 +676,23 @@ export default function CartDrawer({
                       </div>
                     </div>
 
-                    <div className="gateway-dev-notice">
-                      <Sparkles size={14} className="notice-icon" />
+                    <div className="gateway-dev-notice" style={{ background: "#f0fdf4", borderColor: "#bbf7d0", color: "#166534" }}>
+                      <ShieldCheck size={16} className="notice-icon" style={{ color: "#16a34a" }} />
                       <p>
-                        Razorpay payment gateway integration will connect here. For development verification, test both states below:
+                        You will be connected to Razorpay's 128-bit encrypted gateway. Supports UPI (GPay, PhonePe, Paytm), NetBanking, and all Cards.
                       </p>
                     </div>
 
-                    {/* RAZORPAY TRIGGER */}
+                    {/* RAZORPAY SECURE PAYMENT BUTTON */}
                     <div className="gateway-simulation-actions" style={{ flexDirection: 'column' }}>
                       <button
                         type="button"
                         className="simulate-btn simulate-success-btn"
-                        style={{ width: '100%', background: '#01b068', color: '#fff', border: 'none', justifyContent: 'center' }}
+                        style={{ width: '100%', background: '#01b068', color: '#fff', border: 'none', justifyContent: 'center', padding: '13px', fontSize: '0.95rem', fontWeight: '700' }}
                         onClick={handleRazorpayPayment}
                       >
                         <ShoppingBag size={18} />
-                        <span>Pay with Razorpay</span>
+                        <span>Pay Securely ₹{total.toLocaleString("en-IN")}</span>
                       </button>
                     </div>
 

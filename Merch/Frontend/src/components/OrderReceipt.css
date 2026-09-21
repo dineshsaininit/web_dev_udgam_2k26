@@ -1,203 +1,651 @@
+/* =========================================================
+   ORDER RECEIPT - SCREEN & PRINT STYLES
+   UDGAM 2026 • NIT SIKKIM
+========================================================= */
+
+/* ---------------------------------------------------------
+   1. SCREEN MODAL & ENVELOPE PRESENTATION
+--------------------------------------------------------- */
 .receipt-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  perspective: 1000px;
+  padding: 1.5rem;
+  overflow-y: auto;
 }
 
 .receipt-container {
   position: relative;
-  width: 400px;
-  height: 300px;
+  width: 100%;
+  max-width: 520px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  margin: auto;
 }
 
-/* Envelope Styles */
+/* Envelope Simulation on Screen */
 .envelope-wrapper {
   position: relative;
-  width: 350px;
-  height: 220px;
-  background: #e0e0e0;
-  border-radius: 4px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-.envelope-back {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  background: #c0c0c0;
-  border-radius: 4px;
-  z-index: 1;
-}
-
-.envelope-front {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #d4d4d4;
-  border-radius: 4px;
-  z-index: 5;
-  clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-}
-
-.envelope-flap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 120px;
-  background: #e0e0e0;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  z-index: 6;
-  transform-origin: top;
-  transition: transform 0.6s ease-in-out;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.envelope-wrapper.open .envelope-flap.open-flap {
-  transform: rotateX(180deg);
-  z-index: 2; /* Move behind receipt when opened */
-}
-
-/* Receipt Card Styles */
-.receipt-card {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  z-index: 1; /* Starts inside envelope */
-  margin-left: -150px; /* Center adjustment */
-  color: #333;
-}
-
-.receipt-header {
-  text-align: center;
-  border-bottom: 2px dashed #ccc;
-  padding-bottom: 15px;
-  margin-bottom: 15px;
-}
-
-.success-icon {
-  color: #4CAF50;
-  margin-bottom: 10px;
-}
-
-.receipt-header h1 {
-  font-size: 1.2rem;
-  margin: 0 0 5px 0;
-  color: #1a1a1a;
-  letter-spacing: 1px;
-}
-
-.receipt-header h2 {
-  font-size: 1rem;
-  margin: 0;
-  color: #4CAF50;
-}
-
-.receipt-body {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.receipt-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-}
-
-.receipt-row .label {
-  font-weight: 600;
-  color: #666;
-}
-
-.receipt-row .value {
-  font-weight: 500;
-  color: #111;
-  text-align: right;
-}
-
-.receipt-footer {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
   justify-content: center;
 }
 
-.print-btn, .close-btn {
+/* The Main Receipt Card */
+.receipt-card {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  color: #1e293b;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-height: 88vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.receipt-card::-webkit-scrollbar {
+  width: 6px;
+}
+.receipt-card::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+/* Close Button */
+.receipt-modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 4px;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.receipt-modal-close-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Header */
+.receipt-header {
+  text-align: center;
+  border-bottom: 2px dashed #e2e8f0;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.receipt-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #475569;
+  text-transform: uppercase;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  margin-bottom: 0.6rem;
+}
+
+.brand-dot {
+  color: #94a3b8;
+}
+
+.receipt-heading {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin: 0 0 0.5rem 0;
+}
+
+.payment-confirmed-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #166534;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  font-size: 0.8rem;
   font-weight: 600;
-  transition: all 0.2s;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
 }
 
-.print-btn {
+.check-icon {
+  color: #16a34a;
+}
+
+/* Meta Grid */
+.receipt-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.meta-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.meta-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e293b;
+  word-break: break-all;
+}
+
+.order-id-highlight {
+  color: #0f172a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.tx-id-highlight {
+  font-size: 0.78rem;
+  color: #475569;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.status-success {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+/* Sections */
+.receipt-section {
+  margin-bottom: 1.25rem;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.65rem;
+}
+
+/* Student Details Grid */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.detail-val {
+  color: #1e293b;
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+/* Merchandise Table */
+.receipt-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.receipt-items-table thead tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.receipt-items-table th {
+  padding: 0.4rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.th-item {
+  text-align: left;
+  padding-left: 0 !important;
+}
+
+.th-size, .th-qty {
+  text-align: center;
+}
+
+.th-price {
+  text-align: right;
+  padding-right: 0 !important;
+}
+
+.item-row {
+  border-bottom: 1px solid #f8fafc;
+}
+
+.receipt-items-table td {
+  padding: 0.6rem 0.5rem;
+  vertical-align: middle;
+}
+
+.td-item {
+  padding-left: 0 !important;
+}
+
+.item-title {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.td-size, .td-qty {
+  text-align: center;
+}
+
+.size-pill {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.td-qty {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.td-price {
+  text-align: right;
+  font-weight: 600;
+  color: #0f172a;
+  padding-right: 0 !important;
+}
+
+/* Total Bar */
+.receipt-total-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.total-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.total-amount {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #38bdf8;
+}
+
+/* Pickup Notice */
+.receipt-pickup-notice {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.78rem;
+  color: #166534;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+}
+
+.pickup-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.25rem;
+  font-weight: 700;
+}
+
+/* Actions */
+.receipt-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.receipt-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.print-primary-btn {
   background: #678473;
-  color: #fff;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(103, 132, 115, 0.3);
 }
-.print-btn:hover {
+
+.print-primary-btn:hover {
   background: #546d5e;
+  transform: translateY(-1px);
 }
 
-.close-btn {
-  background: #f0f0f0;
-  color: #333;
+.close-secondary-btn {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
 }
-.close-btn:hover {
-  background: #e0e0e0;
+
+.close-secondary-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.print-watermark-note {
+  display: none;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 1.5rem;
 }
 
 
-/* PRINT MEDIA QUERY */
+/* ---------------------------------------------------------
+   2. PRINT MEDIA STYLES - STRICT SINGLE WHITE PAGE ONLY
+--------------------------------------------------------- */
 @media print {
-  /* Hide EVERYTHING on the page except the printable receipt */
-  body * {
-    visibility: hidden;
+  @page {
+    size: portrait;
+    margin: 6mm 10mm;
   }
-  
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Force clean white background and eliminate any scroll or body min-height */
+  html, body, #root {
+    background: #ffffff !important;
+    background-image: none !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Completely remove all background page sections so page 1 is not created */
+  .sakura-corner,
+  .petals-overlay-container,
+  .petals-canvas,
+  .app-header,
+  .app-main-content,
+  .carousel-showcase-section,
+  .product-detail-view,
+  .product-detail-page,
+  .app-footer,
+  .cart-drawer-backdrop,
+  .cart-drawer-aside,
+  .cart-drawer-overlay,
+  .envelope-front,
+  .envelope-back,
+  .envelope-flap,
+  .receipt-modal-close-btn,
+  .receipt-actions,
   .no-print {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
 
-  .printable-receipt, .printable-receipt * {
-    visibility: visible;
-  }
-
-  /* Reset positioning for print to look like a normal document */
-  .printable-receipt {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100% !important;
-    max-width: 600px;
-    margin: 0 auto;
+  .app-container {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    background-color: #ffffff !important;
     box-shadow: none !important;
-    border: 1px solid #ccc;
+  }
+
+  /* Reset receipt overlay: No dark backdrop, purely transparent/white */
+  .receipt-overlay {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  .receipt-container,
+  .envelope-wrapper {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  /* Printable receipt card fits strictly on 1 page */
+  .printable-receipt {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 580px !important;
+    margin: 0 auto !important;
+    padding: 1.1rem 1.35rem !important;
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
     transform: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+  }
+
+  /* Header compacting */
+  .receipt-header {
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+    border-bottom: 1.5px dashed #cbd5e1 !important;
+  }
+
+  .receipt-brand-badge {
+    font-size: 0.72rem !important;
+    padding: 0.15rem 0.6rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  .receipt-heading {
+    font-size: 1.05rem !important;
+    margin: 0 0 0.25rem 0 !important;
+  }
+
+  .payment-confirmed-chip {
+    font-size: 0.72rem !important;
+    padding: 0.15rem 0.5rem !important;
+  }
+
+  /* Meta grid */
+  .receipt-meta-grid {
+    gap: 0.35rem 0.75rem !important;
+    padding: 0.45rem 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  .meta-label {
+    font-size: 0.62rem !important;
+  }
+
+  .meta-value {
+    font-size: 0.78rem !important;
+  }
+
+  /* Student section */
+  .receipt-section {
+    margin-bottom: 0.45rem !important;
+  }
+
+  .section-title {
+    font-size: 0.68rem !important;
+    padding-bottom: 0.2rem !important;
+    margin-bottom: 0.3rem !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+
+  .details-grid {
+    gap: 0.2rem 0.75rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  .detail-label {
+    font-size: 0.65rem !important;
+  }
+
+  .detail-val {
+    font-size: 0.78rem !important;
+  }
+
+  /* Table */
+  .receipt-items-table {
+    font-size: 0.78rem !important;
+  }
+
+  .receipt-items-table th {
+    padding: 0.2rem 0.35rem !important;
+    font-size: 0.65rem !important;
+  }
+
+  .receipt-items-table td {
+    padding: 0.35rem 0.35rem !important;
+  }
+
+  .size-pill {
+    font-size: 0.68rem !important;
+    padding: 0.1rem 0.35rem !important;
+  }
+
+  /* Total Bar */
+  .receipt-total-bar {
+    padding: 0.45rem 0.75rem !important;
+    margin-bottom: 0.45rem !important;
+    background: #0f172a !important;
+    color: #ffffff !important;
+  }
+
+  .total-label {
+    font-size: 0.78rem !important;
+  }
+
+  .total-amount {
+    font-size: 0.95rem !important;
+  }
+
+  /* Pickup notice */
+  .receipt-pickup-notice {
+    padding: 0.4rem 0.65rem !important;
+    margin-bottom: 0.45rem !important;
+    font-size: 0.72rem !important;
+    line-height: 1.3 !important;
+    border: 1px solid #bbf7d0 !important;
+  }
+
+  .pickup-header {
+    margin-bottom: 0.15rem !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* Watermark note */
+  .print-watermark-note {
+    display: block !important;
+    font-size: 0.62rem !important;
+    margin-top: 0.35rem !important;
   }
 }
