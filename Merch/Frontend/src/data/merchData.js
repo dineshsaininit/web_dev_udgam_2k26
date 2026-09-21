@@ -39,19 +39,13 @@ export const merchItems = [
     title: "Udgam26 White T-Shirt",
     subtitle: "High quality combed cotton jersey with premium wash finish",
     tag: "01 • T-SHIRT",
-    price: 380,
+    price: 389,
     originalPrice: 499,
     currency: "₹",
-<<<<<<< Updated upstream
-    image: "/assets/merch/Tshirt1.png?v=2",
-    gallery: [
-      "/assets/merch/Tshirt1.png?v=2",
-      "/assets/merch/Tshirt2.png?v=2"
-=======
+
     image: "/asset/merch/Tshirt_white.jpeg",
     gallery: [
       "/asset/merch/Tshirt_white.jpeg"
->>>>>>> Stashed changes
     ],
     badgeColor: "#7A8F7B",
     badgeText: "CHASE THE BLOOM",
@@ -75,7 +69,7 @@ export const merchItems = [
     title: "Udgam26 Beige T-Shirt",
     subtitle: "High quality combed cotton jersey with premium wash finish",
     tag: "01 • T-SHIRT",
-    price: 380,
+    price: 389,
     originalPrice: 499,
     currency: "₹",
     image: "/asset/merch/Tshirt_beige.jpeg",
@@ -103,7 +97,7 @@ export const merchItems = [
     title: "Udgam26 Hoodie",
     subtitle: "High quality plush fleece cotton with signature puff-print typography",
     tag: "02 • HOODIE",
-    price: 750,
+    price: 789,
     originalPrice: 999,
     currency: "₹",
     image: "/assets/merch/Hoodie.png?v=2",
@@ -131,7 +125,7 @@ export const merchItems = [
     title: "Udgam26 Quarter Zip",
     subtitle: "High quality thermal brushed fleece with mock neck and durable antique zip",
     tag: "03 • QUARTER ZIP",
-    price: 850,
+    price: 889,
     originalPrice: 1199,
     currency: "₹",
     image: "/assets/merch/QuarterZip.png?v=2",
