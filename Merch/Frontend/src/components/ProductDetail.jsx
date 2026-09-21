@@ -59,10 +59,10 @@ export default function ProductDetail({
     product.colorGalleries && product.colorGalleries[selectedColor] && product.colorGalleries[selectedColor].length > 0
       ? product.colorGalleries[selectedColor]
       : product.gallery && product.gallery.length > 0
-      ? product.gallery
-      : product.image
-      ? [product.image]
-      : [];
+        ? product.gallery
+        : product.image
+          ? [product.image]
+          : [];
 
   const [activeImageIndex, setActiveImageIndex] = useState(() => {
     const initialImg = product.image || (product.gallery && product.gallery[0]);
@@ -180,8 +180,8 @@ export default function ProductDetail({
   // Calculate discount percentage
   const discountPercent = product.originalPrice
     ? Math.round(
-        ((product.originalPrice - product.price) / product.originalPrice) * 100
-      )
+      ((product.originalPrice - product.price) / product.originalPrice) * 100
+    )
     : null;
 
   const handleAddToCart = () => {
@@ -419,9 +419,8 @@ export default function ProductDetail({
               {images.map((thumbUrl, idx) => (
                 <button
                   key={idx}
-                  className={`thumbnail-card ${
-                    activeImageIndex === idx ? "active" : ""
-                  }`}
+                  className={`thumbnail-card ${activeImageIndex === idx ? "active" : ""
+                    }`}
                   onClick={() => handleSelectImage(idx)}
                   aria-label={`View angle ${idx + 1}`}
                 >
@@ -500,6 +499,16 @@ export default function ProductDetail({
             )}
           </div>
 
+          {/* Combo Exclusive Bonus Banner */}
+          {isBundle && (
+            <div className="combo-bonus-banner">
+              <Sparkles size={16} className="combo-bonus-icon" />
+              <p className="combo-bonus-text">
+                <strong>Combo Exclusive Bonus:</strong> Unlock <span className="combo-bonus-highlight">FREE personalized name printing</span> on your hoodie when you buy the full set!
+              </p>
+            </div>
+          )}
+
           <div className="divider-line" />
 
           {/* ===================================================
@@ -571,9 +580,8 @@ export default function ProductDetail({
                   <button
                     key={size}
                     type="button"
-                    className={`size-choice-btn ${
-                      selectedSize === size ? "selected" : ""
-                    }`}
+                    className={`size-choice-btn ${selectedSize === size ? "selected" : ""
+                      }`}
                     onClick={() => setSelectedSize(size)}
                   >
                     {size}
@@ -643,9 +651,8 @@ export default function ProductDetail({
             {/* Primary Add to Cart Button */}
             <motion.button
               type="button"
-              className={`add-to-cart-cta ${
-                isOutOfStock ? "disabled-out-of-stock" : isAdded ? "success-state" : ""
-              }`}
+              className={`add-to-cart-cta ${isOutOfStock ? "disabled-out-of-stock" : isAdded ? "success-state" : ""
+                }`}
               onClick={isOutOfStock ? undefined : handleAddToCart}
               disabled={isOutOfStock}
               whileTap={isOutOfStock ? undefined : { scale: 0.97 }}
