@@ -1,0 +1,441 @@
+/* Bundle Customization Modal */
+.bundle-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: rgba(10, 10, 12, 0.68);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.bundle-modal-card {
+  width: 100%;
+  max-width: 540px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+  border: 1px solid rgba(228, 228, 231, 0.8);
+}
+
+/* Header */
+.bundle-modal-header {
+  padding: 24px 28px 18px 28px;
+  border-bottom: 1px solid #f4f4f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+}
+
+.bundle-modal-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(1, 176, 104, 0.1);
+  color: #018f54;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  border: 1px solid rgba(1, 176, 104, 0.2);
+}
+
+.bundle-modal-sparkle {
+  color: #01b068;
+}
+
+.bundle-modal-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #18181b;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px 0;
+  line-height: 1.25;
+}
+
+.bundle-modal-subtitle {
+  font-size: 0.84rem;
+  color: #71717a;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.bundle-modal-close-btn {
+  background: #f4f4f5;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #71717a;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  flex-shrink: 0;
+}
+
+.bundle-modal-close-btn:hover {
+  background: #e4e4e7;
+  color: #18181b;
+}
+
+/* Body */
+.bundle-modal-body {
+  padding: 22px 28px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Section Group */
+.bundle-section-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bundle-section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.step-number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #18181b;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.bundle-section-title {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #18181b;
+  margin: 0 0 2px 0;
+}
+
+.required-star {
+  color: #e11d48;
+  font-weight: 700;
+}
+
+.bundle-section-desc {
+  font-size: 0.8rem;
+  color: #71717a;
+  margin: 0;
+}
+
+.selected-variant-text {
+  color: #018f54;
+}
+
+.selected-variant-text strong {
+  color: #016e40;
+}
+
+/* Options Grid */
+.color-swatch-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.bundle-color-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #e4e4e7;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+  position: relative;
+  text-align: left;
+}
+
+.bundle-color-option-btn:hover {
+  border-color: #a1a1aa;
+  background: #fafafa;
+}
+
+.bundle-color-option-btn.is-selected {
+  border-color: #01b068;
+  background: rgba(1, 176, 104, 0.05);
+  box-shadow: 0 0 0 1px #01b068;
+}
+
+.swatch-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.swatch-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #27272a;
+  flex: 1;
+}
+
+.swatch-check-icon {
+  color: #01b068;
+  stroke-width: 2.5;
+  flex-shrink: 0;
+}
+
+/* Included Item Card */
+.bundle-included-item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+}
+
+.included-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.included-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #01b068;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.included-item-left strong {
+  font-size: 0.88rem;
+  color: #1e293b;
+  display: block;
+}
+
+.included-item-left p {
+  font-size: 0.76rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.included-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #475569;
+  background: #e2e8f0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* Free Custom Name Box */
+.bundle-custom-name-box {
+  padding: 14px 16px;
+  background: #fdf2f8;
+  border-radius: 12px;
+  border: 1px solid #fbcfe8;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-name-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #9d174d;
+  font-size: 0.82rem;
+}
+
+.custom-name-sparkle {
+  color: #ec4899;
+}
+
+.bundle-name-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #f472b6;
+  background: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #18181b;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: border-color 0.18s ease;
+}
+
+.bundle-name-input:focus {
+  border-color: #db2777;
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.25);
+}
+
+.custom-name-note {
+  font-size: 0.74rem;
+  color: #be185d;
+  line-height: 1.35;
+}
+
+/* Validation Warning */
+.bundle-validation-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 10px;
+  color: #be123c;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+/* Footer */
+.bundle-modal-footer {
+  padding: 16px 28px 20px 28px;
+  border-top: 1px solid #f4f4f5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: #fafafa;
+}
+
+.bundle-footer-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-size-label {
+  font-size: 0.78rem;
+  color: #71717a;
+}
+
+.footer-price-val {
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: #18181b;
+}
+
+.bundle-footer-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bundle-cancel-btn {
+  background: transparent;
+  border: 1px solid #e4e4e7;
+  color: #71717a;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.bundle-cancel-btn:hover {
+  background: #f4f4f5;
+  color: #18181b;
+}
+
+.bundle-confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #01b068;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 14px rgba(1, 176, 104, 0.35);
+}
+
+.bundle-confirm-btn:hover:not(.is-disabled) {
+  background: #019659;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(1, 176, 104, 0.45);
+}
+
+.bundle-confirm-btn.is-disabled {
+  background: #a1a1aa;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .bundle-modal-card {
+    border-radius: 16px;
+  }
+  .bundle-modal-header {
+    padding: 18px 20px 14px 20px;
+  }
+  .bundle-modal-body {
+    padding: 16px 20px;
+    gap: 16px;
+  }
+  .bundle-modal-footer {
+    padding: 14px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .bundle-footer-info {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .bundle-footer-buttons {
+    width: 100%;
+  }
+  .bundle-cancel-btn {
+    flex: 1;
+    text-align: center;
+  }
+  .bundle-confirm-btn {
+    flex: 2;
+    justify-content: center;
+  }
+}

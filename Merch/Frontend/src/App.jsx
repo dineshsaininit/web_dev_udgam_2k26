@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Sparkles, ArrowRight } from "lucide-react";
 import Header from "./components/Header";
 import Carousel from "./components/Carousel";
 import ProductDetail from "./components/ProductDetail";
@@ -11,7 +10,7 @@ import PetalsOverlay from "./components/PetalsOverlay";
 import "./App.css";
 
 const CART_STORAGE_KEY = "udgam_merch_cart_v2";
-const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v6";
+const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v7";
 
 export default function App() {
   // Products catalog with localStorage persistence
@@ -107,34 +106,56 @@ export default function App() {
   };
 
   // Cart operations
-  const handleAddToCart = (product, size, quantity, customName = "") => {
+  const handleAddToCart = (product, size, quantity, customName = "", bundleCustomization = null) => {
     if (customName) {
       setInitialPrintedName(customName);
     }
 
     // Strictly prevent adding out of stock product to cart
-    const liveProd = products.find((p) => p.id === product.id) || product;
+    const liveProd = products.find((p) => p.id === (product.baseId || product.id)) || product;
     if (liveProd.inStock === false) {
       return;
     }
 
-    // If Udgam26 Collection is added, add all 3 individual items to the cart
+    // If Udgam26 Collection is added, add all 3 individual items with chosen colors to the cart
     if (liveProd.id === "udgam-collection-04" || liveProd.isBundle) {
-      const tshirt = products.find((p) => p.id === "udgam-tshirt-01") || merchItems.find((p) => p.id === "udgam-tshirt-01");
-      const hoodie = products.find((p) => p.id === "udgam-hoodie-02") || merchItems.find((p) => p.id === "udgam-hoodie-02");
+      const tshirtBase = products.find((p) => p.id === "udgam-tshirt-01") || merchItems.find((p) => p.id === "udgam-tshirt-01");
+      const hoodieBase = products.find((p) => p.id === "udgam-hoodie-02") || merchItems.find((p) => p.id === "udgam-hoodie-02");
       const quarterzip = products.find((p) => p.id === "udgam-quarterzip-03") || merchItems.find((p) => p.id === "udgam-quarterzip-03");
 
+      const tshirtColor = bundleCustomization?.tshirtColor || "White";
+      const hoodieColor = bundleCustomization?.hoodieColor || "Pink";
+
+      const customizedTshirt = {
+        ...tshirtBase,
+        id: `udgam-tshirt-01-${tshirtColor.toLowerCase()}`,
+        baseId: "udgam-tshirt-01",
+        title: `${tshirtColor} T-Shirt`,
+        color: tshirtColor,
+      };
+
+      const customizedHoodie = {
+        ...hoodieBase,
+        id: `udgam-hoodie-02-${hoodieColor.toLowerCase()}`,
+        baseId: "udgam-hoodie-02",
+        title: `${hoodieColor} Hoodie`,
+        color: hoodieColor,
+      };
+
       const bundleItems = [
-        { prod: tshirt, size, qty: quantity },
-        { prod: hoodie, size, qty: quantity },
-        { prod: quarterzip, size, qty: quantity }
+        { prod: customizedTshirt, size, qty: quantity, color: tshirtColor },
+        { prod: customizedHoodie, size, qty: quantity, color: hoodieColor },
+        { prod: quarterzip, size, qty: quantity, color: undefined }
       ].filter((b) => b.prod && b.prod.inStock !== false);
 
       setCart((prevCart) => {
         let updated = [...prevCart];
-        bundleItems.forEach(({ prod, size: s, qty }) => {
+        bundleItems.forEach(({ prod, size: s, qty, color: c }) => {
           const existingIdx = updated.findIndex(
-            (item) => item.product.id === prod.id && item.size === s
+            (item) =>
+              item.product.id === prod.id &&
+              item.size === s &&
+              (item.color || item.product.color) === (c || prod.color)
           );
           if (existingIdx > -1) {
             updated[existingIdx] = {
@@ -142,7 +163,7 @@ export default function App() {
               quantity: updated[existingIdx].quantity + qty,
             };
           } else {
-            updated.push({ product: prod, size: s, quantity: qty });
+            updated.push({ product: prod, size: s, quantity: qty, color: c || prod.color });
           }
         });
         return updated;
@@ -150,9 +171,14 @@ export default function App() {
       return;
     }
 
+    // Individual item addition
+    const itemColor = product.color || undefined;
     setCart((prevCart) => {
       const existingIdx = prevCart.findIndex(
-        (item) => item.product.id === product.id && item.size === size
+        (item) =>
+          item.product.id === product.id &&
+          item.size === size &&
+          (item.color || item.product.color) === itemColor
       );
 
       if (existingIdx > -1) {
@@ -163,31 +189,49 @@ export default function App() {
         };
         return updated;
       } else {
-        return [...prevCart, { product: liveProd, size, quantity }];
+        return [
+          ...prevCart,
+          {
+            product: {
+              ...product,
+              title: product.title,
+              color: itemColor,
+            },
+            size,
+            quantity,
+            color: itemColor,
+          },
+        ];
       }
     });
   };
 
-  const handleUpdateQuantity = (productId, size, newQty) => {
+  const handleUpdateQuantity = (productId, size, newQty, color) => {
     if (newQty <= 0) {
-      handleRemoveItem(productId, size);
+      handleRemoveItem(productId, size, color);
       return;
     }
 
     setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.product.id === productId && item.size === size
-          ? { ...item, quantity: newQty }
-          : item
-      )
+      prevCart.map((item) => {
+        const matches =
+          item.product.id === productId &&
+          item.size === size &&
+          (color === undefined || (item.color || item.product.color) === color);
+        return matches ? { ...item, quantity: newQty } : item;
+      })
     );
   };
 
-  const handleRemoveItem = (productId, size) => {
+  const handleRemoveItem = (productId, size, color) => {
     setCart((prevCart) =>
-      prevCart.filter(
-        (item) => !(item.product.id === productId && item.size === size)
-      )
+      prevCart.filter((item) => {
+        const matches =
+          item.product.id === productId &&
+          item.size === size &&
+          (color === undefined || (item.color || item.product.color) === color);
+        return !matches;
+      })
     );
   };
 
@@ -254,33 +298,6 @@ export default function App() {
               exit={{ opacity: 0, scale: 0.99 }}
               transition={{ duration: 0.35 }}
             >
-              {/* Home Page Announcement Banner: Free Custom Name on Hoodie Perk */}
-              <motion.div
-                className="home-customization-hero-banner"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                onClick={() => {
-                  const collection = products.find((p) => p.id === "udgam-collection-04");
-                  if (collection) handleSelectProduct(collection);
-                }}
-                role="button"
-                tabIndex={0}
-                title="Click to view Udgam26 Collection with Free Hoodie Customization"
-              >
-                <div className="banner-sparkle-pill">
-                  <Sparkles size={14} className="banner-sparkle-icon" />
-                  <span>SPECIAL FEST OFFER</span>
-                </div>
-                <div className="banner-message">
-                  Buy all 3 items (T-Shirt, Hoodie & Quarter Zip) or the <strong>Udgam26 Collection</strong> to get <strong>Free Name Customization printed on your Hoodie!</strong>
-                </div>
-                <div className="banner-action-link">
-                  <span>View Bundle</span>
-                  <ArrowRight size={13} />
-                </div>
-              </motion.div>
-
               {/* Core 3-Card Continuous Merchandise Carousel */}
               <Carousel
                 items={products}

@@ -49,7 +49,7 @@ export const merchItems = [
     badgeColor: "#7A8F7B",
     badgeText: "CHASE THE BLOOM",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Washed Wasabi", "Acid Black", "Vintage Indigo"],
+    colors: ["White", "Beige"],
     inStock: true,
     description:
       "The quintessential fest staple representing Udgam26. Cut in a contemporary relaxed block that retains its shape wash after wash. Crafted from high quality, breathable cotton that is easy to wash, durable, and designed for effortless all-day festival comfort.",
@@ -77,7 +77,7 @@ export const merchItems = [
     badgeColor: "#F6C9A8",
     badgeText: "BESTSELLER",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Vintage Oatmeal", "Charcoal Slate", "Midnight Black"],
+    colors: ["Pink", "Black"],
     inStock: true,
     description:
       "Engineered specifically for UDGAM • NIT Sikkim. Crafted from high quality plush combed organic cotton fleece, featuring a relaxed dropped-shoulder silhouette with heavy ribbed cuffs and double-layered hood. Easy to wash, ultra-durable, and finished with high-density tactile puff screenprint on the front chest and reverse spine.",
@@ -118,3 +118,32 @@ export const merchItems = [
     fitNote: "Classic athletic drape. True to size for layering over t-shirts."
   }
 ];
+
+export const colorSwatches = {
+  White: { hex: "#FFFFFF", border: "#D1D5DB", dotBorder: "#9CA3AF", text: "#111827" },
+  Beige: { hex: "#E8DCC4", border: "#C5B496", dotBorder: "#A39274", text: "#443425" },
+  Pink: { hex: "#F472B6", border: "#DB2777", dotBorder: "#BE185D", text: "#831843" },
+  Black: { hex: "#18181B", border: "#27272A", dotBorder: "#3F3F46", text: "#FFFFFF" },
+};
+
+/**
+ * Computes dynamic product name based on selected color
+ * T-Shirt -> White T-Shirt / Beige T-Shirt
+ * Hoodie -> Pink Hoodie / Black Hoodie
+ * Sweatshirt / Others -> Unchanged title
+ */
+export function getProductDynamicName(product, selectedColor) {
+  if (!product) return "";
+  if (!selectedColor) return product.title;
+
+  const prodId = product.baseId || product.id || "";
+  const cat = product.category || "";
+
+  if (prodId.startsWith("udgam-tshirt-01") || cat === "T-Shirt") {
+    return `${selectedColor} T-Shirt`;
+  }
+  if (prodId.startsWith("udgam-hoodie-02") || cat === "Hoodies") {
+    return `${selectedColor} Hoodie`;
+  }
+  return product.title;
+}

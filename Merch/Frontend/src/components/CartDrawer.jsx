@@ -73,18 +73,18 @@ export default function CartDrawer({
   // Check if all three flagship products are in cart (or bundle)
   const hasTshirt = items.some(
     (item) =>
-      item.product.id === "udgam-tshirt-01" ||
-      item.product.title.toLowerCase().includes("t-shirt")
+      item.product.id?.startsWith("udgam-tshirt-01") ||
+      item.product.title?.toLowerCase().includes("t-shirt")
   );
   const hasHoodie = items.some(
     (item) =>
-      item.product.id === "udgam-hoodie-02" ||
-      item.product.title.toLowerCase().includes("hoodie")
+      item.product.id?.startsWith("udgam-hoodie-02") ||
+      item.product.title?.toLowerCase().includes("hoodie")
   );
   const hasQuarterZip = items.some(
     (item) =>
-      item.product.id === "udgam-quarterzip-03" ||
-      item.product.title.toLowerCase().includes("quarter zip")
+      item.product.id?.startsWith("udgam-quarterzip-03") ||
+      item.product.title?.toLowerCase().includes("quarter zip")
   );
   const hasAllThreeDifferentItems =
     (hasTshirt && hasHoodie && hasQuarterZip) ||
@@ -286,7 +286,8 @@ export default function CartDrawer({
                     </div>
                   )}
                   {items.map((item) => {
-                    const itemKey = `${item.product.id}-${item.size}`;
+                    const itemColor = item.color || item.product.color;
+                    const itemKey = `${item.product.id}-${item.size}-${itemColor || ""}`;
                     return (
                       <motion.div
                         key={itemKey}
@@ -320,7 +321,7 @@ export default function CartDrawer({
                             </span>
                             <button
                               className="cart-item-remove-btn"
-                              onClick={() => onRemoveItem(item.product.id, item.size)}
+                              onClick={() => onRemoveItem(item.product.id, item.size, itemColor)}
                               title="Remove item"
                               aria-label="Remove item"
                             >
@@ -342,6 +343,11 @@ export default function CartDrawer({
                             <span className="cart-size-pill">
                               Size: <strong>{item.size}</strong>
                             </span>
+                            {itemColor && (
+                              <span className="cart-color-pill">
+                                Color: <strong>{itemColor}</strong>
+                              </span>
+                            )}
                             {item.product.inStock === false && (
                               <span className="cart-item-out-of-stock-pill">Out of Stock</span>
                             )}
@@ -356,7 +362,8 @@ export default function CartDrawer({
                                   onUpdateQuantity(
                                     item.product.id,
                                     item.size,
-                                    item.quantity - 1
+                                    item.quantity - 1,
+                                    itemColor
                                   )
                                 }
                                 aria-label="Decrease quantity"
@@ -372,7 +379,8 @@ export default function CartDrawer({
                                   onUpdateQuantity(
                                     item.product.id,
                                     item.size,
-                                    item.quantity + 1
+                                    item.quantity + 1,
+                                    itemColor
                                   )
                                 }
                                 aria-label="Increase quantity"
@@ -381,11 +389,13 @@ export default function CartDrawer({
                               </button>
                             </div>
 
-                            <div className="cart-item-price">
-                              {item.product.currency}
-                              {(item.product.price * item.quantity).toLocaleString(
-                                "en-IN"
-                              )}
+                            <div className="cart-item-pricing">
+                              <span className="item-unit-price">
+                                ₹{item.product.price} each
+                              </span>
+                              <span className="item-total-price">
+                                ₹{(item.product.price * item.quantity).toLocaleString("en-IN")}
+                              </span>
                             </div>
                           </div>
                         </div>
