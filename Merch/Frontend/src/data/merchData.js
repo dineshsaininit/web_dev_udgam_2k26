@@ -14,6 +14,7 @@ export const merchItems = [
       "/asset/merch/Tshirt_beige.jpeg?v=2",
       "/asset/merch/Tshirt_white.jpeg?v=2",
       "/asset/merch/Hoodie.png?v=2",
+      "/asset/merch/Hoodie_pink.png?v=2",
       "/asset/merch/QuarterZip.png?v=2"
     ],
     badgeColor: "#01b068",
