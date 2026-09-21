@@ -10,7 +10,7 @@ import PetalsOverlay from "./components/PetalsOverlay";
 import "./App.css";
 
 const CART_STORAGE_KEY = "udgam_merch_cart_v2";
-const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v9";
+const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v14";
 
 export default function App() {
   // Products catalog with localStorage persistence

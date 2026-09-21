@@ -322,6 +322,10 @@ export default function ProductDetail({
                 src={selectedImage}
                 alt={`${product.title} - angle ${activeImageIndex + 1}`}
                 className="main-product-image"
+                style={{
+                  objectPosition: product.imagePosition || 'center',
+                  objectFit: product.imageFit || 'cover'
+                }}
                 custom={swipeDirection}
                 variants={{
                   enter: (dir) => ({

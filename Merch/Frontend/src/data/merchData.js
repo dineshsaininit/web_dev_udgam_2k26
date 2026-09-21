@@ -42,6 +42,8 @@ export const merchItems = [
     price: 389,
     originalPrice: 499,
     currency: "₹",
+    imagePosition: "center",
+    imageFit: "contain",
 
     image: "/asset/merch/Tshirt_white.jpeg",
     gallery: [

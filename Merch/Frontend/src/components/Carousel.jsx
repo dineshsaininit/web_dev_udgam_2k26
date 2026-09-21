@@ -205,6 +205,10 @@ export default function Carousel({
                     src={item.image}
                     alt={item.title || item.category}
                     className="card-image"
+                    style={{
+                      objectPosition: item.imagePosition || 'center',
+                      objectFit: item.imageFit || 'cover'
+                    }}
                     loading="eager"
                     draggable={false}
                   />
