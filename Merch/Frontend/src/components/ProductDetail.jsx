@@ -32,19 +32,11 @@ export default function ProductDetail({
   const isOutOfStock = product.inStock === false;
   const isBundle = product.isBundle || product.id === "udgam-collection-04";
 
-  // Color options logic: T-Shirt -> White, Beige; Hoodie -> Pink, Black; Sweatshirt -> none
+  // Color options: read directly from product data
   const availableColors = React.useMemo(() => {
     if (isBundle) return [];
-    const prodId = product.baseId || product.id || "";
-    const cat = product.category || "";
-    if (prodId.startsWith("udgam-tshirt-01") || cat === "T-Shirt") {
-      return ["White", "Beige"];
-    }
-    if (prodId.startsWith("udgam-hoodie-02") || cat === "Hoodies") {
-      return ["Pink", "Black"];
-    }
-    return [];
-  }, [product.id, product.baseId, product.category, isBundle]);
+    return Array.isArray(product.colors) ? product.colors.filter(Boolean) : [];
+  }, [product.id, product.colors, isBundle]);
 
   const [prevProductKey, setPrevProductKey] = useState(product.id);
   const [selectedColor, setSelectedColor] = useState(() => (availableColors[0] || ""));
@@ -64,7 +56,9 @@ export default function ProductDetail({
   );
 
   const images =
-    product.gallery && product.gallery.length > 0
+    product.colorGalleries && product.colorGalleries[selectedColor] && product.colorGalleries[selectedColor].length > 0
+      ? product.colorGalleries[selectedColor]
+      : product.gallery && product.gallery.length > 0
       ? product.gallery
       : product.image
       ? [product.image]
@@ -85,6 +79,12 @@ export default function ProductDetail({
 
   // Mobile / Touch device detection
   const [isMobileOrTouch, setIsMobileOrTouch] = useState(false);
+
+  // Reset gallery to first image whenever color changes
+  useEffect(() => {
+    setActiveImageIndex(0);
+    setSwipeDirection(0);
+  }, [selectedColor]);
 
   useEffect(() => {
     const checkMobile = () => {

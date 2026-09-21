@@ -10,7 +10,7 @@ import PetalsOverlay from "./components/PetalsOverlay";
 import "./App.css";
 
 const CART_STORAGE_KEY = "udgam_merch_cart_v2";
-const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v7";
+const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v9";
 
 export default function App() {
   // Products catalog with localStorage persistence
@@ -119,7 +119,7 @@ export default function App() {
 
     // If Udgam26 Collection is added, add all 3 individual items with chosen colors to the cart
     if (liveProd.id === "udgam-collection-04" || liveProd.isBundle) {
-      const tshirtBase = products.find((p) => p.id === "udgam-tshirt-01") || merchItems.find((p) => p.id === "udgam-tshirt-01");
+      const tshirtBase = products.find((p) => p.baseId === "udgam-tshirt-01" || p.id === "udgam-tshirt-01") || merchItems.find((p) => p.baseId === "udgam-tshirt-01" || p.id === "udgam-tshirt-01");
       const hoodieBase = products.find((p) => p.id === "udgam-hoodie-02") || merchItems.find((p) => p.id === "udgam-hoodie-02");
       const quarterzip = products.find((p) => p.id === "udgam-quarterzip-03") || merchItems.find((p) => p.id === "udgam-quarterzip-03");
 
@@ -325,9 +325,9 @@ export default function App() {
 
       {/* Envelope Receipt Animation */}
       {successfulOrderData && (
-        <OrderReceipt 
-          orderData={successfulOrderData} 
-          onClose={() => setSuccessfulOrderData(null)} 
+        <OrderReceipt
+          orderData={successfulOrderData}
+          onClose={() => setSuccessfulOrderData(null)}
         />
       )}
 

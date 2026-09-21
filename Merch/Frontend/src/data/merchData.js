@@ -33,23 +33,59 @@ export const merchItems = [
     fitNote: "Relaxed comfortable drape across all garments. Choose your preferred standard size."
   },
   {
-    id: "udgam-tshirt-01",
+    id: "udgam-tshirt-01-white",
+    baseId: "udgam-tshirt-01",
     category: "T-Shirt",
-    title: "Udgam26 T-Shirt",
+    title: "Udgam26 White T-Shirt",
     subtitle: "High quality combed cotton jersey with premium wash finish",
     tag: "01 • T-SHIRT",
     price: 380,
     originalPrice: 499,
     currency: "₹",
+<<<<<<< Updated upstream
     image: "/assets/merch/Tshirt1.png?v=2",
     gallery: [
       "/assets/merch/Tshirt1.png?v=2",
       "/assets/merch/Tshirt2.png?v=2"
+=======
+    image: "/asset/merch/Tshirt_white.jpeg",
+    gallery: [
+      "/asset/merch/Tshirt_white.jpeg"
+>>>>>>> Stashed changes
     ],
     badgeColor: "#7A8F7B",
     badgeText: "CHASE THE BLOOM",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["White", "Beige"],
+    colors: [],
+    inStock: true,
+    description:
+      "The quintessential fest staple representing Udgam26. Cut in a contemporary relaxed block that retains its shape wash after wash. Crafted from high quality, breathable cotton that is easy to wash, durable, and designed for effortless all-day festival comfort.",
+    features: [
+      "High quality premium combed cotton",
+      "Easy to wash, colorfast and shrink-resistant",
+      "Reinforced ribbed collar preventing stretch",
+      "Silkscreened UDGAM chest insignium and back typography"
+    ],
+    fitNote: "Boxy relaxed fit with extended sleeve length."
+  },
+  {
+    id: "udgam-tshirt-01-beige",
+    baseId: "udgam-tshirt-01",
+    category: "T-Shirt",
+    title: "Udgam26 Beige T-Shirt",
+    subtitle: "High quality combed cotton jersey with premium wash finish",
+    tag: "01 • T-SHIRT",
+    price: 380,
+    originalPrice: 499,
+    currency: "₹",
+    image: "/asset/merch/Tshirt_beige.jpeg",
+    gallery: [
+      "/asset/merch/Tshirt_beige.jpeg"
+    ],
+    badgeColor: "#C5B496",
+    badgeText: "CHASE THE BLOOM",
+    sizes: ["S", "M", "L", "XL"],
+    colors: [],
     inStock: true,
     description:
       "The quintessential fest staple representing Udgam26. Cut in a contemporary relaxed block that retains its shape wash after wash. Crafted from high quality, breathable cotton that is easy to wash, durable, and designed for effortless all-day festival comfort.",
