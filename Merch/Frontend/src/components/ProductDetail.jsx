@@ -754,50 +754,80 @@ export default function ProductDetail({
 
               <div className="modal-body">
                 <p className="size-guide-intro">
-                  All measurements are in inches. Garments feature a contemporary relaxed silhouette.
+                  All measurements are in inches. Please measure yourself before ordering.
                 </p>
 
+                {/* T-SHIRT SIZE CHART */}
+                <div className="size-section-label">
+                  <span className="size-section-tag">👕 T-Shirt — Boxy Fit</span>
+                </div>
                 <div className="size-table-wrapper">
                   <table className="size-table">
                     <thead>
                       <tr>
                         <th>Size</th>
-                        <th>Chest (in)</th>
-                        <th>Length (in)</th>
-                        <th>Shoulder (in)</th>
+                        <th>XS</th>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>L</th>
+                        <th>XL</th>
+                        <th>XXL</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td><strong>S</strong></td>
-                        <td>40</td>
-                        <td>27.5</td>
-                        <td>19</td>
+                        <td><strong>Length</strong></td>
+                        <td>25</td><td>25.5</td><td>26.5</td><td>27.5</td><td>28</td><td>28.5</td>
                       </tr>
                       <tr>
-                        <td><strong>M</strong></td>
-                        <td>42</td>
-                        <td>28.5</td>
-                        <td>20</td>
+                        <td><strong>Chest</strong></td>
+                        <td>42</td><td>44</td><td>46</td><td>48</td><td>50</td><td>52</td>
                       </tr>
                       <tr>
-                        <td><strong>L</strong></td>
-                        <td>44</td>
-                        <td>29.5</td>
-                        <td>21</td>
+                        <td><strong>Shoulder</strong></td>
+                        <td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td>
                       </tr>
                       <tr>
-                        <td><strong>XL</strong></td>
-                        <td>46</td>
-                        <td>30.5</td>
-                        <td>22</td>
+                        <td><strong>Sleeve Length</strong></td>
+                        <td>9.25</td><td>9.5</td><td>9.75</td><td>10</td><td>10.25</td><td>10.75</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+                <p className="size-guide-note">Note: Boxy fit is wider from the chest and has a shorter length compared to oversized fit.</p>
+
+                {/* HOODIE / QUARTER ZIP SIZE CHART */}
+                <div className="size-section-label" style={{ marginTop: "22px" }}>
+                  <span className="size-section-tag">🧥 Hoodie &amp; Quarter Zip</span>
+                </div>
+                <div className="size-table-wrapper">
+                  <table className="size-table">
+                    <thead>
+                      <tr>
+                        <th>Size</th>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>L</th>
+                        <th>XL</th>
+                        <th>XXL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Length</strong></td>
+                        <td>24</td><td>25</td><td>26</td><td>27</td><td>28.5</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Chest</strong></td>
+                        <td>38</td><td>40</td><td>42</td><td>44</td><td>46</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="size-guide-note">*Average sleeve length of M size Hoodie is 25 inches.</p>
 
                 <div className="measure-tip">
-                  <strong>How to measure:</strong> Lay your favorite relaxed fitting garment flat and measure from armpit to armpit for chest width.
+                  <strong>How to measure:</strong> Lay your garment flat. Chest = armpit to armpit. Length = highest point of shoulder to hemline.
                 </div>
               </div>
             </motion.div>
