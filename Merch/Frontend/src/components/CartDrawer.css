@@ -268,6 +268,19 @@
   color: #18181b;
 }
 
+.cart-color-pill {
+  font-size: 0.72rem;
+  color: #52525b;
+  background: #f4f4f5;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid #e4e4e7;
+}
+
+.cart-color-pill strong {
+  color: #016e40;
+}
+
 .cart-item-out-of-stock-pill {
   font-size: 0.68rem;
   font-weight: 700;

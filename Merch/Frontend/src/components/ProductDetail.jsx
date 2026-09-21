@@ -14,6 +14,8 @@ import {
   Ban,
   Sparkles
 } from "lucide-react";
+import { colorSwatches, getProductDynamicName } from "../data/merchData";
+import BundleCustomizationModal from "./BundleCustomizationModal";
 import "./ProductDetail.css";
 
 /**
@@ -28,6 +30,34 @@ export default function ProductDetail({
   onOpenCart,
 }) {
   const isOutOfStock = product.inStock === false;
+  const isBundle = product.isBundle || product.id === "udgam-collection-04";
+
+  // Color options logic: T-Shirt -> White, Beige; Hoodie -> Pink, Black; Sweatshirt -> none
+  const availableColors = React.useMemo(() => {
+    if (isBundle) return [];
+    const prodId = product.baseId || product.id || "";
+    const cat = product.category || "";
+    if (prodId.startsWith("udgam-tshirt-01") || cat === "T-Shirt") {
+      return ["White", "Beige"];
+    }
+    if (prodId.startsWith("udgam-hoodie-02") || cat === "Hoodies") {
+      return ["Pink", "Black"];
+    }
+    return [];
+  }, [product.id, product.baseId, product.category, isBundle]);
+
+  const [prevProductKey, setPrevProductKey] = useState(product.id);
+  const [selectedColor, setSelectedColor] = useState(() => (availableColors[0] || ""));
+
+  if (product.id !== prevProductKey) {
+    setPrevProductKey(product.id);
+    setSelectedColor(availableColors[0] || "");
+  }
+
+  // Dynamic product name reflecting selected color
+  const dynamicTitle = getProductDynamicName(product, selectedColor) || product.title;
+
+  const [isBundleModalOpen, setIsBundleModalOpen] = useState(false);
 
   const [selectedSize, setSelectedSize] = useState(
     product.sizes && product.sizes.length > 0 ? product.sizes[0] : "M"
@@ -156,7 +186,40 @@ export default function ProductDetail({
 
   const handleAddToCart = () => {
     if (isOutOfStock) return;
-    onAddToCart(product, selectedSize, quantity, customName);
+
+    // Bundle Customization before adding to cart
+    if (isBundle) {
+      setIsBundleModalOpen(true);
+      return;
+    }
+
+    const productVariant = {
+      ...product,
+      id: selectedColor ? `${product.baseId || product.id}-${selectedColor.toLowerCase()}` : product.id,
+      baseId: product.baseId || product.id,
+      title: dynamicTitle,
+      color: selectedColor || undefined,
+    };
+
+    onAddToCart(productVariant, selectedSize, quantity, customName);
+    setIsAdded(true);
+    setTimeout(() => {
+      setIsAdded(false);
+    }, 2200);
+  };
+
+  const handleConfirmBundleCustomization = ({ tshirtColor, hoodieColor, customName: modalCustomName }) => {
+    setIsBundleModalOpen(false);
+    if (modalCustomName) {
+      setCustomName(modalCustomName);
+    }
+    onAddToCart(
+      product,
+      selectedSize,
+      quantity,
+      modalCustomName || customName,
+      { tshirtColor, hoodieColor }
+    );
     setIsAdded(true);
     setTimeout(() => {
       setIsAdded(false);
@@ -230,7 +293,7 @@ export default function ProductDetail({
           <span className="breadcrumb-sep">/</span>
           <span className="breadcrumb-muted">Udgam</span>
           <span className="breadcrumb-sep">/</span>
-          <span className="breadcrumb-current">{product.title}</span>
+          <span className="breadcrumb-current">{dynamicTitle}</span>
         </div>
       </div>
 
@@ -364,7 +427,7 @@ export default function ProductDetail({
             <span className="product-series-tag">
               NIT SIKKIM • {Array.from(new Set((product.tag || "OFFICIAL UDGAM DROP").split(" • "))).join(" • ")}
             </span>
-            <h1 className="product-headline">{product.title}</h1>
+            <h1 className="product-headline">{dynamicTitle}</h1>
             <p className="product-tagline">{product.subtitle}</p>
 
             <div className="product-fest-stamp-row">
@@ -424,6 +487,50 @@ export default function ProductDetail({
           </div>
 
           <div className="divider-line" />
+
+          {/* ===================================================
+              COLOR SELECTION SECTION (FOR T-SHIRT & HOODIE)
+          =================================================== */}
+          {availableColors.length > 0 && (
+            <div className="color-selector-section">
+              <div className="color-header-row">
+                <label className="color-label">
+                  Select Color: <strong className="active-color-name">{selectedColor}</strong>
+                </label>
+                <span className="color-variant-hint">
+                  Variant: <strong>{dynamicTitle}</strong>
+                </span>
+              </div>
+
+              <div className="color-pill-grid">
+                {availableColors.map((color) => {
+                  const swatch = colorSwatches[color] || { hex: "#eee" };
+                  const isSelected = selectedColor === color;
+                  return (
+                    <button
+                      key={color}
+                      type="button"
+                      className={`color-choice-btn ${isSelected ? "selected" : ""}`}
+                      onClick={() => setSelectedColor(color)}
+                      aria-label={`Select ${color} color`}
+                    >
+                      <span
+                        className="swatch-indicator-dot"
+                        style={{
+                          backgroundColor: swatch.hex,
+                          borderColor: swatch.dotBorder || swatch.border || "#d1d5db",
+                        }}
+                      />
+                      <span className="color-choice-name">{color}</span>
+                      {isSelected && <Check size={14} className="color-selected-check" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {availableColors.length > 0 && <div className="divider-line" />}
 
           {/* ===================================================
               SIZE CHOICE SELECTOR
@@ -560,7 +667,9 @@ export default function ProductDetail({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
             >
-              <span>Added to your bag with size <strong>{selectedSize}</strong>.</span>
+              <span>
+                Added <strong>{dynamicTitle}</strong> to your bag (Size <strong>{selectedSize}</strong>{selectedColor ? ` • ${selectedColor}` : ""}).
+              </span>
               <button className="view-bag-link" onClick={onOpenCart}>
                 View Cart →
               </button>
@@ -713,6 +822,19 @@ export default function ProductDetail({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Bundle Customization Modal */}
+      {isBundle && (
+        <BundleCustomizationModal
+          isOpen={isBundleModalOpen}
+          onClose={() => setIsBundleModalOpen(false)}
+          bundleProduct={product}
+          selectedSize={selectedSize}
+          quantity={quantity}
+          initialCustomName={customName}
+          onConfirm={handleConfirmBundleCustomization}
+        />
+      )}
     </motion.div>
   );
 }
