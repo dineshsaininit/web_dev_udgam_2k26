@@ -390,9 +390,6 @@ export default function CartDrawer({
                             </div>
 
                             <div className="cart-item-pricing">
-                              <span className="item-unit-price">
-                                ₹{item.product.price} each
-                              </span>
                               <span className="item-total-price">
                                 ₹{(item.product.price * item.quantity).toLocaleString("en-IN")}
                               </span>
