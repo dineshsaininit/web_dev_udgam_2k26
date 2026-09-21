@@ -8,13 +8,13 @@ export const merchItems = [
     price: 1980,
     originalPrice: 2499,
     currency: "₹",
-    image: "/assets/merch/Collection.png",
+    image: "/assets/merch/Collection.png?v=2",
     gallery: [
-      "/assets/merch/Collection.png",
-      "/assets/merch/Tshirt1.png",
-      "/assets/merch/Tshirt2.png",
-      "/assets/merch/Hoodie.png",
-      "/assets/merch/QuarterZip.png"
+      "/assets/merch/Collection.png?v=2",
+      "/assets/merch/Tshirt1.png?v=2",
+      "/assets/merch/Tshirt2.png?v=2",
+      "/assets/merch/Hoodie.png?v=2",
+      "/assets/merch/QuarterZip.png?v=2"
     ],
     badgeColor: "#01b068",
     badgeText: "ULTIMATE FEST BUNDLE",
@@ -41,10 +41,10 @@ export const merchItems = [
     price: 380,
     originalPrice: 499,
     currency: "₹",
-    image: "/assets/merch/Tshirt1.png",
+    image: "/assets/merch/Tshirt1.png?v=2",
     gallery: [
-      "/assets/merch/Tshirt1.png",
-      "/assets/merch/Tshirt2.png"
+      "/assets/merch/Tshirt1.png?v=2",
+      "/assets/merch/Tshirt2.png?v=2"
     ],
     badgeColor: "#7A8F7B",
     badgeText: "CHASE THE BLOOM",
@@ -70,9 +70,9 @@ export const merchItems = [
     price: 750,
     originalPrice: 999,
     currency: "₹",
-    image: "/assets/merch/Hoodie.png",
+    image: "/assets/merch/Hoodie.png?v=2",
     gallery: [
-      "/assets/merch/Hoodie.png"
+      "/assets/merch/Hoodie.png?v=2"
     ],
     badgeColor: "#F6C9A8",
     badgeText: "BESTSELLER",
@@ -98,10 +98,10 @@ export const merchItems = [
     price: 850,
     originalPrice: 1199,
     currency: "₹",
-    image: "/assets/merch/QuarterZip.png",
+    image: "/assets/merch/QuarterZip.png?v=2",
     gallery: [
-      "/assets/merch/QuarterZip.png",
-      "/asset/merch/QuarterZip2.jpeg"
+      "/assets/merch/QuarterZip.png?v=2",
+      "/asset/merch/QuarterZip2.jpeg?v=2"
     ],
     badgeColor: "#A8BFA1",
     badgeText: "NEW DROP",
