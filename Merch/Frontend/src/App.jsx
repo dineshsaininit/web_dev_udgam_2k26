@@ -117,19 +117,21 @@ export default function App() {
       return;
     }
 
-    // If Udgam26 Collection is added, add all 3 individual items with chosen colors to the cart
+    // If Udgam26 Collection is added, add all 3 individual items with chosen colors to the cart.
     if (liveProd.id === "udgam-collection-04" || liveProd.isBundle) {
-      const tshirtBase = products.find((p) => p.baseId === "udgam-tshirt-01" || p.id === "udgam-tshirt-01") || merchItems.find((p) => p.baseId === "udgam-tshirt-01" || p.id === "udgam-tshirt-01");
-      const hoodieBase = products.find((p) => p.id === "udgam-hoodie-02") || merchItems.find((p) => p.id === "udgam-hoodie-02");
-      const hoodiepink = products.find((p) => p.id === "udgam-hoodie-pink") || merchItems.find((p) => p.id === "udgam-hoodie-02");
-      const quarterzip = products.find((p) => p.id === "udgam-quarterzip-03") || merchItems.find((p) => p.id === "udgam-quarterzip-03");
-
       const tshirtColor = bundleCustomization?.tshirtColor || "White";
       const hoodieColor = bundleCustomization?.hoodieColor || "Pink";
 
+      const tshirtTargetId = `udgam-tshirt-01-${tshirtColor.toLowerCase()}`;
+      const hoodieTargetId = `udgam-hoodie-02-${hoodieColor.toLowerCase()}`;
+
+      const tshirtBase = products.find((p) => p.id === tshirtTargetId) || merchItems.find((p) => p.id === tshirtTargetId) || products.find((p) => p.baseId === "udgam-tshirt-01") || merchItems.find((p) => p.baseId === "udgam-tshirt-01");
+      const hoodieBase = products.find((p) => p.id === hoodieTargetId) || merchItems.find((p) => p.id === hoodieTargetId) || products.find((p) => p.id?.startsWith("udgam-hoodie-02")) || merchItems.find((p) => p.id?.startsWith("udgam-hoodie-02"));
+      const quarterzip = products.find((p) => p.id === "udgam-quarterzip-03") || merchItems.find((p) => p.id === "udgam-quarterzip-03");
+
       const customizedTshirt = {
         ...tshirtBase,
-        id: `udgam-tshirt-01-${tshirtColor.toLowerCase()}`,
+        id: tshirtTargetId,
         baseId: "udgam-tshirt-01",
         title: `${tshirtColor} T-Shirt`,
         color: tshirtColor,
@@ -137,7 +139,7 @@ export default function App() {
 
       const customizedHoodie = {
         ...hoodieBase,
-        id: `udgam-hoodie-02-${hoodieColor.toLowerCase()}`,
+        id: hoodieTargetId,
         baseId: "udgam-hoodie-02",
         title: `${hoodieColor} Hoodie`,
         color: hoodieColor,

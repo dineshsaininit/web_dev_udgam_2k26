@@ -5,7 +5,7 @@ export const merchItems = [
     title: "Udgam26 Collection",
     subtitle: "All-in-one official fest bundle featuring T-Shirt, Hoodie & Quarter Zip",
     tag: "00 • COMPLETE FEST BUNDLE",
-    price: 1980,
+    price: 2067,
     originalPrice: 2499,
     currency: "₹",
     image: "/asset/merch/Collection.png?v=2",
@@ -18,7 +18,7 @@ export const merchItems = [
     ],
     badgeColor: "#01b068",
     badgeText: "ULTIMATE FEST BUNDLE",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Official Fest Colorways"],
     inStock: true,
     isBundle: true,
@@ -51,7 +51,7 @@ export const merchItems = [
     ],
     badgeColor: "#7A8F7B",
     badgeText: "CHASE THE BLOOM",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [],
     inStock: true,
     description:
@@ -80,7 +80,7 @@ export const merchItems = [
     ],
     badgeColor: "#C5B496",
     badgeText: "CHASE THE BLOOM",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [],
     inStock: true,
     description:
@@ -94,7 +94,7 @@ export const merchItems = [
     fitNote: "Boxy relaxed fit with extended sleeve length."
   },
   {
-    id: "udgam-hoodie-02",
+    id: "udgam-hoodie-02-black",
     category: "Hoodies",
     title: "Udgam26 Hoodie",
     subtitle: "High quality plush fleece cotton with signature puff-print typography",
@@ -107,8 +107,8 @@ export const merchItems = [
       "/asset/merch/Hoodie.png?v=2"
     ],
     badgeColor: "#F6C9A8",
-    badgeText: "BESTSELLER",
-    sizes: ["S", "M", "L", "XL"],
+    badgeText: "HOT PICK",
+    sizes: ["S", "M", "L", "XL", "XXL"],
     inStock: true,
     description:
       "Engineered specifically for UDGAM • NIT Sikkim. Crafted from high quality plush combed organic cotton fleece, featuring a relaxed dropped-shoulder silhouette with heavy ribbed cuffs and double-layered hood. Easy to wash, ultra-durable, and finished with high-density tactile puff screenprint on the front chest and reverse spine.",
@@ -121,7 +121,7 @@ export const merchItems = [
     fitNote: "Relaxed oversized fit. Order your true size for a loose streetwear drape, or size down for classic tailored fit."
   },
   {
-    id: "udgam-hoodie-pink",
+    id: "udgam-hoodie-02-pink",
     category: "Hoodies",
     title: "Udgam26 Hoodie",
     subtitle: "High quality plush fleece cotton with signature puff-print typography",
@@ -129,13 +129,13 @@ export const merchItems = [
     price: 789,
     originalPrice: 999,
     currency: "₹",
-    image: "/asset/merch/Hoodie_pink.jpeg?v=2",
+    image: "/asset/merch/Hoodie_pink.png?v=2",
     gallery: [
-      "/asset/merch/Hoodie_pink.jpeg?v=2"
+      "/asset/merch/Hoodie_pink.png?v=2"
     ],
     badgeColor: "#F6C9A8",
-    badgeText: "BESTSELLER",
-    sizes: ["S", "M", "L", "XL"],
+    badgeText: "MOST POPULAR",
+    sizes: ["S", "M", "L", "XL", "XXL"],
     inStock: true,
     description:
       "Engineered specifically for UDGAM • NIT Sikkim. Crafted from high quality plush combed organic cotton fleece, featuring a relaxed dropped-shoulder silhouette with heavy ribbed cuffs and double-layered hood. Easy to wash, ultra-durable, and finished with high-density tactile puff screenprint on the front chest and reverse spine.",
@@ -162,8 +162,8 @@ export const merchItems = [
       "/asset/merch/QuarterZip2.jpeg?v=2"
     ],
     badgeColor: "#A8BFA1",
-    badgeText: "NEW DROP",
-    sizes: ["S", "M", "L", "XL"],
+    badgeText: "BESTSELLER",
+    sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Pure White", "Vintage Oatmeal", "Midnight Forest"],
     inStock: true,
     description:

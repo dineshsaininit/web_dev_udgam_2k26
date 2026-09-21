@@ -157,9 +157,8 @@ export default function Carousel({
             return (
               <motion.div
                 key={virtualIndex}
-                className={`carousel-card ${isCenter ? "is-center" : ""} ${
-                  isLeft ? "is-left" : ""
-                } ${isRight ? "is-right" : ""} ${item.inStock === false ? "is-card-out-of-stock" : ""}`}
+                className={`carousel-card ${isCenter ? "is-center" : ""} ${isLeft ? "is-left" : ""
+                  } ${isRight ? "is-right" : ""} ${item.inStock === false ? "is-card-out-of-stock" : ""}`}
                 style={{
                   zIndex,
                   cursor,
@@ -346,9 +345,8 @@ export default function Carousel({
               </div>
 
               <button
-                className={`meta-view-product-btn ${
-                  currentItem.inStock === false ? "meta-btn-out-of-stock" : ""
-                }`}
+                className={`meta-view-product-btn ${currentItem.inStock === false ? "meta-btn-out-of-stock" : ""
+                  }`}
                 onClick={() => {
                   if (onSelectProduct && currentItem.id) {
                     onSelectProduct(currentItem);

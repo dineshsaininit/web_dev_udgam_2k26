@@ -356,12 +356,22 @@ export default function ProductDetail({
             {isZooming && (
               <div
                 className="inplace-zoom-layer"
-                style={{
-                  backgroundImage: `url(${selectedImage})`,
-                  backgroundPosition: `${zoomCoords.x}% ${zoomCoords.y}%`,
-                  backgroundSize: "260%",
-                }}
-              />
+                style={{ overflow: 'hidden' }}
+              >
+                <img
+                  src={selectedImage}
+                  alt=""
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: product.imageFit || 'cover',
+                    objectPosition: product.imagePosition || 'center',
+                    transform: `scale(2.6)`,
+                    transformOrigin: `${zoomCoords.x}% ${zoomCoords.y}%`,
+                    pointerEvents: 'none'
+                  }}
+                />
+              </div>
             )}
 
             {/* Subtle overlay badges */}
