@@ -100,7 +100,8 @@ export const merchItems = [
     currency: "₹",
     image: "/assets/merch/QuarterZip.png",
     gallery: [
-      "/assets/merch/QuarterZip.png"
+      "/assets/merch/QuarterZip.png",
+      "/asset/merch/QuarterZip2.jpeg"
     ],
     badgeColor: "#A8BFA1",
     badgeText: "NEW DROP",
