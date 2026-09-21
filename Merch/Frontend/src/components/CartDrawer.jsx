@@ -150,42 +150,41 @@ export default function CartDrawer({
 
             const verifyData = await verifyRes.json();
             if (verifyData.success) {
+              // Capture data before any state changes
+              const receiptData = {
+                orderId: verifyData.orderId || order.id,
+                paymentId: response.razorpay_payment_id || verifyData.paymentId,
+                name: checkoutForm.name,
+                email: checkoutForm.officialEmail,
+                rollNo: checkoutForm.rollNumber,
+                phone: checkoutForm.phone || 'N/A',
+                itemName: items.map(i => i.product.title).join(', '),
+                size: items.map(i => i.size).join(', '),
+                items: items.map(i => ({
+                  id: i.id || i.product?.id,
+                  title: i.product?.title || 'Merchandise Item',
+                  size: i.size,
+                  quantity: i.quantity,
+                  price: i.product?.price || 0
+                })),
+                totalAmount: total,
+                printedName: checkoutForm.printedName || null,
+                orderDate: new Date().toLocaleString('en-IN', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: true
+                }),
+                pickupLocation: 'UDGAM Merch Desk, NIT Sikkim Campus'
+              };
+
+              // Close cart first, clear cart, then show receipt after a tick
+              handleCloseAll();
+              onClearCart();
               if (onCheckoutSuccess) {
-                onCheckoutSuccess({
-                  orderId: verifyData.orderId || order.id,
-                  paymentId: response.razorpay_payment_id || verifyData.paymentId,
-                  name: checkoutForm.name,
-                  email: checkoutForm.officialEmail,
-                  rollNo: checkoutForm.rollNumber,
-                  phone: checkoutForm.phone || 'N/A',
-                  itemName: items.map(i => i.product.title).join(', '),
-                  size: items.map(i => i.size).join(', '),
-                  items: items.map(i => ({
-                    id: i.id || i.product?.id,
-                    title: i.product?.title || 'Merchandise Item',
-                    size: i.size,
-                    quantity: i.quantity,
-                    price: i.product?.price || 0
-                  })),
-                  totalAmount: total,
-                  printedName: checkoutForm.printedName || null,
-                  orderDate: new Date().toLocaleString('en-IN', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                  }),
-                  pickupLocation: 'UDGAM Merch Desk, NIT Sikkim Campus'
-                });
-                handleCloseAll();
-                onClearCart();
-              } else {
-                setOrderId(verifyData.orderId || order.id);
-                setPaymentId(response.razorpay_payment_id);
-                setPaymentStep("success");
-                onClearCart();
+                setTimeout(() => onCheckoutSuccess(receiptData), 100);
               }
             } else {
               setFailureReason(verifyData.error || "Payment verification failed. Please contact support.");

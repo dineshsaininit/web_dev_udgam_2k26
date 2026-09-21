@@ -13,8 +13,8 @@ export const merchItems = [
       "/asset/merch/Collection.png?v=2",
       "/asset/merch/Tshirt_beige.jpeg?v=2",
       "/asset/merch/Tshirt_white.jpeg?v=2",
-      "/asset/merch/Hoodie.png?v=2",
-      "/asset/merch/Hoodie_pink.png?v=2",
+      "/asset/merch/Hoodie_black.png?v=3",
+      "/asset/merch/Hoodie_pink.png?v=3",
       "/asset/merch/QuarterZip.png?v=2"
     ],
     badgeColor: "#01b068",
@@ -103,9 +103,9 @@ export const merchItems = [
     price: 789,
     originalPrice: 999,
     currency: "₹",
-    image: "/asset/merch/Hoodie.png?v=2",
+    image: "/asset/merch/Hoodie.png?v=3",
     gallery: [
-      "/asset/merch/Hoodie.png?v=2"
+      "/asset/merch/Hoodie.png?v=3"
     ],
     badgeColor: "#F6C9A8",
     badgeText: "HOT PICK",
@@ -130,9 +130,9 @@ export const merchItems = [
     price: 789,
     originalPrice: 999,
     currency: "₹",
-    image: "/asset/merch/Hoodie_pink.png?v=2",
+    image: "/asset/merch/Hoodie_pink.png?v=3",
     gallery: [
-      "/asset/merch/Hoodie_pink.png?v=2"
+      "/asset/merch/Hoodie_pink.png?v=3"
     ],
     badgeColor: "#F6C9A8",
     badgeText: "MOST POPULAR",
