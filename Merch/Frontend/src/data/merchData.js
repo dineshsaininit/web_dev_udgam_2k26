@@ -164,7 +164,7 @@ export const merchItems = [
     badgeColor: "#A8BFA1",
     badgeText: "BESTSELLER",
     sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Pure White", "Vintage Oatmeal", "Midnight Forest"],
+    colors: [],
     inStock: true,
     description:
       "A timeless campus essential. Constructed with high quality thermal brushed fleece engineered to withstand chilly mountain winds. Fitted with a heavy-gauge antique brass quarter-length zipper and custom embroidered UDGAM crest on the left chest. Easy to wash and wrinkle-resistant.",
