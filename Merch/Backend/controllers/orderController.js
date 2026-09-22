@@ -19,7 +19,7 @@ exports.getOrders = async (req, res) => {
         u.name as student_name,
         u.email as student_email
       FROM orders o
-      JOIN users u ON o.user_id = u.id
+      LEFT JOIN users u ON o.user_id = u.id
       ORDER BY o.created_at DESC
     `;
 
