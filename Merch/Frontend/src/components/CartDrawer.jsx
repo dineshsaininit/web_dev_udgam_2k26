@@ -209,9 +209,33 @@ export default function CartDrawer({
 
       const rzp1 = new window.Razorpay(options);
       rzp1.on('payment.failed', function (response) {
-        setFailureReason(response.error.description || "Payment failed.");
-        setFailureCode(response.error.code || "ERR_PAYMENT_FAILED");
+        const errCode = response.error.code || "ERR_PAYMENT_FAILED";
+        const errDesc = response.error.description || "Payment failed.";
+
+        setFailureReason(errDesc);
+        setFailureCode(errCode);
         setPaymentStep("failure");
+
+        // Record the failed attempt in backend (fire & forget — don't await)
+        fetch("https://merch-backend-fn9a.onrender.com/api/payments/save-failed-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpay_order_id: response.error.metadata?.order_id || order.id,
+            razorpay_payment_id: response.error.metadata?.payment_id || null,
+            error_code: errCode,
+            error_description: errDesc,
+            orderDetails: {
+              name: checkoutForm.name,
+              email: checkoutForm.officialEmail,
+              rollNo: checkoutForm.rollNumber,
+              phone: checkoutForm.phone || null,
+              itemName: items.map(i => i.product.title).join(', '),
+              size: items.map(i => i.size).join(', '),
+              quantity: items.reduce((a, i) => a + i.quantity, 0),
+            }
+          }),
+        }).catch(err => console.warn("Could not save failed payment:", err));
       });
       rzp1.open();
 

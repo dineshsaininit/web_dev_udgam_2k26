@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const neonDb = require('../config/neonDb');
 const { db: firebaseDb } = require('../config/firebaseDb');
 
+
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -168,3 +169,115 @@ exports.verifyPayment = async (req, res) => {
     savedToDb: neonDbSuccess
   });
 };
+
+// ─────────────────────────────────────────────────────────────────────
+// Save a FAILED payment attempt (called from frontend on payment.failed)
+// ─────────────────────────────────────────────────────────────────────
+exports.saveFailedPayment = async (req, res) => {
+  const {
+    razorpay_order_id,
+    razorpay_payment_id, // Razorpay provides this even for failed payments
+    error_code,
+    error_description,
+    orderDetails
+  } = req.body;
+
+  // Sanitize inputs
+  const sanitizedPhone = orderDetails.phone
+    ? String(orderDetails.phone).trim().substring(0, 50) : null;
+  const sanitizedRollNo = orderDetails.rollNo
+    ? String(orderDetails.rollNo).trim().substring(0, 50) : null;
+  const sanitizedName = (orderDetails.name || 'Unknown').trim().substring(0, 100);
+  const sanitizedEmail = (orderDetails.email || '').trim().substring(0, 100);
+  const sanitizedItemName = (orderDetails.itemName || 'Merchandise').trim().substring(0, 255);
+  const sanitizedSize = (orderDetails.size || 'N/A').trim().substring(0, 10);
+
+  console.log('=== FAILED PAYMENT ATTEMPT ===');
+  console.log(JSON.stringify({
+    razorpay_order_id,
+    razorpay_payment_id: razorpay_payment_id || 'N/A',
+    error_code,
+    error_description,
+    name: sanitizedName,
+    email: sanitizedEmail,
+    rollNo: sanitizedRollNo,
+    phone: sanitizedPhone,
+    itemName: sanitizedItemName,
+    size: sanitizedSize,
+    quantity: orderDetails.quantity,
+    timestamp: new Date().toISOString()
+  }));
+  console.log('==============================');
+
+  // Find or create user
+  let userId = null;
+  try {
+    if (sanitizedEmail) {
+      let userResult = await neonDb.query(
+        'SELECT id FROM users WHERE email = $1', [sanitizedEmail]
+      );
+      if (userResult.rows.length > 0) {
+        userId = userResult.rows[0].id;
+      } else {
+        const insertUser = await neonDb.query(
+          'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id',
+          [sanitizedName, sanitizedEmail, 'guest_checkout_no_pass']
+        );
+        userId = insertUser.rows[0].id;
+      }
+    }
+
+    // Save failed attempt to Neon DB
+    // failure_reason stored in printed_name column (reuse) — or we use status column for the error
+    const failureNote = `FAILED: ${error_code || 'ERR'} - ${(error_description || '').substring(0, 80)}`;
+    await neonDb.query(
+      `INSERT INTO orders
+        (user_id, razorpay_order_id, razorpay_payment_id, item_name, size, quantity, address, roll_no, phone, printed_name, status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      [
+        userId,
+        razorpay_order_id || 'unknown',
+        razorpay_payment_id || `failed_${Date.now()}`,
+        sanitizedItemName,
+        sanitizedSize,
+        orderDetails.quantity || 1,
+        'Campus Pickup',
+        sanitizedRollNo,
+        sanitizedPhone,
+        failureNote,
+        'failed'
+      ]
+    );
+    console.log(`[Neon DB] Failed payment saved for: ${sanitizedEmail}`);
+  } catch (dbErr) {
+    console.error('[Neon DB] Could not save failed payment:', dbErr.message);
+  }
+
+  // Save to Firebase
+  try {
+    if (firebaseDb) {
+      const docId = razorpay_payment_id || `failed_${razorpay_order_id}_${Date.now()}`;
+      await firebaseDb.collection('failed_payments').doc(docId).set({
+        razorpay_order_id: razorpay_order_id || null,
+        razorpay_payment_id: razorpay_payment_id || null,
+        error_code: error_code || null,
+        error_description: error_description || null,
+        userName: sanitizedName,
+        userEmail: sanitizedEmail,
+        rollNo: sanitizedRollNo,
+        phone: sanitizedPhone,
+        itemName: sanitizedItemName,
+        size: sanitizedSize,
+        quantity: orderDetails.quantity || 1,
+        status: 'failed',
+        createdAt: new Date().toISOString()
+      });
+      console.log(`[Firebase] Failed payment saved to 'failed_payments' collection`);
+    }
+  } catch (fbErr) {
+    console.error('[Firebase] Could not save failed payment:', fbErr.message);
+  }
+
+  res.json({ success: true, msg: 'Failed payment attempt recorded.' });
+};
+

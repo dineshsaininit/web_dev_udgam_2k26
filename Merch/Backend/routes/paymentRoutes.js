@@ -9,4 +9,8 @@ router.post('/create-order', paymentController.createOrder);
 // Route to verify the payment and store details in Neon + Firebase
 router.post('/verify-payment', paymentController.verifyPayment);
 
+// Route to record a failed payment attempt
+router.post('/save-failed-payment', paymentController.saveFailedPayment);
+
 module.exports = router;
+
