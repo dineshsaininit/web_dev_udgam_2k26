@@ -97,7 +97,7 @@ export const merchItems = [
   {
     id: "udgam-hoodie-02-black",
     category: "Hoodies",
-    title: "Udgam26 Hoodie",
+    title: "Udgam26 Hoodie(Black)",
     subtitle: "High quality plush fleece cotton with signature puff-print typography",
     tag: "02 • HOODIE",
     price: 789,
@@ -124,7 +124,7 @@ export const merchItems = [
   {
     id: "udgam-hoodie-02-pink",
     category: "Hoodies",
-    title: "Udgam26 Hoodie",
+    title: "Udgam26 Hoodie (Pink)",
     subtitle: "High quality plush fleece cotton with signature puff-print typography",
     tag: "02 • HOODIE",
     price: 789,
