@@ -24,7 +24,7 @@ import "./CartDrawer.css";
 /**
  * Slide-over Cart Drawer Component
  * - Manages items, quantities, size breakdown
- * - Compulsory checkout fields: Name, Official Email, Roll No, Phone
+ * - Checkout fields: Name, Official Email, Phone (Roll Number is optional for faculty)
  * - Razorpay payment simulation with both Payment Success and Payment Failure flows
  */
 export default function CartDrawer({
@@ -141,7 +141,7 @@ export default function CartDrawer({
                   address: 'Campus Pickup',
                   name: checkoutForm.name,
                   email: checkoutForm.officialEmail,
-                  rollNo: checkoutForm.rollNumber,
+                  rollNo: checkoutForm.rollNumber ? checkoutForm.rollNumber.trim() : null,
                   phone: checkoutForm.phone || 'N/A',
                   printedName: checkoutForm.printedName || null
                 }
@@ -156,7 +156,7 @@ export default function CartDrawer({
                 paymentId: response.razorpay_payment_id || verifyData.paymentId,
                 name: checkoutForm.name,
                 email: checkoutForm.officialEmail,
-                rollNo: checkoutForm.rollNumber,
+                rollNo: checkoutForm.rollNumber ? checkoutForm.rollNumber.trim() : null,
                 phone: checkoutForm.phone || 'N/A',
                 itemName: items.map(i => i.product.title).join(', '),
                 size: items.map(i => i.size).join(', '),
@@ -228,7 +228,7 @@ export default function CartDrawer({
             orderDetails: {
               name: checkoutForm.name,
               email: checkoutForm.officialEmail,
-              rollNo: checkoutForm.rollNumber,
+              rollNo: checkoutForm.rollNumber ? checkoutForm.rollNumber.trim() : null,
               phone: checkoutForm.phone || null,
               itemName: items.map(i => i.product.title).join(', '),
               size: items.map(i => i.size).join(', '),
@@ -516,7 +516,7 @@ export default function CartDrawer({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {/* STEP 1: STUDENT DETAILS FORM (ALL COMPULSORY) */}
+              {/* STEP 1: CUSTOMER DETAILS FORM */}
               {paymentStep === "form" && (
                 <motion.div
                   className="checkout-modal-card"
@@ -585,13 +585,12 @@ export default function CartDrawer({
                     <div className="form-group">
                       <label className="form-label">
                         <Hash size={13} className="label-icon" />
-                        <span>Roll Number *</span>
+                        <span>Roll Number (Optional for Faculty)</span>
                       </label>
                       <input
                         type="text"
                         className="form-input"
-                        placeholder="e.g. B220045CS"
-                        required
+                        placeholder="e.g. B220045CS (Leave blank if Faculty)"
                         value={checkoutForm.rollNumber}
                         onChange={(e) =>
                           setCheckoutForm({
@@ -600,6 +599,9 @@ export default function CartDrawer({
                           })
                         }
                       />
+                      <span className="field-hint">
+                        Required for students; faculty members can leave this blank
+                      </span>
                     </div>
 
                     {/* Phone Number */}
@@ -686,12 +688,12 @@ export default function CartDrawer({
 
                     <div className="gateway-buyer-card">
                       <div className="buyer-field">
-                        <span>Student:</span>
+                        <span>Name:</span>
                         <strong>{checkoutForm.name}</strong>
                       </div>
                       <div className="buyer-field">
                         <span>Roll No:</span>
-                        <strong>{checkoutForm.rollNumber}</strong>
+                        <strong>{checkoutForm.rollNumber || 'N/A (Faculty)'}</strong>
                       </div>
                       <div className="buyer-field">
                         <span>Email:</span>
@@ -724,7 +726,7 @@ export default function CartDrawer({
                       className="back-to-details-btn"
                       onClick={() => setPaymentStep("form")}
                     >
-                      ← Back to Student Details
+                      ← Back to Details
                     </button>
                   </div>
                 </motion.div>
@@ -787,8 +789,8 @@ export default function CartDrawer({
                       <code>{paymentId}</code>
                     </div>
                     <div className="receipt-row">
-                      <span>Student:</span>
-                      <strong>{checkoutForm.name} ({checkoutForm.rollNumber})</strong>
+                      <span>Name:</span>
+                      <strong>{checkoutForm.name}{checkoutForm.rollNumber ? ` (${checkoutForm.rollNumber})` : ''}</strong>
                     </div>
                     <div className="receipt-row">
                       <span>Institute Email:</span>
@@ -803,7 +805,7 @@ export default function CartDrawer({
                   <div className="success-instructions">
                     <Sparkles size={16} className="sparkle-accent" />
                     <span>
-                      Order slip and pick-up voucher have been dispatched to <strong>{checkoutForm.officialEmail}</strong>. Present your roll number at the fest merchandise desk for distribution!
+                      Order slip and pick-up voucher have been dispatched to <strong>{checkoutForm.officialEmail}</strong>. Present your roll number or ID at the fest merchandise desk for distribution!
                     </span>
                   </div>
 
