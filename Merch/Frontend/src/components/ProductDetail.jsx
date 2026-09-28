@@ -400,7 +400,8 @@ export default function ProductDetail({
                 ) : (
                   <span className="image-stock-pill in-stock">
                     <span className="stock-pulse-dot" />
-                    In Stock • Campus Pickup
+                    <span className="stock-text-full">In Stock • Campus Pickup</span>
+                    <span className="stock-text-short">In Stock</span>
                   </span>
                 )}
               </div>

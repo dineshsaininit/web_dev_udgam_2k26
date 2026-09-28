@@ -8,12 +8,14 @@ export const merchItems = [
     price: 2067,
     originalPrice: 2499,
     currency: "₹",
+    imagePosition: "center",
+    imageFit: "contain",
     image: "/asset/merch/Collection.png?v=2",
     gallery: [
       "/asset/merch/Collection.png?v=2",
       "/asset/merch/Tshirt_beige.jpeg?v=2",
       "/asset/merch/Tshirt_white.jpeg?v=2",
-      "/asset/merch/Hoodie_black.png?v=3",
+      "/asset/merch/Hoodie.png?v=3",
       "/asset/merch/Hoodie_pink.png?v=3",
       "/asset/merch/QuarterZip.png?v=2"
     ],
