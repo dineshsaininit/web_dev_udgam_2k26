@@ -92,19 +92,19 @@ export default function OrderReceipt({ orderData, onClose }) {
               </div>
             </div>
 
-            {/* Student Details Section */}
+            {/* Customer Details Section */}
             <div className="receipt-section student-section">
               <div className="section-title">
-                <span>Customer & Student Details</span>
+                <span>Customer Details</span>
               </div>
               <div className="details-grid">
                 <div className="detail-item">
-                  <span className="detail-label">Student Name:</span>
-                  <strong className="detail-val">{orderData.name || 'Student'}</strong>
+                  <span className="detail-label">Customer Name:</span>
+                  <strong className="detail-val">{orderData.name || 'Customer'}</strong>
                 </div>
                 <div className="detail-item">
                   <span className="detail-label">Roll Number:</span>
-                  <strong className="detail-val">{orderData.rollNo || 'N/A'}</strong>
+                  <strong className="detail-val">{orderData.rollNo ? orderData.rollNo : 'N/A (Faculty)'}</strong>
                 </div>
                 <div className="detail-item">
                   <span className="detail-label">Institute Email:</span>
@@ -161,7 +161,7 @@ export default function OrderReceipt({ orderData, onClose }) {
                 <strong>Collection / Pickup Instructions:</strong>
               </div>
               <p>
-                Present your Roll No. and this receipt (digital or printed) at the <strong>{orderData.pickupLocation || 'UDGAM Merchandise Desk (Campus)'}</strong> to collect your merchandise package.
+                Present your Roll No. / Institute ID and this receipt (digital or printed) at the <strong>{orderData.pickupLocation || 'UDGAM Merchandise Desk (Campus)'}</strong> to collect your merchandise package.
               </p>
             </div>
 
