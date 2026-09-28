@@ -17,7 +17,10 @@ import {
   User,
   Hash,
   Phone,
-  AlertTriangle
+  AlertTriangle,
+  GraduationCap,
+  MapPin,
+  Truck
 } from "lucide-react";
 import "./CartDrawer.css";
 
@@ -53,6 +56,8 @@ export default function CartDrawer({
     officialEmail: "",
     rollNumber: "",
     phone: "",
+    isAlumni: false,
+    deliveryAddress: "",
     printedName: initialPrintedName || "",
   });
 
@@ -62,12 +67,13 @@ export default function CartDrawer({
     setCheckoutForm((prev) => ({ ...prev, printedName: initialPrintedName }));
   }
 
-  // Calculate totals (No coupons)
+  // Calculate totals: merchandise subtotal + optional alumni delivery charge
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
-  const total = subtotal;
+  const deliveryCharge = checkoutForm.isAlumni ? 100 : 0;
+  const total = subtotal + deliveryCharge;
   const totalItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   // Check if all three flagship products are in cart (or bundle)
@@ -138,7 +144,9 @@ export default function CartDrawer({
                   itemName: items.map(i => i.product.title).join(', '),
                   size: items.map(i => i.size).join(', '),
                   quantity: items.map(i => i.quantity).reduce((a, b) => a + b, 0),
-                  address: 'Campus Pickup',
+                  address: checkoutForm.isAlumni && checkoutForm.deliveryAddress
+                    ? checkoutForm.deliveryAddress.trim()
+                    : 'Campus Pickup',
                   name: checkoutForm.name,
                   email: checkoutForm.officialEmail,
                   rollNo: checkoutForm.rollNumber ? checkoutForm.rollNumber.trim() : null,
@@ -158,6 +166,10 @@ export default function CartDrawer({
                 email: checkoutForm.officialEmail,
                 rollNo: checkoutForm.rollNumber ? checkoutForm.rollNumber.trim() : null,
                 phone: checkoutForm.phone || 'N/A',
+                isAlumni: checkoutForm.isAlumni,
+                deliveryCharge: checkoutForm.isAlumni ? 100 : 0,
+                deliveryAddress: checkoutForm.isAlumni ? checkoutForm.deliveryAddress.trim() : null,
+                address: checkoutForm.isAlumni ? checkoutForm.deliveryAddress.trim() : 'Campus Pickup',
                 itemName: items.map(i => i.product.title).join(', '),
                 size: items.map(i => i.size).join(', '),
                 items: items.map(i => ({
@@ -167,6 +179,7 @@ export default function CartDrawer({
                   quantity: i.quantity,
                   price: i.product?.price || 0
                 })),
+                subtotal: subtotal,
                 totalAmount: total,
                 printedName: checkoutForm.printedName || null,
                 orderDate: new Date().toLocaleString('en-IN', {
@@ -177,7 +190,9 @@ export default function CartDrawer({
                   minute: '2-digit',
                   hour12: true
                 }),
-                pickupLocation: 'UDGAM Merch Desk, NIT Sikkim Campus'
+                pickupLocation: checkoutForm.isAlumni
+                  ? `Doorstep Courier: ${checkoutForm.deliveryAddress.trim()}`
+                  : 'UDGAM Merch Desk, NIT Sikkim Campus'
               };
 
               // Close cart first, clear cart, then show receipt after a tick
@@ -230,6 +245,9 @@ export default function CartDrawer({
               email: checkoutForm.officialEmail,
               rollNo: checkoutForm.rollNumber ? checkoutForm.rollNumber.trim() : null,
               phone: checkoutForm.phone || null,
+              address: checkoutForm.isAlumni && checkoutForm.deliveryAddress
+                ? checkoutForm.deliveryAddress.trim()
+                : 'Campus Pickup',
               itemName: items.map(i => i.product.title).join(', '),
               size: items.map(i => i.size).join(', '),
               quantity: items.reduce((a, i) => a + i.quantity, 0),
@@ -622,6 +640,59 @@ export default function CartDrawer({
                       />
                     </div>
 
+                    {/* Alumni Delivery Option Card */}
+                    <div className={`alumni-option-card ${checkoutForm.isAlumni ? "is-active" : ""}`}>
+                      <label className="alumni-toggle-label">
+                        <input
+                          type="checkbox"
+                          className="alumni-checkbox"
+                          checked={checkoutForm.isAlumni}
+                          onChange={(e) =>
+                            setCheckoutForm({
+                              ...checkoutForm,
+                              isAlumni: e.target.checked,
+                            })
+                          }
+                        />
+                        <div className="alumni-toggle-content">
+                          <div className="alumni-toggle-title">
+                            <GraduationCap size={16} className="alumni-icon" />
+                            <strong>Are you an NIT Sikkim Alumni?</strong>
+                            <span className="alumni-badge">Courier Delivery</span>
+                          </div>
+                          <p className="alumni-toggle-subtitle">
+                            Check this to get merchandise shipped directly to your postal address across India (+₹100 delivery charge).
+                          </p>
+                        </div>
+                      </label>
+                    </div>
+
+                    {/* Conditional Delivery Address Input for Alumni */}
+                    {checkoutForm.isAlumni && (
+                      <div className="form-group delivery-address-group">
+                        <label className="form-label">
+                          <MapPin size={13} className="label-icon" />
+                          <span>Delivery / Shipping Address *</span>
+                        </label>
+                        <textarea
+                          className="delivery-address-input"
+                          rows={3}
+                          placeholder="Complete postal address: House/Flat No., Landmark, City, State & PIN Code"
+                          required={checkoutForm.isAlumni}
+                          value={checkoutForm.deliveryAddress}
+                          onChange={(e) =>
+                            setCheckoutForm({
+                              ...checkoutForm,
+                              deliveryAddress: e.target.value,
+                            })
+                          }
+                        />
+                        <span className="field-hint">
+                          📦 An additional delivery charge of ₹100 is added to your total. Package will be dispatched via Speed Post / Courier.
+                        </span>
+                      </div>
+                    )}
+
                     {/* Conditional: Name to Print (For all 3 different items / Collection) */}
                     {hasAllThreeDifferentItems && (
                       <div className="form-group" style={{ backgroundColor: "#f3f8f2", padding: "12px 14px", borderRadius: "10px", border: "1.5px solid #a8cfa5" }}>
@@ -647,8 +718,27 @@ export default function CartDrawer({
                     )}
 
                     <div className="order-final-summary">
-                      <span>Total Payable:</span>
-                      <strong>₹{total.toLocaleString("en-IN")}</strong>
+                      {checkoutForm.isAlumni ? (
+                        <div className="order-summary-breakdown">
+                          <div className="summary-row-sub">
+                            <span>Merchandise Subtotal:</span>
+                            <strong>₹{subtotal.toLocaleString("en-IN")}</strong>
+                          </div>
+                          <div className="summary-row-delivery">
+                            <span>Alumni Delivery Fee:</span>
+                            <strong>+₹100</strong>
+                          </div>
+                          <div className="summary-row-total">
+                            <span>Total Payable:</span>
+                            <strong>₹{total.toLocaleString("en-IN")}</strong>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <span>Total Payable:</span>
+                          <strong>₹{total.toLocaleString("en-IN")}</strong>
+                        </>
+                      )}
                     </div>
 
                     <button type="submit" className="confirm-order-btn">
@@ -684,6 +774,11 @@ export default function CartDrawer({
                     <div className="gateway-amount-display">
                       <span className="amount-label">Amount to Pay</span>
                       <h2 className="amount-val">₹{total.toLocaleString("en-IN")}</h2>
+                      {checkoutForm.isAlumni && (
+                        <span style={{ fontSize: "0.78rem", color: "#059669", marginTop: "2px", fontWeight: 600 }}>
+                          (Includes ₹100 alumni postal shipping)
+                        </span>
+                      )}
                     </div>
 
                     <div className="gateway-buyer-card">
@@ -693,12 +788,24 @@ export default function CartDrawer({
                       </div>
                       <div className="buyer-field">
                         <span>Roll No:</span>
-                        <strong>{checkoutForm.rollNumber || 'N/A (Faculty)'}</strong>
+                        <strong>{checkoutForm.rollNumber || (checkoutForm.isAlumni ? "N/A (Alumni)" : "N/A (Faculty)")}</strong>
                       </div>
                       <div className="buyer-field">
                         <span>Email:</span>
                         <span>{checkoutForm.officialEmail}</span>
                       </div>
+                      <div className="buyer-field">
+                        <span>Fulfillment:</span>
+                        <strong>{checkoutForm.isAlumni ? "Doorstep Courier Delivery (+₹100)" : "Campus Pickup"}</strong>
+                      </div>
+                      {checkoutForm.isAlumni && checkoutForm.deliveryAddress && (
+                        <div className="buyer-field" style={{ flexDirection: "column", gap: "3px", alignItems: "flex-start" }}>
+                          <span style={{ fontSize: "0.74rem", color: "#64748b" }}>Ship To:</span>
+                          <span style={{ fontSize: "0.8rem", color: "#1e293b", wordBreak: "break-word", textAlign: "left", lineHeight: 1.35 }}>
+                            {checkoutForm.deliveryAddress}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="gateway-dev-notice" style={{ background: "#f0fdf4", borderColor: "#bbf7d0", color: "#166534" }}>
@@ -790,12 +897,24 @@ export default function CartDrawer({
                     </div>
                     <div className="receipt-row">
                       <span>Name:</span>
-                      <strong>{checkoutForm.name}{checkoutForm.rollNumber ? ` (${checkoutForm.rollNumber})` : ''}</strong>
+                      <strong>{checkoutForm.name}{checkoutForm.rollNumber ? ` (${checkoutForm.rollNumber})` : checkoutForm.isAlumni ? " (Alumni)" : ""}</strong>
                     </div>
                     <div className="receipt-row">
-                      <span>Institute Email:</span>
+                      <span>Email:</span>
                       <span>{checkoutForm.officialEmail}</span>
                     </div>
+                    <div className="receipt-row">
+                      <span>Fulfillment:</span>
+                      <span>{checkoutForm.isAlumni ? "Doorstep Courier (+₹100)" : "Campus Pickup"}</span>
+                    </div>
+                    {checkoutForm.isAlumni && checkoutForm.deliveryAddress && (
+                      <div className="receipt-row" style={{ alignItems: "flex-start" }}>
+                        <span>Address:</span>
+                        <span style={{ textAlign: "right", maxWidth: "65%", fontSize: "0.8rem", wordBreak: "break-word" }}>
+                          {checkoutForm.deliveryAddress}
+                        </span>
+                      </div>
+                    )}
                     <div className="receipt-row">
                       <span>Amount Paid:</span>
                       <strong>₹{total.toLocaleString("en-IN")} (Razorpay)</strong>
@@ -805,7 +924,11 @@ export default function CartDrawer({
                   <div className="success-instructions">
                     <Sparkles size={16} className="sparkle-accent" />
                     <span>
-                      Order slip and pick-up voucher have been dispatched to <strong>{checkoutForm.officialEmail}</strong>. Present your roll number or ID at the fest merchandise desk for distribution!
+                      {checkoutForm.isAlumni ? (
+                        <>Order receipt and tracking updates will be dispatched to <strong>{checkoutForm.officialEmail}</strong>. Your merchandise will be shipped directly to your provided delivery address!</>
+                      ) : (
+                        <>Order slip and pick-up voucher have been dispatched to <strong>{checkoutForm.officialEmail}</strong>. Present your roll number or ID at the fest merchandise desk for distribution!</>
+                      )}
                     </span>
                   </div>
 

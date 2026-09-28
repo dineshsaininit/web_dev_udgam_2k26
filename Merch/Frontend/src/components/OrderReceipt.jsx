@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Printer, CheckCircle2, X, MapPin } from 'lucide-react';
+import { Printer, CheckCircle2, X, MapPin, Truck } from 'lucide-react';
 import './OrderReceipt.css';
 
 export default function OrderReceipt({ orderData, onClose }) {
@@ -103,17 +103,23 @@ export default function OrderReceipt({ orderData, onClose }) {
                   <strong className="detail-val">{orderData.name || 'Customer'}</strong>
                 </div>
                 <div className="detail-item">
-                  <span className="detail-label">Roll Number:</span>
-                  <strong className="detail-val">{orderData.rollNo ? orderData.rollNo : 'N/A (Faculty)'}</strong>
+                  <span className="detail-label">Roll Number / Batch:</span>
+                  <strong className="detail-val">{orderData.rollNo ? orderData.rollNo : orderData.isAlumni ? 'N/A (Alumni)' : 'N/A (Faculty)'}</strong>
                 </div>
                 <div className="detail-item">
-                  <span className="detail-label">Institute Email:</span>
+                  <span className="detail-label">Email:</span>
                   <span className="detail-val">{orderData.email || 'N/A'}</span>
                 </div>
                 <div className="detail-item">
                   <span className="detail-label">Contact Phone:</span>
                   <span className="detail-val">{orderData.phone || 'N/A'}</span>
                 </div>
+                {orderData.isAlumni && (orderData.deliveryAddress || orderData.address) && (
+                  <div className="detail-item full-width">
+                    <span className="detail-label">Delivery Address (Doorstep Shipping):</span>
+                    <strong className="detail-val">{orderData.deliveryAddress || orderData.address}</strong>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -148,22 +154,48 @@ export default function OrderReceipt({ orderData, onClose }) {
               </table>
             </div>
 
+            {/* Alumni Delivery Fee Breakdown */}
+            {orderData.isAlumni && (
+              <div className="receipt-breakdown-box">
+                <div className="receipt-breakdown-row">
+                  <span className="breakdown-label">Merchandise Subtotal:</span>
+                  <span className="breakdown-val">₹{((Number(orderData.totalAmount || 0)) - (orderData.deliveryCharge || 100)).toLocaleString('en-IN')}</span>
+                </div>
+                <div className="receipt-breakdown-row delivery-row">
+                  <span className="breakdown-label">Alumni Postal Delivery Fee:</span>
+                  <span className="breakdown-val">+₹{(orderData.deliveryCharge || 100).toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+            )}
+
             {/* Order Total */}
             <div className="receipt-total-bar">
               <span className="total-label">Total Amount Paid:</span>
               <span className="total-amount">₹{Number(orderData.totalAmount || 0).toLocaleString('en-IN')}</span>
             </div>
 
-            {/* Pickup & Verification Instructions */}
-            <div className="receipt-pickup-notice">
-              <div className="pickup-header">
-                <MapPin size={15} />
-                <strong>Collection / Pickup Instructions:</strong>
+            {/* Pickup / Delivery Verification Instructions */}
+            {orderData.isAlumni ? (
+              <div className="receipt-pickup-notice delivery-mode">
+                <div className="pickup-header">
+                  <Truck size={15} />
+                  <strong>Doorstep Courier Delivery & Tracking:</strong>
+                </div>
+                <p>
+                  Your package will be dispatched to <strong>{orderData.deliveryAddress || orderData.address}</strong> via Speed Post / Courier. Consignment tracking information will be emailed to <strong>{orderData.email}</strong> once dispatched.
+                </p>
               </div>
-              <p>
-                Present your Roll No. / Institute ID and this receipt (digital or printed) at the <strong>{orderData.pickupLocation || 'UDGAM Merchandise Desk (Campus)'}</strong> to collect your merchandise package.
-              </p>
-            </div>
+            ) : (
+              <div className="receipt-pickup-notice">
+                <div className="pickup-header">
+                  <MapPin size={15} />
+                  <strong>Collection / Pickup Instructions:</strong>
+                </div>
+                <p>
+                  Present your Roll No. / Institute ID and this receipt (digital or printed) at the <strong>{orderData.pickupLocation || 'UDGAM Merchandise Desk (Campus)'}</strong> to collect your merchandise package.
+                </p>
+              </div>
+            )}
 
             {/* Print Footer / Action Buttons */}
             <div className="receipt-actions no-print">
