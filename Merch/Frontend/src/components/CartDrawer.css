@@ -543,6 +543,8 @@
   justify-content: center;
   padding: 16px;
   z-index: 150;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .checkout-modal-card {
@@ -550,8 +552,51 @@
   max-width: 480px;
   background: #ffffff;
   border-radius: 24px;
-  padding: 28px;
+  padding: 24px 28px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  margin: auto;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.checkout-modal-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.checkout-modal-card::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #f4f4f5;
+  color: #71717a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.modal-close-btn:hover {
+  background: #e4e4e7;
+  color: #18181b;
 }
 
 .checkout-title {
@@ -615,6 +660,106 @@
   box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.08);
 }
 
+/* Alumni Delivery Option Card */
+.alumni-option-card {
+  margin: 10px 0;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.alumni-option-card:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.alumni-option-card.is-active {
+  background: #eff6ff;
+  border-color: #2563eb;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+}
+
+.alumni-toggle-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.alumni-checkbox {
+  width: 19px;
+  height: 19px;
+  margin-top: 2px;
+  accent-color: #2563eb;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.alumni-toggle-content {
+  flex: 1;
+}
+
+.alumni-toggle-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #0f172a;
+  flex-wrap: wrap;
+}
+
+.alumni-icon {
+  color: #2563eb;
+}
+
+.alumni-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.alumni-toggle-subtitle {
+  font-size: 0.77rem;
+  color: #475569;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.delivery-address-group {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.delivery-address-input {
+  width: 100%;
+  min-height: 76px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #e4e4e7;
+  font-family: inherit;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  outline: none;
+  background: #fafafa;
+  resize: vertical;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.delivery-address-input:focus {
+  background: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
 .order-final-summary {
   display: flex;
   justify-content: space-between;
@@ -624,6 +769,44 @@
   border-radius: 12px;
   font-size: 0.95rem;
   margin-top: 4px;
+}
+
+.order-summary-breakdown {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.summary-row-sub {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.summary-row-delivery {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.summary-row-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 8px;
+  margin-top: 2px;
+  font-size: 1rem;
+}
+
+.summary-row-total strong {
+  font-size: 1.18rem;
+  color: #01b068;
 }
 
 .confirm-order-btn {
@@ -825,6 +1008,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  margin: auto;
+  box-sizing: border-box;
 }
 
 .success-icon-bubble {
@@ -943,6 +1131,11 @@
   flex-direction: column;
   align-items: center;
   border-top: 4px solid #ef4444;
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  margin: auto;
+  box-sizing: border-box;
 }
 
 .failure-icon-bubble {
@@ -1087,4 +1280,95 @@
   color: #166534;
   margin: 0;
   line-height: 1.35;
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE MODAL & DRAWER ADJUSTMENTS
+========================================================= */
+@media (max-width: 640px) {
+  .checkout-modal-backdrop {
+    padding: 10px 8px;
+    align-items: flex-start;
+  }
+
+  .checkout-modal-card {
+    padding: 20px 16px 24px;
+    border-radius: 18px;
+    max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
+    margin: auto 0;
+    width: 100%;
+  }
+
+  .checkout-title {
+    font-size: 1.15rem;
+  }
+
+  .checkout-subtitle {
+    font-size: 0.76rem;
+  }
+
+  .checkout-form {
+    gap: 11px;
+    margin-top: 14px;
+  }
+
+  .form-group {
+    gap: 4px;
+  }
+
+  .form-label {
+    font-size: 0.77rem;
+  }
+
+  .form-input {
+    height: 40px;
+    padding: 0 12px;
+    font-size: 0.84rem;
+  }
+
+  .alumni-option-card {
+    margin: 6px 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+
+  .alumni-toggle-title {
+    font-size: 0.82rem;
+  }
+
+  .alumni-toggle-subtitle {
+    font-size: 0.73rem;
+  }
+
+  .delivery-address-input {
+    min-height: 64px;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
+
+  .order-final-summary {
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+
+  .summary-row-sub,
+  .summary-row-delivery {
+    font-size: 0.8rem;
+  }
+
+  .summary-row-total {
+    font-size: 0.92rem;
+    padding-top: 6px;
+  }
+
+  .summary-row-total strong {
+    font-size: 1.1rem;
+  }
+
+  .confirm-order-btn {
+    height: 48px;
+    font-size: 0.88rem;
+    margin-top: 4px;
+  }
 }
