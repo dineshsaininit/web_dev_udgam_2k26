@@ -21,7 +21,7 @@ export const merchItems = [
     ],
     badgeColor: "#01b068",
     badgeText: "ULTIMATE FEST BUNDLE",
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: ["Official Fest Colorways"],
     inStock: true,
     isBundle: true,
@@ -54,7 +54,7 @@ export const merchItems = [
     ],
     badgeColor: "#7A8F7B",
     badgeText: "CHASE THE BLOOM",
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: [],
     inStock: true,
     description:
@@ -83,7 +83,7 @@ export const merchItems = [
     ],
     badgeColor: "#C5B496",
     badgeText: "CHASE THE BLOOM",
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: [],
     inStock: true,
     description:
@@ -111,7 +111,7 @@ export const merchItems = [
     ],
     badgeColor: "#F6C9A8",
     badgeText: "HOT PICK",
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     inStock: true,
     description:
       "Engineered specifically for UDGAM • NIT Sikkim. Crafted from high quality plush combed organic cotton fleece, featuring a relaxed dropped-shoulder silhouette with heavy ribbed cuffs and double-layered hood. Easy to wash, ultra-durable, and finished with high-density tactile puff screenprint on the front chest and reverse spine.",
@@ -138,7 +138,7 @@ export const merchItems = [
     ],
     badgeColor: "#F6C9A8",
     badgeText: "MOST POPULAR",
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     inStock: true,
     description:
       "Engineered specifically for UDGAM • NIT Sikkim. Crafted from high quality plush combed organic cotton fleece, featuring a relaxed dropped-shoulder silhouette with heavy ribbed cuffs and double-layered hood. Easy to wash, ultra-durable, and finished with high-density tactile puff screenprint on the front chest and reverse spine.",
@@ -166,7 +166,7 @@ export const merchItems = [
     ],
     badgeColor: "#A8BFA1",
     badgeText: "BESTSELLER",
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: [],
     inStock: true,
     description:
