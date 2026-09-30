@@ -11,7 +11,7 @@ const razorpay = new Razorpay({
 
 exports.createOrder = async (req, res) => {
   const { amount, currency = "INR" } = req.body;
-  
+
   try {
     const options = {
       amount: amount * 100, // Razorpay amount is in paise
@@ -76,6 +76,7 @@ exports.verifyPayment = async (req, res) => {
     email: sanitizedEmail,
     rollNo: sanitizedRollNo,
     phone: sanitizedPhone,
+    address: sanitizedAddress,
     itemName: sanitizedItemName,
     size: sanitizedSize,
     quantity: orderDetails.quantity,
@@ -89,7 +90,7 @@ exports.verifyPayment = async (req, res) => {
   let neonDbSuccess = false;
   try {
     let userResult = await neonDb.query('SELECT id, name, email FROM users WHERE email = $1', [sanitizedEmail]);
-    
+
     if (userResult.rows.length > 0) {
       userId = userResult.rows[0].id;
     } else {
@@ -191,6 +192,7 @@ exports.saveFailedPayment = async (req, res) => {
   const sanitizedEmail = (orderDetails.email || '').trim().substring(0, 100);
   const sanitizedItemName = (orderDetails.itemName || 'Merchandise').trim().substring(0, 255);
   const sanitizedSize = (orderDetails.size || 'N/A').trim().substring(0, 10);
+  const sanitizedAddress = (orderDetails.address || 'Campus Pickup').trim();
 
   console.log('=== FAILED PAYMENT ATTEMPT ===');
   console.log(JSON.stringify({
@@ -202,6 +204,7 @@ exports.saveFailedPayment = async (req, res) => {
     email: sanitizedEmail,
     rollNo: sanitizedRollNo,
     phone: sanitizedPhone,
+    address: sanitizedAddress,
     itemName: sanitizedItemName,
     size: sanitizedSize,
     quantity: orderDetails.quantity,
@@ -241,7 +244,7 @@ exports.saveFailedPayment = async (req, res) => {
         sanitizedItemName,
         sanitizedSize,
         orderDetails.quantity || 1,
-        'Campus Pickup',
+        sanitizedAddress,
         sanitizedRollNo,
         sanitizedPhone,
         failureNote,

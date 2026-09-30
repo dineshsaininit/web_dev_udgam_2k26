@@ -72,7 +72,7 @@ export default function CartDrawer({
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
-  const deliveryCharge = checkoutForm.isAlumni ? 100 : 0;
+  const deliveryCharge = checkoutForm.isAlumni ? 150 : 0;
   const total = subtotal + deliveryCharge;
   const totalItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -167,7 +167,7 @@ export default function CartDrawer({
                 rollNo: checkoutForm.rollNumber ? checkoutForm.rollNumber.trim() : null,
                 phone: checkoutForm.phone || 'N/A',
                 isAlumni: checkoutForm.isAlumni,
-                deliveryCharge: checkoutForm.isAlumni ? 100 : 0,
+                deliveryCharge: checkoutForm.isAlumni ? 150 : 0,
                 deliveryAddress: checkoutForm.isAlumni ? checkoutForm.deliveryAddress.trim() : null,
                 address: checkoutForm.isAlumni ? checkoutForm.deliveryAddress.trim() : 'Campus Pickup',
                 itemName: items.map(i => i.product.title).join(', '),
@@ -661,7 +661,7 @@ export default function CartDrawer({
                             <span className="alumni-badge">Courier Delivery</span>
                           </div>
                           <p className="alumni-toggle-subtitle">
-                            Check this to get merchandise shipped directly to your postal address across India (+₹100 delivery charge).
+                            Check this to get merchandise shipped directly to your postal address across India (+₹150 delivery charge).
                           </p>
                         </div>
                       </label>
@@ -688,7 +688,7 @@ export default function CartDrawer({
                           }
                         />
                         <span className="field-hint">
-                          📦 An additional delivery charge of ₹100 is added to your total. Package will be dispatched via Speed Post / Courier.
+                          📦 An additional delivery charge of ₹150 is added to your total. Package will be dispatched via Speed Post / Courier.
                         </span>
                       </div>
                     )}
@@ -726,7 +726,7 @@ export default function CartDrawer({
                           </div>
                           <div className="summary-row-delivery">
                             <span>Alumni Delivery Fee:</span>
-                            <strong>+₹100</strong>
+                            <strong>+₹150</strong>
                           </div>
                           <div className="summary-row-total">
                             <span>Total Payable:</span>
@@ -776,7 +776,7 @@ export default function CartDrawer({
                       <h2 className="amount-val">₹{total.toLocaleString("en-IN")}</h2>
                       {checkoutForm.isAlumni && (
                         <span style={{ fontSize: "0.78rem", color: "#059669", marginTop: "2px", fontWeight: 600 }}>
-                          (Includes ₹100 alumni postal shipping)
+                          (Includes ₹150 alumni postal shipping)
                         </span>
                       )}
                     </div>
@@ -796,7 +796,7 @@ export default function CartDrawer({
                       </div>
                       <div className="buyer-field">
                         <span>Fulfillment:</span>
-                        <strong>{checkoutForm.isAlumni ? "Doorstep Courier Delivery (+₹100)" : "Campus Pickup"}</strong>
+                        <strong>{checkoutForm.isAlumni ? "Doorstep Courier Delivery (+₹150)" : "Campus Pickup"}</strong>
                       </div>
                       {checkoutForm.isAlumni && checkoutForm.deliveryAddress && (
                         <div className="buyer-field" style={{ flexDirection: "column", gap: "3px", alignItems: "flex-start" }}>
@@ -905,7 +905,7 @@ export default function CartDrawer({
                     </div>
                     <div className="receipt-row">
                       <span>Fulfillment:</span>
-                      <span>{checkoutForm.isAlumni ? "Doorstep Courier (+₹100)" : "Campus Pickup"}</span>
+                      <span>{checkoutForm.isAlumni ? "Doorstep Courier (+₹150)" : "Campus Pickup"}</span>
                     </div>
                     {checkoutForm.isAlumni && checkoutForm.deliveryAddress && (
                       <div className="receipt-row" style={{ alignItems: "flex-start" }}>

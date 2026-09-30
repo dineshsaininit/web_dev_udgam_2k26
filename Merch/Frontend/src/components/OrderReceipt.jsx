@@ -159,11 +159,11 @@ export default function OrderReceipt({ orderData, onClose }) {
               <div className="receipt-breakdown-box">
                 <div className="receipt-breakdown-row">
                   <span className="breakdown-label">Merchandise Subtotal:</span>
-                  <span className="breakdown-val">₹{((Number(orderData.totalAmount || 0)) - (orderData.deliveryCharge || 100)).toLocaleString('en-IN')}</span>
+                  <span className="breakdown-val">₹{((Number(orderData.totalAmount || 0)) - (orderData.deliveryCharge || 150)).toLocaleString('en-IN')}</span>
                 </div>
                 <div className="receipt-breakdown-row delivery-row">
                   <span className="breakdown-label">Alumni Postal Delivery Fee:</span>
-                  <span className="breakdown-val">+₹{(orderData.deliveryCharge || 100).toLocaleString('en-IN')}</span>
+                  <span className="breakdown-val">+₹{(orderData.deliveryCharge || 150).toLocaleString('en-IN')}</span>
                 </div>
               </div>
             )}
