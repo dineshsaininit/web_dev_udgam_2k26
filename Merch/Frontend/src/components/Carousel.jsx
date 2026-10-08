@@ -224,19 +224,12 @@ export default function Carousel({
                     <span className="badge-text">{item.category}</span>
                   </div>
 
-                  {/* Free Hoodie Name Customization Badge on Collection Card */}
-                  {(item.isBundle || item.id === "udgam-collection-04") && (
-                    <div className="card-hoodie-perk-badge">
-                      <Sparkles size={11} className="badge-sparkle-icon" />
-                      <span>Free Name on Hoodie</span>
-                    </div>
-                  )}
 
-                  {/* Out of Stock Ribbon / Badge */}
+                  {/* Sold Out Ribbon / Badge */}
                   {item.inStock === false && (
                     <div className="card-out-of-stock-pill">
                       <span className="stock-dot-red" />
-                      <span>OUT OF STOCK</span>
+                      <span>SOLD OUT</span>
                     </div>
                   )}
 
@@ -253,7 +246,7 @@ export default function Carousel({
                     <div className="center-card-hover-cta">
                       <div className={`hover-cta-pill ${item.inStock === false ? "hover-pill-out-stock" : ""}`}>
                         <ShoppingBag size={14} />
-                        <span>{item.inStock === false ? "Out of Stock • View" : "View Merch Details"}</span>
+                        <span>{item.inStock === false ? "Sold Out • View Details" : "View Merch Details"}</span>
                         <ArrowRight size={13} />
                       </div>
                     </div>
@@ -340,7 +333,7 @@ export default function Carousel({
                   </span>
                 )}
                 {currentItem.inStock === false && (
-                  <span className="meta-stock-pill-out">Out of Stock</span>
+                  <span className="meta-stock-pill-out">Sold Out</span>
                 )}
               </div>
 
@@ -355,7 +348,7 @@ export default function Carousel({
               >
                 <span>
                   {currentItem.inStock === false
-                    ? "View Details (Out of Stock)"
+                    ? "View Details (Sold Out)"
                     : "Select Size & Order"}
                 </span>
                 <ArrowRight size={15} />

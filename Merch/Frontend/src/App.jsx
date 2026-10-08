@@ -10,22 +10,19 @@ import PetalsOverlay from "./components/PetalsOverlay";
 import "./App.css";
 
 const CART_STORAGE_KEY = "udgam_merch_cart_v2";
-const PRODUCTS_STORAGE_KEY = "udgam_products_catalog_v14";
 
 export default function App() {
-  // Products catalog with localStorage persistence
-  const [products] = useState(() => {
+  // Master merchandise catalog
+  const products = merchItems;
+
+  // Clean up legacy products localStorage key if present
+  useEffect(() => {
     try {
-      const saved = localStorage.getItem(PRODUCTS_STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
+      localStorage.removeItem("udgam_products_catalog_v14");
     } catch {
       // Fallback
     }
-    return merchItems;
-  });
+  }, []);
 
   // Navigation view state: 'showcase' | 'product'
   const [currentView, setCurrentView] = useState("showcase");
@@ -33,26 +30,31 @@ export default function App() {
   const [successfulOrderData, setSuccessfulOrderData] = useState(null);
   const [initialPrintedName, setInitialPrintedName] = useState("");
 
-  // Cart state with localStorage persistence
+  // Cart state with localStorage persistence and live stock verification
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map((item) => {
+        const liveProd = merchItems.find(
+          (p) => p.id === (item.product?.baseId || item.product?.id) || p.id === item.product?.id
+        );
+        return {
+          ...item,
+          product: {
+            ...item.product,
+            inStock: liveProd ? liveProd.inStock : false,
+          },
+        };
+      });
     } catch {
       return [];
     }
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
-
-  // Save products catalog changes
-  useEffect(() => {
-    try {
-      localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(products));
-    } catch (e) {
-      console.error("Failed to save products to localStorage", e);
-    }
-  }, [products]);
 
   // Save cart changes to localStorage
   useEffect(() => {

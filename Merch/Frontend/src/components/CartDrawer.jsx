@@ -409,7 +409,7 @@ export default function CartDrawer({
                               </span>
                             )}
                             {item.product.inStock === false && (
-                              <span className="cart-item-out-of-stock-pill">Out of Stock</span>
+                              <span className="cart-item-out-of-stock-pill">Sold Out</span>
                             )}
                           </div>
 
@@ -492,7 +492,7 @@ export default function CartDrawer({
                 {hasOutOfStockItems && (
                   <div className="cart-out-of-stock-warning">
                     <AlertTriangle size={15} className="warning-icon" />
-                    <span>Please remove out-of-stock item(s) to proceed</span>
+                    <span>All items are sold out • Orders are closed</span>
                   </div>
                 )}
 
@@ -504,13 +504,13 @@ export default function CartDrawer({
                   disabled={hasOutOfStockItems}
                   title={
                     hasOutOfStockItems
-                      ? "Remove out of stock items to proceed"
+                      ? "All merchandise is sold out and ordering is closed"
                       : "Proceed to Checkout"
                   }
                 >
                   <span>
                     {hasOutOfStockItems
-                      ? "Remove Out of Stock Items to Checkout"
+                      ? "Sold Out • Ordering Closed"
                       : "Proceed to Checkout"}
                   </span>
                   <ArrowRight size={17} />

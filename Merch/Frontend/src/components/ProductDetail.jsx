@@ -395,7 +395,7 @@ export default function ProductDetail({
                 {isOutOfStock ? (
                   <span className="image-stock-pill out-of-stock">
                     <span className="stock-dot-red" />
-                    Out of Stock
+                    Sold Out
                   </span>
                 ) : (
                   <span className="image-stock-pill in-stock">
@@ -467,14 +467,14 @@ export default function ProductDetail({
             <span className="tax-note">All taxes included</span>
           </div>
 
-          {/* Out of Stock Warning Banner */}
+          {/* Sold Out Warning Banner */}
           {isOutOfStock && (
             <div className="product-out-of-stock-alert">
               <AlertTriangle size={18} className="stock-alert-icon" />
               <div className="stock-alert-body">
-                <strong className="stock-alert-title">Currently Out of Stock</strong>
+                <strong className="stock-alert-title">Officially Sold Out</strong>
                 <p className="stock-alert-text">
-                  This item is temporarily sold out. It cannot be added to your bag at this time. Please check back for campus restocks.
+                  All slots for this edition have been claimed. This merchandise is officially sold out and no longer available to buy. Thank you for your incredible support for UDGAM 2026!
                 </p>
               </div>
             </div>
@@ -610,10 +610,11 @@ export default function ProductDetail({
                 <input
                   type="text"
                   className="bundle-custom-input"
-                  placeholder="e.g. RAHUL"
+                  placeholder={isOutOfStock ? "Sold Out" : "e.g. RAHUL"}
                   maxLength={20}
                   value={customName}
                   onChange={(e) => setCustomName(e.target.value.toUpperCase())}
+                  disabled={isOutOfStock}
                 />
                 <span className="bundle-custom-hint">
                   * Note: Name will only be printed on the Hoodie. Leave blank if you prefer no custom print.
@@ -658,12 +659,12 @@ export default function ProductDetail({
               disabled={isOutOfStock}
               whileTap={isOutOfStock ? undefined : { scale: 0.97 }}
               aria-disabled={isOutOfStock}
-              title={isOutOfStock ? "This item is currently out of stock" : "Add to Cart"}
+              title={isOutOfStock ? "This item is sold out" : "Add to Cart"}
             >
               {isOutOfStock ? (
                 <>
                   <Ban size={19} className="cta-icon" />
-                  <span>Out of Stock • Cannot Add to Cart</span>
+                  <span>Sold Out • Not Available to Buy</span>
                 </>
               ) : isAdded ? (
                 <>
