@@ -198,10 +198,17 @@
   opacity: 1;
 }
 
-/* Out of Stock Card Overlay & Dimming */
+/* Out of Stock / Sold Out Card Styling */
 .carousel-card.is-card-out-of-stock .card-image {
-  filter: grayscale(35%) contrast(0.92);
-  opacity: 0.82;
+  filter: grayscale(18%) contrast(0.96);
+  opacity: 0.9;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.carousel-card.is-card-out-of-stock.is-center .card-image,
+.carousel-card.is-card-out-of-stock:hover .card-image {
+  filter: none;
+  opacity: 1;
 }
 
 .carousel-card.is-card-out-of-stock.is-center {
@@ -489,31 +496,6 @@
 /* ---------------------------------------------------------
    HOODIE CUSTOMIZATION PERK HIGHLIGHTS (CAROUSEL)
 --------------------------------------------------------- */
-.card-hoodie-perk-badge {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  background: rgba(1, 176, 104, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 14px rgba(1, 176, 104, 0.35);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.badge-sparkle-icon {
-  color: #ffffff;
-}
 
 .meta-bundle-hoodie-perk {
   display: inline-flex;

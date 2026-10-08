@@ -23,7 +23,7 @@ export const merchItems = [
     badgeText: "ULTIMATE FEST BUNDLE",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: ["Official Fest Colorways"],
-    inStock: true,
+    inStock: false,
     isBundle: true,
     description:
       "The ultimate festival package engineered for UDGAM • NIT Sikkim. Includes all three flagship pieces: the Udgam26 T-Shirt, Udgam26 Hoodie, and Udgam26 Quarter Zip. High quality fabrics, easy to wash, and includes free personalized name printing on the hoodie!",
@@ -56,7 +56,7 @@ export const merchItems = [
     badgeText: "CHASE THE BLOOM",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: [],
-    inStock: true,
+    inStock: false,
     description:
       "The quintessential fest staple representing Udgam26. Cut in a contemporary relaxed block that retains its shape wash after wash. Crafted from high quality, breathable cotton that is easy to wash, durable, and designed for effortless all-day festival comfort.",
     features: [
@@ -85,7 +85,7 @@ export const merchItems = [
     badgeText: "CHASE THE BLOOM",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: [],
-    inStock: true,
+    inStock: false,
     description:
       "The quintessential fest staple representing Udgam26. Cut in a contemporary relaxed block that retains its shape wash after wash. Crafted from high quality, breathable cotton that is easy to wash, durable, and designed for effortless all-day festival comfort.",
     features: [
@@ -112,7 +112,7 @@ export const merchItems = [
     badgeColor: "#F6C9A8",
     badgeText: "HOT PICK",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    inStock: true,
+    inStock: false,
     description:
       "Engineered specifically for UDGAM • NIT Sikkim. Crafted from high quality plush combed organic cotton fleece, featuring a relaxed dropped-shoulder silhouette with heavy ribbed cuffs and double-layered hood. Easy to wash, ultra-durable, and finished with high-density tactile puff screenprint on the front chest and reverse spine.",
     features: [
@@ -139,7 +139,7 @@ export const merchItems = [
     badgeColor: "#F6C9A8",
     badgeText: "MOST POPULAR",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    inStock: true,
+    inStock: false,
     description:
       "Engineered specifically for UDGAM • NIT Sikkim. Crafted from high quality plush combed organic cotton fleece, featuring a relaxed dropped-shoulder silhouette with heavy ribbed cuffs and double-layered hood. Easy to wash, ultra-durable, and finished with high-density tactile puff screenprint on the front chest and reverse spine.",
     features: [
@@ -168,7 +168,7 @@ export const merchItems = [
     badgeText: "BESTSELLER",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: [],
-    inStock: true,
+    inStock: false,
     description:
       "A timeless campus essential. Constructed with high quality thermal brushed fleece engineered to withstand chilly mountain winds. Fitted with a heavy-gauge antique brass quarter-length zipper and custom embroidered UDGAM crest on the left chest. Easy to wash and wrinkle-resistant.",
     features: [
